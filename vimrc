@@ -240,7 +240,7 @@ endfu
 command! Ltags helptags ~/Dropbox/leon/notes/ | helptags ~/Dropbox/leon/todo/
 command! Lnotes e ~/Dropbox/leon/notes/index.txt
 command! Ltodo e ~/Dropbox/leon/todo/reusable_todo_home.txt
-command! Lvimrc e ~/Dropbox/.vim/.vimrc
+command! Lvimrc e ~/.vim/vimrc
 " }}}
 
 " PLUGIN SPECIFIC															{{{1
