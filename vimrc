@@ -6,12 +6,13 @@
 "===============================================================================
 
 
+set nocompatible              " be iMproved, required
 filetype off	"required
-set rtp+=~/.vim/bundle/vundle
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 
-Plugin 'gmarik/vundle'		" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'		"let Vundle manage Vundle, required
 Plugin 'L9'
 Plugin 'vim-scripts/JavaImp.vim--Lee'
 "Plugin 'vim-scripts/javacomplete'
@@ -91,7 +92,7 @@ set hidden	" allow swapping to other buffer when unwritten
 
 set backspace=indent,eol,start " make that backspace key work the way it should (only in terminal)
 set mouse=a			" Scroling using the mouse if I have my hands there accidentally
-
+set relativenumber	" Easier moving stuff around.
 
 set hlsearch		" highlight searches. Pratical with * search (see mapleaders)
 
