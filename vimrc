@@ -152,9 +152,9 @@ let NERDTreeHijackNetrw=1
 let mapleader = "\<SPACE>"
 
 "Search highlighting toggle
-map  <F12> :set hls!<CR>
-imap <F12> <ESC>:set hls!<CR>a
-vmap <F12> <ESC>:set hls!<CR>gv
+"map  <F12> :set hls!<CR>
+"imap <F12> <ESC>:set hls!<CR>a
+"vmap <F12> <ESC>:set hls!<CR>gv
 
 noremap <leader>n :NERDTreeToggle<CR>
 
@@ -163,15 +163,7 @@ noremap <leader>\| :Tabularize/\|<CR>
 "switch to last buffer. Like this one best
 noremap ,b :b#<CR>
 "delte current buffer without closing window
-"noremap _b :Kwbd<CR>
 noremap _b :Bdelete<CR>
-
-" Quick jump-to-line (123 <CR>) 
-"nmap <CR> G "Has odd sideeffects
-
-" Next + previous tabs > doesn't work
-"nmap ]w gt
-"nmap [w gT
 
 " for those anoying wrapping lines
 nmap j gj
@@ -311,15 +303,6 @@ map <leader>/ <plug>NERDCommenterToggle
 
 " JAVACOMPLETE
 "----------------------------------------
-"autocmd Filetype java set omnifunc=javacomplete#Complete
-"autocmd Filetype java set completefunc=javacomplete#CompleteParamsInf
-"autocmd FileType java,javascript,jsp inoremap <buffer> . .<C-X><C-O><C-P>
-
-"" android.jar
-"let $ANDROID_JAR = '/usr/local/opt/android-sdk/platforms/android-19/android.jar'
-
-"" cache
-"let $JAVACOMPLETE_CACHE = '~/.jcc'
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -331,19 +314,28 @@ let g:exclude_tags = 1
 "----------------------------------------
 let g:UltiSnipsExpandTrigger = "<c-l>"
 
-" MAKE GREEN
-autocmd FileType python compiler pyunittest
-autocmd FileType python nnoremap <leader>u :MakeGreen discover<CR>
 
-" DISPATCH
+" MAKE GREEN
+"----------------------------------------
+"autocmd FileType python compiler pyunittest
+"autocmd FileType python nnoremap <leader>u :MakeGreen discover<CR>
+
+
+" VIM-GRAND
+"----------------------------------------
 autocmd FileType java let b:dispatch = 'gradle'
+
 "Use vim-dispatch to run gradleTest
 autocmd FileType java nnoremap <leader>u :w<bar>Dispatch ./gradlew test -q<CR>
 "This runs my android gradle test for this class only
 autocmd FileType java nnoremap <leader>uc :w<bar>Dispatch ./gradlew test -q -Dclasses=%:t:r<CR>
 
-" VIM-JAVA-HI-SEMANTICS
+"Run GrandCtags command every time you save a java file
+autocmd BufWritePost *.java silent! GrandTags
 
+
+" VIM-JAVA-HI-SEMANTICS
+"----------------------------------------
 autocmd BufRead,BufNewFile *.java		setlocal syntax=java2
 autocmd BufWritePost *.java		silent!	setlocal syntax=java2
 "autocmd BufWritePost *.java		silent!	setlocal syntax=java2 | exe "normal! g`\""
@@ -351,11 +343,9 @@ autocmd BufWritePost *.java		silent!	setlocal syntax=java2
 "autocmd BufWritePost *  silent!	exe "normal! g`^"
 
 " VIM-OPEN-URL
+"----------------------------------------
 noremap gx :OpenURL<CR>
 
-
-"Run GrandCtags command every time you save a java file
-autocmd BufWritePost *.java silent! GrandTags
 
 
 
