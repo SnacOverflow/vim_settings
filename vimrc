@@ -2,55 +2,54 @@
 " VIMRC
 
 
-" VUNDLE SETUP																{{{
+" VUNDLE SETUP
 "===============================================================================
 
-
-set nocompatible              " be iMproved, required
-filetype off	"required
+set nocompatible                  " be iMproved, required by Vundle
+filetype off                      " required by Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-
-Plugin 'gmarik/Vundle.vim'		"let Vundle manage Vundle, required
+" ENVIRONMENT
+Plugin 'gmarik/Vundle.vim' " let Vundle manage Vundle, required
+Plugin 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
 Plugin 'L9'
-Plugin 'vim-scripts/JavaImp.vim--Lee'
-"Plugin 'vim-scripts/javacomplete'
-Plugin 'Shougo/javacomplete'
-"Plugin 'PeterCxy/javacomplete'
+
 Plugin 'scrooloose/nerdtree'
-Plugin 'h1mesuke/vim-unittest'
-Plugin 'scrooloose/syntastic'
-Plugin 'godlygeek/tabular'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'bling/vim-airline'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'tfnico/vim-gradle'
+Plugin 'wincent/command-t'
+Plugin 'Lokaltog/vim-easymotion'
+
+" ENHANCEMENTS
 Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-fugitive'
-Plugin 'wincent/command-t'
-Plugin 'sentientmachine/erics_vim_syntax_and_color_highlighting'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'yegappan/greplace'
+Plugin 'godlygeek/tabular'
 Plugin 'tpope/vim-surround'
-Plugin 'henrik/vim-qargs'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'reinh/vim-makegreen'
-Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-dispatch' "Async task runner
 Plugin 'stefandtw/quickfix-reflector.vim'
 Plugin 'tpope/vim-vinegar' "Netrw upgrader
 Plugin 'tpope/vim-eunuch' "Commands like :Rename
 Plugin 'artnez/vim-wipeout'
-Plugin 'moll/vim-bbye'
+Plugin 'tpope/vim-repeat' "Extends vim's repeating using '.'
+Plugin 'henrik/vim-open-url'
+
+" CODING
+Plugin 'Shougo/javacomplete'
+Plugin 'vim-scripts/JavaImp.vim--Lee'
+Plugin 'scrooloose/syntastic'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'scrooloose/nerdcommenter' " Why not try tpopes version? Tpope = generally more my style
+Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
 
-Plugin 'henrik/vim-open-url'
-Plugin 'sjl/vitality.vim' "Improvements for tmux (autofocus event + cursor)
-Plugin 'tpope/vim-repeat'
-
-
+" STYLING & SYNTAX
+Plugin 'altercation/vim-colors-solarized'
 Plugin 'endel/vim-github-colorscheme'
+Plugin 'bling/vim-airline'
+Plugin 'tfnico/vim-gradle'
+
+"Plugin 'henrik/vim-qargs'    " Do I even use this?
+"Plugin 'reinh/vim-makegreen' " Do I even use this?
+"Plugin 'moll/vim-bbye'       " Do I even use this?
 
 "MY STUFF
 Plugin 'meonlol/vim-android'
@@ -60,25 +59,22 @@ Plugin 'meonlol/vim-java-hi-semantics'
 
 
 " TRIED
-"Plugin 'java_apidoc.vim' 		"Didn't get it to work
-"Plugin 'Lokaltog/powerline' 	"To many requirements for python
-"Plugin 'vim-scripts/Vim-JDE'
-"Plugin 'dhruvasagar/vim-table-mode'	"Interesting for makeing tables (exel
-"Plugin 'jewes/Conque-Shell'			"Interesting shell intergration. Never used it
-"Plugin 'tomtom/tcomment_vim' " wrong comment in java
-"Plugin 'vim-scripts/pyunit.vim' 		"Rather use native python unittest
-"Plugin 'alfredodeza/pytest.vim'
-"Plugin 'reedes/vim-pencil' " To many functions I don't need. + wrapping sucks
-"Plugin 'vim-scripts/TagHighlight'		"Uses tags file to highlight every method. Don't need that and is very slow
+" Maybe try again later
+"Plugin 'dhruvasagar/vim-table-mode' " Interesting for makeing tables (exel
+"Plugin 'jewes/Conque-Shell'         " Interesting shell intergration. Never used it
+"Plugin 'vim-scripts/javacomplete'
+"Plugin 'PeterCxy/javacomplete'
+"Plugin 'yegappan/greplace'          " Never used
 
 
 " All of your Plugins must be added before the following line
-call vundle#end()			 " required
-filetype plugin indent on	 " required
+call vundle#end()			 " required by Vundle
+filetype plugin indent on	 " required by Vundle
 
-" }}}
 
-" SETTINGS																	{{{
+
+
+" SETTINGS
 "===============================================================================
 
 
@@ -134,32 +130,23 @@ au FocusLost,WinLeave * :silent! w
 
 
 "THEME
-"let java_highlight_functions="indent"
-
 set background=dark
-"set background=light
- "let g:solarized_visibility = "low"
  let g:solarized_visibility = "high"
  let g:solarized_contrast = "high"
- "let g:solarized_termcolors= 16
  "let g:solarized_termcolors= 256 "Guess I shouldn't use this one
 let g:solarized_termtrans = 1
 colorscheme solarized
+
 set guifont=Menlo\ Regular:h12
 set t_Co=256
-
 
 
 let NERDTreeHijackNetrw=1
 
 
-"TURNED OFF
-"set showmatch		" jump to matches when entering [] etc ~They are highlighted, why bother
-"set autochdir	" workingdir == current file dir Don't like it. Works shitty with my use of folders
 
-" }}}
 
-" MAPPINGS																	 {{{
+" MAPPINGS
 "===============================================================================
 
 let mapleader = "\<SPACE>"
@@ -215,15 +202,9 @@ noremap <F7> :let g:searchString = expand("<cword>")<CR> :vim /\<<C-R>=g:searchS
 
 
 
-"<CR>  q:let g:currentWord
-
-"Toggle for turning wrapping on/off > Can easilly type command
-"noremap <leader>wr :set wrap!<CR>
 
 
-" }}}
-
-" COMMANDS																	 {{{
+" COMMANDS
 "===============================================================================
 
 " Toggle spelling or enable the spell checker if the language is specified 
@@ -250,13 +231,13 @@ command! Lvimrc e ~/.vim/vimrc
 command! Ltwenty read !~/Dropbox/leon/developing/python/major_numbers/twenty.py
 command! Ltwenty2 read ~/.twenty_last
 
-" }}}
 
-" PLUGIN SPECIFIC															{{{1
+" PLUGIN SPECIFIC
 "===============================================================================
-" YOUCOMPLETEME						{{{2
+
+" YOUCOMPLETEME
 "----------------------------------------
-nnoremap <leader>y :call YcmToggle()<CR>                " Toggle YouCompleteMe
+nnoremap <leader>y :call YcmToggle()<CR>
 
 function! YcmToggle()
 	if g:ycm_auto_trigger == 1
@@ -267,8 +248,8 @@ function! YcmToggle()
 		echo "ycm on"
 	endif
 endfunction
-" }}}
-" AIRLINE						{{{2
+
+" AIRLINE
 "----------------------------------------
 let g:airline#extensions#tabline#enabled = 1
 set laststatus=2
@@ -306,42 +287,29 @@ set laststatus=2
       \ }
 
 
-" }}}
-" PYTEST						{{{2
-"----------------------------------------
-nnoremap <leader>p :Pytest file<CR>
-
-" UNIT TEST (vim)					{{{2
-"----------------------------------------
-"nnoremap <leader>u :w<CR>:UnitTest<CR>
-
-" }}}
-" COMMAND-T						{{{2
+" COMMAND-T
 "----------------------------------------
 map <D-O> :CommandT<CR>
 map <leader>t :CommandT<CR>
 map <leader>d :CommandT ~/Dropbox/leon/<CR>
 set wildignore=**/build/*,**/.git/*,*.class
 
-" }}}
-" NERDTREE						{{{2
+" NERDTREE
 "----------------------------------------
 let NERDTreeWinSize = 50
 let NERDTreeBookmarksSort = 0
-" }}}
-" EASYMOTION						{{{2
+
+" EASYMOTION
 "----------------------------------------
 map <leader>s <Plug>(easymotion-s)
 map <leader>f <Plug>(easymotion-f)
 map <leader>F <Plug>(easymotion-F)
 
-" }}}
-" NERDCommenter						{{{2
+" NERDCommenter
 "----------------------------------------
 map <leader>/ <plug>NERDCommenterToggle
 
-" }}}
-" JAVACOMPLETE						{{{2
+" JAVACOMPLETE
 "----------------------------------------
 "autocmd Filetype java set omnifunc=javacomplete#Complete
 "autocmd Filetype java set completefunc=javacomplete#CompleteParamsInf
@@ -358,23 +326,23 @@ if has("autocmd")
 	autocmd Filetype java setlocal omnifunc=javacomplete#Complete
 endif 
 let g:exclude_tags = 1
-" }}}
-" ULTISNIPS						{{{2
+
+" ULTISNIPS
 "----------------------------------------
 let g:UltiSnipsExpandTrigger = "<c-l>"
-"}}}
-" MAKE GREEN					{{{2
+
+" MAKE GREEN
 autocmd FileType python compiler pyunittest
 autocmd FileType python nnoremap <leader>u :MakeGreen discover<CR>
-" }}}
-" DISPATCH					{{{2
+
+" DISPATCH
 autocmd FileType java let b:dispatch = 'gradle'
 "Use vim-dispatch to run gradleTest
 autocmd FileType java nnoremap <leader>u :w<bar>Dispatch ./gradlew test -q<CR>
 "This runs my android gradle test for this class only
 autocmd FileType java nnoremap <leader>uc :w<bar>Dispatch ./gradlew test -q -Dclasses=%:t:r<CR>
-" }}}
-" VIM-JAVA-HI-SEMANTICS				{{{2
+
+" VIM-JAVA-HI-SEMANTICS
 
 autocmd BufRead,BufNewFile *.java		setlocal syntax=java2
 autocmd BufWritePost *.java		silent!	setlocal syntax=java2
@@ -382,47 +350,20 @@ autocmd BufWritePost *.java		silent!	setlocal syntax=java2
 "autocmd BufWritePost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`^" | endif
 "autocmd BufWritePost *  silent!	exe "normal! g`^"
 
-" }}}
-" VIM-OPEN-URL				{{{2
+" VIM-OPEN-URL
 noremap gx :OpenURL<CR>
-" }}}
 
-"}}}
 
 "Run GrandCtags command every time you save a java file
 autocmd BufWritePost *.java silent! GrandTags
 
 
-" VIMRC IN DROPBOX															{{{
-"===============================================================================
 
-" To share my vimrc over different computers. It can be placed into the
-" dropbox. Using the below code in the actual vimrc redirects all settings to
-" here.
-
-"set runtimepath^=~/Dropbox/.vim
-"source ~/Dropbox/.vim/.vimrc
-
-
-" NOTE: Vundle needs to installed locally. Then the :PluginInstall command
-" installs it on the local machine
-
-" .inputrc file contents, for VIM commands in terminal
-" set editing-mode vi
-" set keymap vi-command
-
-" }}}
-
-
-
-" EXPERIMENTAL																{{{
+" EXPERIMENTAL
 "===============================================================================
 
 "For JavaImp
 "let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
 
-" }}}
 
 
-"--------------------------------------------------------------------------------
-" vim:fdm=marker:
