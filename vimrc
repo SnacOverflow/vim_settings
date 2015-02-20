@@ -31,6 +31,7 @@ Plugin 'tpope/vim-eunuch' "Commands like :Rename
 Plugin 'artnez/vim-wipeout'
 Plugin 'tpope/vim-repeat' "Extends vim's repeating using '.'
 Plugin 'henrik/vim-open-url'
+Plugin 'moll/vim-bbye'       " Close current buffer (mapped to _b)
 
 " CODING
 Plugin 'Shougo/javacomplete'
@@ -49,7 +50,6 @@ Plugin 'tfnico/vim-gradle'
 
 "Plugin 'henrik/vim-qargs'    " Do I even use this?
 "Plugin 'reinh/vim-makegreen' " Do I even use this?
-"Plugin 'moll/vim-bbye'       " Do I even use this?
 
 "MY STUFF
 Plugin 'meonlol/vim-android'
@@ -124,8 +124,8 @@ set autowrite
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
-au FocusGained,BufEnter * :silent! !
-au FocusLost,WinLeave * :silent! w
+"au FocusGained,BufEnter * :silent! e
+"au FocusLost,WinLeave * :silent! w
 
 
 
@@ -313,12 +313,6 @@ let g:exclude_tags = 1
 " ULTISNIPS
 "----------------------------------------
 let g:UltiSnipsExpandTrigger = "<c-l>"
-
-
-" MAKE GREEN
-"----------------------------------------
-"autocmd FileType python compiler pyunittest
-"autocmd FileType python nnoremap <leader>u :MakeGreen discover<CR>
 
 
 " VIM-GRAND
