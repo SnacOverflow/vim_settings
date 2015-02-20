@@ -197,6 +197,9 @@ map <leader>j <C-W>j
 map <leader>k <C-W>k
 map <leader>l <C-W>l
 
+map [w i<space><ESC>l
+map ]w a<space><ESC>h
+
 "QUICK SUBSTITUTE CWORD
 "1. saves word under cursor in g:replacingString
 "2. Opens cmdwin and goes to insert mode
@@ -241,7 +244,12 @@ endfu
 command! Ltags helptags ~/Dropbox/leon/notes/ | helptags ~/Dropbox/leon/todo/
 command! Lnotes e ~/Dropbox/leon/notes/index.txt
 command! Ltodo e ~/Dropbox/leon/todo/reusable_todo_home.txt
+command! Lochtend e ~/Dropbox/leon/todo/ochtend-ritueel.txt
 command! Lvimrc e ~/.vim/vimrc
+
+command! Ltwenty read !~/Dropbox/leon/developing/python/major_numbers/twenty.py
+command! Ltwenty2 read ~/.twenty_last
+
 " }}}
 
 " PLUGIN SPECIFIC															{{{1
@@ -378,9 +386,6 @@ autocmd BufWritePost *.java		silent!	setlocal syntax=java2
 " VIM-OPEN-URL				{{{2
 noremap gx :OpenURL<CR>
 " }}}
-" VIM-EASYCLIP				{{{2
-noremap gm m
-" }}}
 
 "}}}
 
@@ -416,8 +421,6 @@ autocmd BufWritePost *.java silent! GrandTags
 "For JavaImp
 "let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
 
-command! Ltwenty read !~/Dropbox/leon/developing/python/major_numbers/twenty.py
-command! Ltwenty2 read ~/.twenty_last
 " }}}
 
 
