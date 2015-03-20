@@ -22,6 +22,7 @@ Plugin 'Lokaltog/vim-easymotion'
 " ENHANCEMENTS
 Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-speeddating'
 Plugin 'godlygeek/tabular'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-dispatch' "Async task runner
