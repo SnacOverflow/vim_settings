@@ -26,6 +26,14 @@ snip.rv = currentPath
 `;
 endsnippet
 
+snippet im "local import" b
+import `!p
+pathItems = path.split('/')
+currentPath = '.'.join(pathItems[3:6])
+snip.rv = currentPath
+`.$0;
+endsnippet
+
 snippet co "constructor" b
 public ${2:`!p snip.rv = snip.basename or "untitled"`}() {
 	$0
