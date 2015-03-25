@@ -20,7 +20,11 @@ snip.rv = snip.basename or "untitled"`} {
 endsnippet
 
 snippet pa "package" b
-package $0
+package `!p
+pathItems = path.split('/')
+currentPath = '.'.join(pathItems[3:-1])
+snip.rv = currentPath
+`;
 endsnippet
 
 snippet co "constructor" b

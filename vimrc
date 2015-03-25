@@ -63,8 +63,8 @@ Plugin 'meonlol/vim-java-hi-semantics'
 " Maybe try again later
 "Plugin 'dhruvasagar/vim-table-mode' " Interesting for makeing tables (exel
 "Plugin 'jewes/Conque-Shell'         " Interesting shell intergration. Never used it
-"Plugin 'vim-scripts/javacomplete'
 "Plugin 'PeterCxy/javacomplete'
+"Plugin 'vim-scripts/javacomplete'
 "Plugin 'yegappan/greplace'          " Never used
 
 
