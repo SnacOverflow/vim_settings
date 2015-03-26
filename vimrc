@@ -351,5 +351,43 @@ noremap gx :OpenURL<CR>
 "For JavaImp
 "let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
 
+nnoremap ,t :call OpenOther()<CR>
+
+fu! OpenOther()
+	let mainDir = "/main/"
+	let testDir = "/test/"
+
+	let testSuffix = "Test.java"
 
 
+	" Path
+	let fullPath = expand('%:p:h')
+    let cwd = getcwd()
+    let relPath = substitute(fullPath, l:cwd . "/" , "", "")
+	let targetPath = ""
+
+	" Filename
+	let srcFile = expand('%:t')
+	let targetFile = ""
+
+	" Change path
+	if (stridx(relPath, mainDir) > -1)
+		let targetPath = substitute(relPath, mainDir, testDir, "")
+	elseif (stridx( relPath, testDir) > -1)
+		let targetPath = substitute(relPath, testDir, mainDir, "")
+	endif
+
+	" Change fileName
+	if (stridx(srcFile, testSuffix) > -1)
+		let targetFile = substitute(srcFile, "Test.java", ".java", "")
+	else
+		let targetFile = substitute(srcFile, ".java", "Test.java", "")
+	endif
+
+	let finalFilePath = targetPath . '/' . targetFile
+	if filereadable(finalFilePath)
+		execute "edit " . finalFilePath
+	else
+		echomsg "Other file not found"
+	endif
+endfu
