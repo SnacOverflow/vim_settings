@@ -306,9 +306,9 @@ map <leader>/ <plug>NERDCommenterToggle
 "----------------------------------------
 
 " Only do this part when compiled with support for autocommands.
-if has("autocmd")
-	autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-endif 
+"if has("autocmd")
+	"autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+"endif 
 let g:exclude_tags = 1
 
 " ULTISNIPS
