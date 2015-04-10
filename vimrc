@@ -354,23 +354,25 @@ noremap gx :OpenURL<CR>
 nnoremap ,t :call OpenOther()<CR>
 
 fu! OpenOther()
+	if &filetype == "java"
+		call OpenOtherJava()
+	elseif &filetype == "ruby"
+		call OpenOtherRuby()
+	endif
+endfu
+
+fu! OpenOtherJava()
+	let testSuffix = "Test.java"
+	let nonTestSuffix = ".java"
 	let mainDir = "/main/"
 	let testDir = "/test/"
 
-	let testSuffix = "Test.java"
-
-
-	" Path
-	let fullPath = expand('%:p:h')
-    let cwd = getcwd()
-    let relPath = substitute(fullPath, l:cwd . "/" , "", "")
-	let targetPath = ""
-
-	" Filename
+	" Files & paths
+	let relPath = GetRelativeFilePath()
 	let srcFile = expand('%:t')
-	let targetFile = ""
 
 	" Change path
+	let targetPath = ""
 	if (stridx(relPath, mainDir) > -1)
 		let targetPath = substitute(relPath, mainDir, testDir, "")
 	elseif (stridx( relPath, testDir) > -1)
@@ -378,16 +380,46 @@ fu! OpenOther()
 	endif
 
 	" Change fileName
+	let targetFile = ""
 	if (stridx(srcFile, testSuffix) > -1)
-		let targetFile = substitute(srcFile, "Test.java", ".java", "")
+		let targetFile = substitute(srcFile, testSuffix, nonTestSuffix, "")
 	else
-		let targetFile = substitute(srcFile, ".java", "Test.java", "")
+		let targetFile = substitute(srcFile, nonTestSuffix, testSuffix, "")
 	endif
 
-	let finalFilePath = targetPath . '/' . targetFile
-	if filereadable(finalFilePath)
-		execute "edit " . finalFilePath
+	call OpenFileAtPath(targetFile, targetPath)
+endfu
+
+
+fu! OpenOtherRuby()
+	let testPrefix = "tc_"
+
+	" Files & paths
+	let srcFile = expand('%:t')
+
+	" Change fileName
+	let targetFile = ""
+	if (stridx(srcFile, testPrefix) > -1)
+		let targetFile = substitute(srcFile, testPrefix, "", "")
 	else
-		echomsg "Other file not found"
+		let targetFile = testPrefix . srcFile
 	endif
+
+	call OpenFileAtPath(targetFile, GetRelativeFilePath())
+endfu
+
+
+fu! OpenFileAtPath(fileName, path)
+	let completePath = a:path . '/' . a:fileName
+	if filereadable(completePath)
+		execute "edit " . completePath
+	else
+		echomsg "File not found: " . completePath
+	endif
+endfu
+
+
+fu! GetRelativeFilePath()
+	let fullPath = expand('%:p:h')
+    return substitute(fullPath, getcwd() . "/" , "", "")
 endfu
