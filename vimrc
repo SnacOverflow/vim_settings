@@ -35,7 +35,6 @@ Plugin 'henrik/vim-open-url'
 Plugin 'moll/vim-bbye'       " Close current buffer (mapped to _b)
 
 " CODING
-Plugin 'Shougo/javacomplete'
 Plugin 'vim-scripts/JavaImp.vim--Lee'
 Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/YouCompleteMe'
@@ -49,14 +48,12 @@ Plugin 'endel/vim-github-colorscheme'
 Plugin 'bling/vim-airline'
 Plugin 'tfnico/vim-gradle'
 
-"Plugin 'henrik/vim-qargs'    " Do I even use this?
-"Plugin 'reinh/vim-makegreen' " Do I even use this?
-
 "MY STUFF
 Plugin 'meonlol/vim-android'
 Plugin 'meonlol/pyunit.vim'
 Plugin 'meonlol/vim-grand'
 Plugin 'meonlol/vim-java-hi-semantics'
+Plugin 'meonlol/javacomplete'
 
 
 " TRIED
@@ -65,7 +62,9 @@ Plugin 'meonlol/vim-java-hi-semantics'
 "Plugin 'jewes/Conque-Shell'         " Interesting shell intergration. Never used it
 "Plugin 'PeterCxy/javacomplete'
 "Plugin 'vim-scripts/javacomplete'
+"Plugin 'Shougo/javacomplete'
 "Plugin 'yegappan/greplace'          " Never used
+"Plugin 'reinh/vim-makegreen' " Do I even use this?
 
 
 " All of your Plugins must be added before the following line
