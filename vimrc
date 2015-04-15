@@ -107,7 +107,8 @@ set wildmenu		" tab completion for help
 set ai				" set auto-indenting on for programming
 set tabstop=4		" Uses 4 colums (spaces) for a tab
 set shiftwidth=4	" 
-set noexpandtab		" use tabs in stead of spaces
+"set noexpandtab		" use tabs in stead of spaces
+set expandtab		" use spaces in stead of tabs
 " TRICK: use 'set et|retab' to convert all tabs to spaces or 'set noet|retab!' for the reverse
 
 "SEARCHING
