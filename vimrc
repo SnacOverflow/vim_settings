@@ -18,6 +18,7 @@ Plugin 'L9'
 Plugin 'scrooloose/nerdtree'
 Plugin 'wincent/command-t'
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'rhysd/vim-grammarous'
 
 " ENHANCEMENTS
 Plugin 'tpope/vim-unimpaired'
