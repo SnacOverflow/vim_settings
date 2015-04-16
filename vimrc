@@ -342,7 +342,9 @@ autocmd BufWritePost *.java		silent!	setlocal syntax=java2
 "----------------------------------------
 noremap gx :OpenURL<CR>
 
-
+" VIM-FUGITIVE
+"----------------------------------------
+autocmd QuickFixCmdPost *grep* cwindow
 
 
 " EXPERIMENTAL
