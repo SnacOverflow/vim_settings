@@ -350,6 +350,13 @@ autocmd QuickFixCmdPost *grep* cwindow
 " EXPERIMENTAL
 "===============================================================================
 
+
+" Use CTRL-P for command-history, using entered text to match.
+cnoremap <C-p> <Up>
+
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+
 "For JavaImp
 "let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
 
