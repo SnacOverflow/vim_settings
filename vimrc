@@ -15,6 +15,7 @@ Plugin 'gmarik/Vundle.vim' " let Vundle manage Vundle, required
 Plugin 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
 Plugin 'L9'
 
+
 Plugin 'scrooloose/nerdtree'
 Plugin 'wincent/command-t'
 Plugin 'Lokaltog/vim-easymotion'
@@ -41,6 +42,7 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdcommenter' " Why not try tpopes version? Tpope = generally more my style
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
+Plugin 'janx/vim-rubytest'
 
 " STYLING & SYNTAX
 Plugin 'altercation/vim-colors-solarized'
@@ -359,6 +361,11 @@ let g:rubycomplete_classes_in_global = 1
 
 "For JavaImp
 "let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
+
+
+map <unique> <Leader>urt <Plug>RubyTestRun
+map <unique> <Leader>urc <Plug>RubyFileRun
+map <unique> <Leader>url <Plug>RubyTestRunLast
 
 nnoremap ,t :call OpenOther()<CR>
 
