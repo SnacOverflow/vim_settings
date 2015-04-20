@@ -43,7 +43,7 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdcommenter' " Why not try tpopes version? Tpope = generally more my style
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
-Plugin 'janx/vim-rubytest'
+Plugin 'meonlol/vim-rubytest'
 
 " STYLING & SYNTAX
 Plugin 'altercation/vim-colors-solarized'
@@ -364,9 +364,11 @@ let g:rubycomplete_classes_in_global = 1
 "let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
 
 
-map <unique> <Leader>urt <Plug>RubyTestRun
-map <unique> <Leader>urc <Plug>RubyFileRun
-map <unique> <Leader>url <Plug>RubyTestRunLast
+autocmd FileType ruby noremap <Leader>ut <Plug>RubyTestRun
+autocmd FileType ruby noremap <Leader>uc <Plug>RubyFileRun
+autocmd FileType ruby noremap <Leader>ul <Plug>RubyTestRunLast
+
+autocmd FileType java noremap <Leader>gi :GrandInstall<CR>
 
 nnoremap ,t :call OpenOther()<CR>
 
