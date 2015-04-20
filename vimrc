@@ -368,7 +368,7 @@ autocmd FileType ruby noremap <Leader>ut <Plug>RubyTestRun
 autocmd FileType ruby noremap <Leader>uc <Plug>RubyFileRun
 autocmd FileType ruby noremap <Leader>ul <Plug>RubyTestRunLast
 
-autocmd FileType java noremap <Leader>gi :GrandInstall<CR>
+autocmd FileType java noremap <Leader>i :GrandInstall<CR>
 
 nnoremap ,t :call OpenOther()<CR>
 
