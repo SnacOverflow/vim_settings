@@ -363,6 +363,12 @@ let g:rubycomplete_classes_in_global = 1
 "For JavaImp
 "let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
 
+" removes quickfix buffer from showing up using :bnext and the like.
+augroup qf
+    autocmd!
+    autocmd FileType qf set nobuflisted
+augroup END
+
 
 autocmd FileType ruby noremap <Leader>ut <Plug>RubyTestRun
 autocmd FileType ruby noremap <Leader>uc <Plug>RubyFileRun
