@@ -356,16 +356,15 @@ autocmd QuickFixCmdPost *grep* cwindow
 " Use CTRL-P for command-history, using entered text to match.
 cnoremap <C-p> <Up>
 
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-
 "For JavaImp
 "let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
 
+" vim-surround for spaces
+let g:surround_119 = "\ \r\ "
 
-map <unique> <Leader>urt <Plug>RubyTestRun
-map <unique> <Leader>urc <Plug>RubyFileRun
-map <unique> <Leader>url <Plug>RubyTestRunLast
+autocmd FileType ruby noremap <Leader>ut <Plug>RubyTestRun
+autocmd FileType ruby noremap <Leader>uc <Plug>RubyFileRun
+autocmd FileType ruby noremap <Leader>ul <Plug>RubyTestRunLast
 
 nnoremap ,t :call OpenOther()<CR>
 
