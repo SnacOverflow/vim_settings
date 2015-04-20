@@ -19,6 +19,7 @@ Plugin 'L9'
 Plugin 'scrooloose/nerdtree'
 Plugin 'wincent/command-t'
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'rhysd/vim-grammarous'
 
 " ENHANCEMENTS
 Plugin 'tpope/vim-unimpaired'
@@ -42,7 +43,7 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdcommenter' " Why not try tpopes version? Tpope = generally more my style
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
-Plugin 'janx/vim-rubytest'
+Plugin 'meonlol/vim-rubytest'
 
 " STYLING & SYNTAX
 Plugin 'altercation/vim-colors-solarized'
@@ -362,9 +363,17 @@ cnoremap <C-p> <Up>
 " vim-surround for spaces
 let g:surround_119 = "\ \r\ "
 
+" removes quickfix buffer from showing up using :bnext and the like.
+augroup qf
+    autocmd!
+    autocmd FileType qf set nobuflisted
+augroup END
+
 autocmd FileType ruby noremap <Leader>ut <Plug>RubyTestRun
 autocmd FileType ruby noremap <Leader>uc <Plug>RubyFileRun
 autocmd FileType ruby noremap <Leader>ul <Plug>RubyTestRunLast
+
+autocmd FileType java noremap <Leader>i :GrandInstall<CR>
 
 nnoremap ,t :call OpenOther()<CR>
 
