@@ -1,7 +1,6 @@
 
 " VIMRC
 
-
 " VUNDLE SETUP
 "===============================================================================
 
@@ -191,13 +190,24 @@ map ]w a<space><ESC>h
 "4. Visually selects the second string for easy replacing or changing
 noremap <F6> :let g:replacingString = expand("<cword>")<CR> q:i%s/\<<c-r>=g:replacingString<cr>\>/<c-r>=g:replacingString<cr>/gc<ESC>2T/vet/
 
-"QUICK VIMGREP CWORD
-"1. saves word under cursor in g:searchString
-"2. executs vimgrep command for all java files in cwd (not jumping to first match) (whole word only)
-"3. opens quickfix window (now use the 'stefandtw/quickfix-reflector.vim' plugin to use QUICK SUBSTITUTE CWORD in the quickfix window)
-noremap <F7> :let g:searchString = expand("<cword>")<CR> :vim /\<<C-R>=g:searchString<CR>\>/j **/*.java **/*.xml<CR> :cw<CR>
+noremap <F7> :call VimGrepThis()<CR>
+noremap <F8> :call GitGrepThis()<CR>
 
+fu! VimGrepThis()
+    let g:wordUnderCursor = expand("<cword>")
+    let vimGrepCommand = "vimgrep /\\<" . g:wordUnderCursor . "\\>/j **/*." .  expand('%:e')
+    echomsg vimGrepCommand
+    execute vimGrepCommand
+    cw
+endfu
 
+fu! GitGrepThis()
+    let g:wordUnderCursor = expand("<cword>")
+    let gitGrepCommand = "Ggrep " . g:wordUnderCursor
+    echomsg gitGrepCommand
+    execute gitGrepCommand
+    cw
+endfu
 
 
 
@@ -348,6 +358,7 @@ noremap gx :OpenURL<CR>
 
 " VIM-FUGITIVE
 "----------------------------------------
+" Open quickfix window after :grep | :Ggrep returns
 "autocmd QuickFixCmdPost *grep* cwindow
 
 
@@ -363,7 +374,7 @@ cnoremap <C-p> <Up>
 
 " TODO: Fix?
 " Removes quickfix buffer from showing up using :bnext and the like.
-"autocmd FileType qf set nobuflisted
+autocmd FileType qf set nobuflisted
 
 " Doesn't work with noremap for some reason
 autocmd FileType ruby map <Leader>ut <Plug>RubyTestRun
