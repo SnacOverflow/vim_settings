@@ -24,6 +24,7 @@ Plugin 'rhysd/vim-grammarous'
 " ENHANCEMENTS
 Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-scriptease'
 Plugin 'tpope/vim-speeddating'
 Plugin 'godlygeek/tabular'
 Plugin 'tpope/vim-surround'
@@ -347,7 +348,7 @@ noremap gx :OpenURL<CR>
 
 " VIM-FUGITIVE
 "----------------------------------------
-autocmd QuickFixCmdPost *grep* cwindow
+"autocmd QuickFixCmdPost *grep* cwindow
 
 
 " EXPERIMENTAL
@@ -360,14 +361,9 @@ cnoremap <C-p> <Up>
 "For JavaImp
 "let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
 
-" vim-surround for spaces
-let g:surround_119 = "\ \r\ "
-
-" removes quickfix buffer from showing up using :bnext and the like.
-augroup qf
-    autocmd!
-    autocmd FileType qf set nobuflisted
-augroup END
+" TODO: Fix?
+" Removes quickfix buffer from showing up using :bnext and the like.
+"autocmd FileType qf set nobuflisted
 
 " Doesn't work with noremap for some reason
 autocmd FileType ruby map <Leader>ut <Plug>RubyTestRun
@@ -379,58 +375,58 @@ autocmd FileType java noremap <Leader>i :GrandInstall<CR>
 nnoremap ,t :call OpenOther()<CR>
 
 fu! OpenOther()
-	if &filetype == "java"
-		call OpenOtherJava()
-	elseif &filetype == "ruby"
-		call OpenOtherRuby()
-	endif
+    if &filetype == "java"
+        call OpenOtherJava()
+    elseif &filetype == "ruby"
+        call OpenOtherRuby()
+    endif
 endfu
 
 fu! OpenOtherJava()
-	let testSuffix = "Test.java"
-	let nonTestSuffix = ".java"
-	let mainDir = "/main/"
-	let testDir = "/test/"
+    let testSuffix = "Test.java"
+    let nonTestSuffix = ".java"
+    let mainDir = "/main/"
+    let testDir = "/test/"
 
-	" Files & paths
-	let relPath = GetRelativeFilePath()
-	let srcFile = expand('%:t')
+    " Files & paths
+    let relPath = GetRelativeFilePath()
+    let srcFile = expand('%:t')
 
-	" Change path
-	let targetPath = ""
-	if (stridx(relPath, mainDir) > -1)
-		let targetPath = substitute(relPath, mainDir, testDir, "")
-	elseif (stridx( relPath, testDir) > -1)
-		let targetPath = substitute(relPath, testDir, mainDir, "")
-	endif
+    " Change path
+    let targetPath = ""
+    if (stridx(relPath, mainDir) > -1)
+        let targetPath = substitute(relPath, mainDir, testDir, "")
+    elseif (stridx( relPath, testDir) > -1)
+        let targetPath = substitute(relPath, testDir, mainDir, "")
+    endif
 
-	" Change fileName
-	let targetFile = ""
-	if (stridx(srcFile, testSuffix) > -1)
-		let targetFile = substitute(srcFile, testSuffix, nonTestSuffix, "")
-	else
-		let targetFile = substitute(srcFile, nonTestSuffix, testSuffix, "")
-	endif
+    " Change fileName
+    let targetFile = ""
+    if (stridx(srcFile, testSuffix) > -1)
+        let targetFile = substitute(srcFile, testSuffix, nonTestSuffix, "")
+    else
+        let targetFile = substitute(srcFile, nonTestSuffix, testSuffix, "")
+    endif
 
-	call OpenFileAtPath(targetFile, targetPath)
+    call OpenFileAtPath(targetFile, targetPath)
 endfu
 
 
 fu! OpenOtherRuby()
-	let testPrefix = "tc_"
+    let testPrefix = "tc_"
 
-	" Files & paths
-	let srcFile = expand('%:t')
+    " Files & paths
+    let srcFile = expand('%:t')
 
-	" Change fileName
-	let targetFile = ""
-	if (stridx(srcFile, testPrefix) > -1)
-		let targetFile = substitute(srcFile, testPrefix, "", "")
-	else
-		let targetFile = testPrefix . srcFile
-	endif
+    " Change fileName
+    let targetFile = ""
+    if (stridx(srcFile, testPrefix) > -1)
+        let targetFile = substitute(srcFile, testPrefix, "", "")
+    else
+        let targetFile = testPrefix . srcFile
+    endif
 
-	call OpenFileAtPath(targetFile, GetRelativeFilePath())
+    call OpenFileAtPath(targetFile, GetRelativeFilePath())
 endfu
 
 
