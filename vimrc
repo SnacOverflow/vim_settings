@@ -369,9 +369,10 @@ augroup qf
     autocmd FileType qf set nobuflisted
 augroup END
 
-autocmd FileType ruby noremap <Leader>ut <Plug>RubyTestRun
-autocmd FileType ruby noremap <Leader>uc <Plug>RubyFileRun
-autocmd FileType ruby noremap <Leader>ul <Plug>RubyTestRunLast
+" Doesn't work with noremap for some reason
+autocmd FileType ruby map <Leader>ut <Plug>RubyTestRun
+autocmd FileType ruby map <Leader>uc <Plug>RubyFileRun
+autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 
 autocmd FileType java noremap <Leader>i :GrandInstall<CR>
 
