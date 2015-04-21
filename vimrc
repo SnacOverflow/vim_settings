@@ -347,7 +347,7 @@ noremap gx :OpenURL<CR>
 
 " VIM-FUGITIVE
 "----------------------------------------
-autocmd QuickFixCmdPost *grep* cwindow
+"autocmd QuickFixCmdPost *grep* cwindow
 
 
 " EXPERIMENTAL
@@ -364,15 +364,12 @@ let g:rubycomplete_classes_in_global = 1
 "let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
 
 " removes quickfix buffer from showing up using :bnext and the like.
-augroup qf
-    autocmd!
-    autocmd FileType qf set nobuflisted
-augroup END
 
+"autocmd FileType qf set nobuflisted
 
-autocmd FileType ruby noremap <Leader>ut <Plug>RubyTestRun
-autocmd FileType ruby noremap <Leader>uc <Plug>RubyFileRun
-autocmd FileType ruby noremap <Leader>ul <Plug>RubyTestRunLast
+autocmd FileType ruby map <Leader>ut <Plug>RubyTestRun
+autocmd FileType ruby map <Leader>uc <Plug>RubyFileRun
+autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 
 autocmd FileType java noremap <Leader>i :GrandInstall<CR>
 
