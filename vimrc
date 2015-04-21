@@ -24,6 +24,7 @@ Plugin 'rhysd/vim-grammarous'
 " ENHANCEMENTS
 Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-scriptease'
 Plugin 'tpope/vim-speeddating'
 Plugin 'godlygeek/tabular'
 Plugin 'tpope/vim-surround'
@@ -370,70 +371,72 @@ augroup qf
 augroup END
 
 
-autocmd FileType ruby noremap <Leader>ut <Plug>RubyTestRun
-autocmd FileType ruby noremap <Leader>uc <Plug>RubyFileRun
-autocmd FileType ruby noremap <Leader>ul <Plug>RubyTestRunLast
+"autocmd FileType ruby map <Leader>ut <Plug>RubyTestRun
+"autocmd FileType ruby map <Leader>uc <Plug>RubyFileRun
+"autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 
 autocmd FileType java noremap <Leader>i :GrandInstall<CR>
 
 nnoremap ,t :call OpenOther()<CR>
 
 fu! OpenOther()
-	if &filetype == "java"
-		call OpenOtherJava()
-	elseif &filetype == "ruby"
-		call OpenOtherRuby()
-	endif
+    echo "No 'OpenOther' command defined for filetype " . &filetype
+	"if &filetype == "java"
+		"call OpenOtherJava()
+	"elseif &filetype == "ruby"
+		"call OpenOtherRuby()
+	"endif
 endfu
 
-fu! OpenOtherJava()
-	let testSuffix = "Test.java"
-	let nonTestSuffix = ".java"
-	let mainDir = "/main/"
-	let testDir = "/test/"
+"fu! OpenOtherJava()
+	"let testSuffix = "Test.java"
+	"let nonTestSuffix = ".java"
+	"let mainDir = "/main/"
+	"let testDir = "/test/"
 
-	" Files & paths
-	let relPath = GetRelativeFilePath()
-	let srcFile = expand('%:t')
+	"" Files & paths
+	"let relPath = GetRelativeFilePath()
+	"let srcFile = expand('%:t')
 
-	" Change path
-	let targetPath = ""
-	if (stridx(relPath, mainDir) > -1)
-		let targetPath = substitute(relPath, mainDir, testDir, "")
-	elseif (stridx( relPath, testDir) > -1)
-		let targetPath = substitute(relPath, testDir, mainDir, "")
-	endif
+	"" Change path
+	"let targetPath = ""
+	"if (stridx(relPath, mainDir) > -1)
+		"let targetPath = substitute(relPath, mainDir, testDir, "")
+	"elseif (stridx( relPath, testDir) > -1)
+		"let targetPath = substitute(relPath, testDir, mainDir, "")
+	"endif
 
-	" Change fileName
-	let targetFile = ""
-	if (stridx(srcFile, testSuffix) > -1)
-		let targetFile = substitute(srcFile, testSuffix, nonTestSuffix, "")
-	else
-		let targetFile = substitute(srcFile, nonTestSuffix, testSuffix, "")
-	endif
+	"" Change fileName
+	"let targetFile = ""
+	"if (stridx(srcFile, testSuffix) > -1)
+		"let targetFile = substitute(srcFile, testSuffix, nonTestSuffix, "")
+	"else
+		"let targetFile = substitute(srcFile, nonTestSuffix, testSuffix, "")
+	"endif
 
-	call OpenFileAtPath(targetFile, targetPath)
-endfu
-
-
-fu! OpenOtherRuby()
-	let testPrefix = "tc_"
-
-	" Files & paths
-	let srcFile = expand('%:t')
-
-	" Change fileName
-	let targetFile = ""
-	if (stridx(srcFile, testPrefix) > -1)
-		let targetFile = substitute(srcFile, testPrefix, "", "")
-	else
-		let targetFile = testPrefix . srcFile
-	endif
-
-	call OpenFileAtPath(targetFile, GetRelativeFilePath())
-endfu
+	"call OpenFileAtPath(targetFile, targetPath)
+"endfu
 
 
+"fu! OpenOtherRuby()
+	"let testPrefix = "tc_"
+
+	"" Files & paths
+	"let srcFile = expand('%:t')
+
+	"" Change fileName
+	"let targetFile = ""
+	"if (stridx(srcFile, testPrefix) > -1)
+		"let targetFile = substitute(srcFile, testPrefix, "", "")
+	"else
+		"let targetFile = testPrefix . srcFile
+	"endif
+
+	"call OpenFileAtPath(targetFile, GetRelativeFilePath())
+"endfu
+
+
+"TODO: Reused in separate OpenOther scripts. Move this someware sane
 fu! OpenFileAtPath(fileName, path)
 	let completePath = a:path . '/' . a:fileName
 	if filereadable(completePath)
