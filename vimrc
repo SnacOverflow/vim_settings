@@ -180,8 +180,8 @@ map <leader>j <C-W>j
 map <leader>k <C-W>k
 map <leader>l <C-W>l
 
-map [w i<space><ESC>l
-map ]w a<space><ESC>h
+"map [w i<space><ESC>l
+"map ]w a<space><ESC>h
 
 "QUICK SUBSTITUTE CWORD
 "1. saves word under cursor in g:replacingString
@@ -384,6 +384,34 @@ autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 autocmd FileType java noremap <Leader>i :GrandInstall<CR>
 
 nnoremap ,t :call OpenOther()<CR>
+
+
+
+" copied from vim-unimpaired
+function! s:MapNextFamily(map,cmd)
+  let map = '<Plug>unimpairedCustom'.toupper(a:map)
+  let cmd = '".(v:count ? v:count : "")."'.a:cmd
+  let end = '"<CR>'.(a:cmd == 'l' || a:cmd == 'c' ? 'zv' : '')
+  execute 'nnoremap <silent> '.map.'Previous :<C-U>exe "'.cmd.'previous'.end
+  execute 'nnoremap <silent> '.map.'Next     :<C-U>exe "'.cmd.'next'.end
+  execute 'nnoremap <silent> '.map.'First    :<C-U>exe "'.cmd.'first'.end
+  execute 'nnoremap <silent> '.map.'Last     :<C-U>exe "'.cmd.'last'.end
+  execute 'nmap <silent> ['.        a:map .' '.map.'Previous'
+  execute 'nmap <silent> ]'.        a:map .' '.map.'Next'
+  execute 'nmap <silent> ['.toupper(a:map).' '.map.'First'
+  execute 'nmap <silent> ]'.toupper(a:map).' '.map.'Last'
+  if exists(':'.a:cmd.'nfile')
+    execute 'nnoremap <silent> '.map.'PFile :<C-U>exe "'.cmd.'pfile'.end
+    execute 'nnoremap <silent> '.map.'NFile :<C-U>exe "'.cmd.'nfile'.end
+    execute 'nmap <silent> [<C-'.a:map.'> '.map.'PFile'
+    execute 'nmap <silent> ]<C-'.a:map.'> '.map.'NFile'
+  endif
+endfunction
+
+
+call s:MapNextFamily('w','tab')
+
+
 
 fu! OpenOther()
     if &filetype == "java"
