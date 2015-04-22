@@ -1,7 +1,6 @@
 
 " VIMRC
 
-
 " VUNDLE SETUP
 "===============================================================================
 
@@ -191,13 +190,24 @@ map ]w a<space><ESC>h
 "4. Visually selects the second string for easy replacing or changing
 noremap <F6> :let g:replacingString = expand("<cword>")<CR> q:i%s/\<<c-r>=g:replacingString<cr>\>/<c-r>=g:replacingString<cr>/gc<ESC>2T/vet/
 
-"QUICK VIMGREP CWORD
-"1. saves word under cursor in g:searchString
-"2. executs vimgrep command for all java files in cwd (not jumping to first match) (whole word only)
-"3. opens quickfix window (now use the 'stefandtw/quickfix-reflector.vim' plugin to use QUICK SUBSTITUTE CWORD in the quickfix window)
-noremap <F7> :let g:searchString = expand("<cword>")<CR> :vim /\<<C-R>=g:searchString<CR>\>/j **/*.java **/*.xml<CR> :cw<CR>
+noremap <F7> :call VimGrepThis()<CR>
+noremap <F8> :call GitGrepThis()<CR>
 
+fu! VimGrepThis()
+    let g:wordUnderCursor = expand("<cword>")
+    let vimGrepCommand = "vimgrep /\\<" . g:wordUnderCursor . "\\>/j **/*." .  expand('%:e')
+    echomsg vimGrepCommand
+    execute vimGrepCommand
+    cw
+endfu
 
+fu! GitGrepThis()
+    let g:wordUnderCursor = expand("<cword>")
+    let gitGrepCommand = "Ggrep " . g:wordUnderCursor
+    echomsg gitGrepCommand
+    execute gitGrepCommand
+    cw
+endfu
 
 
 
@@ -348,6 +358,7 @@ noremap gx :OpenURL<CR>
 
 " VIM-FUGITIVE
 "----------------------------------------
+" Open quickfix window after :grep | :Ggrep returns
 "autocmd QuickFixCmdPost *grep* cwindow
 
 
@@ -358,16 +369,14 @@ noremap gx :OpenURL<CR>
 " Use CTRL-P for command-history, using entered text to match.
 cnoremap <C-p> <Up>
 
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-
 "For JavaImp
 "let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
 
 " TODO: Fix?
 " Removes quickfix buffer from showing up using :bnext and the like.
-"autocmd FileType qf set nobuflisted
+autocmd FileType qf set nobuflisted
 
+" Doesn't work with noremap for some reason
 autocmd FileType ruby map <Leader>ut <Plug>RubyTestRun
 autocmd FileType ruby map <Leader>uc <Plug>RubyFileRun
 autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
@@ -377,63 +386,61 @@ autocmd FileType java noremap <Leader>i :GrandInstall<CR>
 nnoremap ,t :call OpenOther()<CR>
 
 fu! OpenOther()
-    echo "No 'OpenOther' command defined for filetype " . &filetype
-	"if &filetype == "java"
-		"call OpenOtherJava()
-	"elseif &filetype == "ruby"
-		"call OpenOtherRuby()
-	"endif
+    if &filetype == "java"
+        call OpenOtherJava()
+    elseif &filetype == "ruby"
+        call OpenOtherRuby()
+    endif
 endfu
 
-"fu! OpenOtherJava()
-	"let testSuffix = "Test.java"
-	"let nonTestSuffix = ".java"
-	"let mainDir = "/main/"
-	"let testDir = "/test/"
+fu! OpenOtherJava()
+    let testSuffix = "Test.java"
+    let nonTestSuffix = ".java"
+    let mainDir = "/main/"
+    let testDir = "/test/"
 
-	"" Files & paths
-	"let relPath = GetRelativeFilePath()
-	"let srcFile = expand('%:t')
+    " Files & paths
+    let relPath = GetRelativeFilePath()
+    let srcFile = expand('%:t')
 
-	"" Change path
-	"let targetPath = ""
-	"if (stridx(relPath, mainDir) > -1)
-		"let targetPath = substitute(relPath, mainDir, testDir, "")
-	"elseif (stridx( relPath, testDir) > -1)
-		"let targetPath = substitute(relPath, testDir, mainDir, "")
-	"endif
+    " Change path
+    let targetPath = ""
+    if (stridx(relPath, mainDir) > -1)
+        let targetPath = substitute(relPath, mainDir, testDir, "")
+    elseif (stridx( relPath, testDir) > -1)
+        let targetPath = substitute(relPath, testDir, mainDir, "")
+    endif
 
-	"" Change fileName
-	"let targetFile = ""
-	"if (stridx(srcFile, testSuffix) > -1)
-		"let targetFile = substitute(srcFile, testSuffix, nonTestSuffix, "")
-	"else
-		"let targetFile = substitute(srcFile, nonTestSuffix, testSuffix, "")
-	"endif
+    " Change fileName
+    let targetFile = ""
+    if (stridx(srcFile, testSuffix) > -1)
+        let targetFile = substitute(srcFile, testSuffix, nonTestSuffix, "")
+    else
+        let targetFile = substitute(srcFile, nonTestSuffix, testSuffix, "")
+    endif
 
-	"call OpenFileAtPath(targetFile, targetPath)
-"endfu
-
-
-"fu! OpenOtherRuby()
-	"let testPrefix = "tc_"
-
-	"" Files & paths
-	"let srcFile = expand('%:t')
-
-	"" Change fileName
-	"let targetFile = ""
-	"if (stridx(srcFile, testPrefix) > -1)
-		"let targetFile = substitute(srcFile, testPrefix, "", "")
-	"else
-		"let targetFile = testPrefix . srcFile
-	"endif
-
-	"call OpenFileAtPath(targetFile, GetRelativeFilePath())
-"endfu
+    call OpenFileAtPath(targetFile, targetPath)
+endfu
 
 
-"TODO: Reused in separate OpenOther scripts. Move this someware sane
+fu! OpenOtherRuby()
+    let testPrefix = "tc_"
+
+    " Files & paths
+    let srcFile = expand('%:t')
+
+    " Change fileName
+    let targetFile = ""
+    if (stridx(srcFile, testPrefix) > -1)
+        let targetFile = substitute(srcFile, testPrefix, "", "")
+    else
+        let targetFile = testPrefix . srcFile
+    endif
+
+    call OpenFileAtPath(targetFile, GetRelativeFilePath())
+endfu
+
+
 fu! OpenFileAtPath(fileName, path)
 	let completePath = a:path . '/' . a:fileName
 	if filereadable(completePath)
