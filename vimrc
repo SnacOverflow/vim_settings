@@ -71,8 +71,8 @@ Plugin 'meonlol/javacomplete'
 
 
 " All of your Plugins must be added before the following line
-call vundle#end()			 " required by Vundle
-filetype plugin indent on	 " required by Vundle
+call vundle#end()            " required by Vundle
+filetype plugin indent on    " required by Vundle
 
 
 
@@ -82,49 +82,51 @@ filetype plugin indent on	 " required by Vundle
 
 
 "ENVIRONMENT
-set nocompatible	" use vim defaults
-set nobackup		" do not keep a backup file
-set noswapfile		" don't want no swapfiles eather. Might disable if ever it causes problems for me. I'm a compulsive saver anyway.
-set visualbell t_vb=	" turn off error beep/flash
-set visualbell	" turn off visual bell
-set hidden	" allow swapping to other buffer when unwritten
+set nocompatible    " use vim defaults
+set nobackup        " do not keep a backup file
+set noswapfile      " don't want no swapfiles eather. Might disable if ever it causes problems for me. I'm a compulsive saver anyway.
+set visualbell t_vb=    " turn off error beep/flash
+set visualbell  " turn off visual bell
+set hidden  " allow swapping to other buffer when unwritten
 
 set backspace=indent,eol,start " make that backspace key work the way it should (only in terminal)
-set mouse=a			" Scroling using the mouse if I have my hands there accidentally
-set relativenumber	" Easier moving stuff around.
+set mouse=a         " Scroling using the mouse if I have my hands there accidentally
+set relativenumber  " Easier moving stuff around.
 
-set hlsearch		" highlight searches. Pratical with * search (see mapleaders)
+set hlsearch        " highlight searches. Pratical with * search (see mapleaders)
 
 "UI
-set scrolloff=3		" keep 3 lines when scrolling
-set number			" show line numbers
-set ruler			" show the current row and column
-set showcmd			" display incomplete commands
-set lbr				" wrapping doesn't break words inbetween
-set nowrap			" default: no wrapping
-set wildmenu		" tab completion for help
+set scrolloff=3     " keep 3 lines when scrolling
+set number          " show line numbers
+set ruler           " show the current row and column
+set showcmd         " display incomplete commands
+set lbr             " wrapping doesn't break words inbetween
+set nowrap          " default: no wrapping
+set wildmenu        " tab completion for help
 
 
 "TEXT EDITING
-set ai				" set auto-indenting on for programming
-set tabstop=4		" Uses 4 colums (spaces) for a tab
-set shiftwidth=4	" 
-"set noexpandtab		" use tabs in stead of spaces
-set expandtab		" use spaces in stead of tabs
+set ai              " set auto-indenting on for programming
+set tabstop=4       " Uses 4 colums (spaces) for a tab
+set shiftwidth=4    " 
+"set noexpandtab        " use tabs in stead of spaces
+set expandtab       " use spaces in stead of tabs
 " TRICK: use 'set et|retab' to convert all tabs to spaces or 'set noet|retab!' for the reverse
 
 "SEARCHING
-set incsearch		" do incremental searching
-set ignorecase		" ignore case when searching
-set smartcase		" no ignorecase if Uppercase char present
+set incsearch       " do incremental searching
+set ignorecase      " ignore case when searching
+set smartcase       " no ignorecase if Uppercase char present
 
 "FILES
-syntax on		" turn syntax highlighting on by default
-filetype on		" detect type of file
-filetype indent on	" load indent file for specific file type
+syntax on       " turn syntax highlighting on by default
+filetype on     " detect type of file
+filetype indent on  " load indent file for specific file type
 filetype plugin on  " ?
 set autoread
 set autowrite
+
+set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
@@ -216,18 +218,18 @@ endfu
 " COMMANDS
 "===============================================================================
 
-" Toggle spelling or enable the spell checker if the language is specified 
+" Toggle spelling or enable the spell checker if the language is specified
 command! -nargs=? Sp call SpelCheck('<args>')
 fu! SpelCheck(...)
-	if (a:1 ==# 'nl')
-		setlocal spell spelllang=nl
-	elseif (a:1 ==# 'de')
-		setlocal spell spelllang=de_de
-	elseif (a:1 ==# 'en')
-		setlocal spell spelllang=en_us
-	else
-		setlocal spell!
-	endif
+    if (a:1 ==# 'nl')
+        setlocal spell spelllang=nl
+    elseif (a:1 ==# 'de')
+        setlocal spell spelllang=de_de
+    elseif (a:1 ==# 'en')
+        setlocal spell spelllang=en_us
+    else
+        setlocal spell!
+    endif
 endfu
 
 " Rebuild tags for central notes
@@ -250,13 +252,13 @@ command! Last Dispatch last -1 reboot
 nnoremap <leader>y :call YcmToggle()<CR>
 
 function! YcmToggle()
-	if g:ycm_auto_trigger == 1
-		let g:ycm_auto_trigger=0
-		echo "ycm off"
-	else
-		let g:ycm_auto_trigger=1
-		echo "ycm on"
-	endif
+    if g:ycm_auto_trigger == 1
+        let g:ycm_auto_trigger=0
+        echo "ycm off"
+    else
+        let g:ycm_auto_trigger=1
+        echo "ycm on"
+    endif
 endfunction
 
 " AIRLINE
@@ -324,8 +326,8 @@ map <leader>/ <plug>NERDCommenterToggle
 
 " Only do this part when compiled with support for autocommands.
 "if has("autocmd")
-	"autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-"endif 
+    "autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+"endif
 let g:exclude_tags = 1
 
 " ULTISNIPS
@@ -348,11 +350,11 @@ autocmd BufWritePost *.java silent! GrandTags
 
 " VIM-JAVA-HI-SEMANTICS
 "----------------------------------------
-autocmd BufRead,BufNewFile *.java		setlocal syntax=java2
-autocmd BufWritePost *.java		silent!	setlocal syntax=java2
-"autocmd BufWritePost *.java		silent!	setlocal syntax=java2 | exe "normal! g`\""
+autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
+autocmd BufWritePost *.java     silent! setlocal syntax=java2
+"autocmd BufWritePost *.java        silent! setlocal syntax=java2 | exe "normal! g`\""
 "autocmd BufWritePost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`^" | endif
-"autocmd BufWritePost *  silent!	exe "normal! g`^"
+"autocmd BufWritePost *  silent!    exe "normal! g`^"
 
 " VIM-OPEN-URL
 "----------------------------------------
@@ -372,7 +374,7 @@ noremap gx :OpenURL<CR>
 cnoremap <C-p> <Up>
 
 "For JavaImp
-"let g:JavaImpPaths = "./src/main/java/,./src/test/java/" 
+"let g:JavaImpPaths = "./src/main/java/,./src/test/java/"
 
 " TODO: Fix?
 " Removes quickfix buffer from showing up using :bnext and the like.
@@ -472,16 +474,16 @@ endfu
 
 
 fu! OpenFileAtPath(fileName, path)
-	let completePath = a:path . '/' . a:fileName
-	if filereadable(completePath)
-		execute "edit " . completePath
-	else
-		echomsg "File not found: " . completePath
-	endif
+    let completePath = a:path . '/' . a:fileName
+    if filereadable(completePath)
+        execute "edit " . completePath
+    else
+        echomsg "File not found: " . completePath
+    endif
 endfu
 
 
 fu! GetRelativeFilePath()
-	let fullPath = expand('%:p:h')
+    let fullPath = expand('%:p:h')
     return substitute(fullPath, getcwd() . "/" , "", "")
 endfu
