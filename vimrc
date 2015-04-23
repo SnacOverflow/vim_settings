@@ -163,7 +163,7 @@ let mapleader = "\<SPACE>"
 noremap <leader>n :NERDTreeToggle<CR>
 
 noremap <leader>\| :Tabularize/\|<CR>
-noremap <leader>oh :noh<CR>
+noremap <leader>on :noh<CR>
 
 "switch to last buffer. Like this one best
 "h
