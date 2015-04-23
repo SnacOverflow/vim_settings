@@ -37,13 +37,14 @@ Plugin 'henrik/vim-open-url'
 Plugin 'moll/vim-bbye'       " Close current buffer (mapped to _b)
 
 " CODING
-Plugin 'vim-scripts/JavaImp.vim--Lee'
+Plugin 'tpope/vim-commentary'
 Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'scrooloose/nerdcommenter' " Why not try tpopes version? Tpope = generally more my style
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
 Plugin 'meonlol/vim-rubytest'
+"Plugin 'scrooloose/nerdcommenter' " Replaced by tpope/vim-commentary
+"Plugin 'vim-scripts/JavaImp.vim--Lee' " Not used.
 
 " STYLING & SYNTAX
 Plugin 'altercation/vim-colors-solarized'
@@ -319,7 +320,7 @@ map <leader>F <Plug>(easymotion-F)
 
 " NERDCommenter
 "----------------------------------------
-map <leader>/ <plug>NERDCommenterToggle
+"map <leader>/ <plug>NERDCommenterToggle
 
 " JAVACOMPLETE
 "----------------------------------------
