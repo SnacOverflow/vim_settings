@@ -163,8 +163,10 @@ let mapleader = "\<SPACE>"
 noremap <leader>n :NERDTreeToggle<CR>
 
 noremap <leader>\| :Tabularize/\|<CR>
+noremap <leader>oh :noh<CR>
 
 "switch to last buffer. Like this one best
+"h
 noremap ,b :b#<CR>
 "delte current buffer without closing window
 noremap _b :Bdelete<CR>
