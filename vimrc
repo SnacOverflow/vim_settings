@@ -107,6 +107,7 @@ set wildmenu        " tab completion for help
 
 
 "TEXT EDITING
+set nojoinspaces    " Don't add a second space after a dot on reformatting
 set ai              " set auto-indenting on for programming
 set tabstop=4       " Uses 4 colums (spaces) for a tab
 set shiftwidth=4    " 
@@ -478,8 +479,8 @@ fu! OpenFileAtPath(fileName, path)
     let completePath = a:path . '/' . a:fileName
     if filereadable(completePath)
         execute "edit " . completePath
-    else
-        echomsg "File not found: " . completePath
+    " else
+    "     echomsg "File not found: " . completePath
     endif
 endfu
 
