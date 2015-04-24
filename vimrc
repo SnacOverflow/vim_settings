@@ -1,5 +1,8 @@
 
 " VIMRC
+"
+" Index
+" ctags −−regex−<LANG>
 
 " VUNDLE SETUP
 "===============================================================================
@@ -20,7 +23,7 @@ Plugin 'wincent/command-t'       " Quickly open cwd files by name
 Plugin 'Lokaltog/vim-easymotion' " Direcly moving the cursor somewhere
 Plugin 'rhysd/vim-grammarous'    " Plugin for grammar checking
 
-" ENHANCEMENTS
+" => ENHANCEMENTS
 Plugin 'tpope/vim-unimpaired'             " essential: group mappings to [ and ] for common functions
 Plugin 'tpope/vim-surround'               " Essential: Surrounding text with (), {}, [] and more
 Plugin 'tpope/vim-fugitive'               " Git intergration
