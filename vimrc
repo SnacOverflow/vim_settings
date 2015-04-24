@@ -10,31 +10,31 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " ENVIRONMENT
-Plugin 'gmarik/Vundle.vim' " let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim' " required. Plugin management using Vundle
 Plugin 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
-Plugin 'L9'
+Plugin 'L9'                " Common library. Is it used?
 
 
-Plugin 'scrooloose/nerdtree'
-Plugin 'wincent/command-t'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'rhysd/vim-grammarous'
+Plugin 'scrooloose/nerdtree'     " Easy filesystem navigation
+Plugin 'wincent/command-t'       " Quickly open cwd files by name
+Plugin 'Lokaltog/vim-easymotion' " Direcly moving the cursor somewhere
+Plugin 'rhysd/vim-grammarous'    " Plugin for grammar checking
 
 " ENHANCEMENTS
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-scriptease'
-Plugin 'tpope/vim-speeddating'
-Plugin 'godlygeek/tabular'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-dispatch' "Async task runner
-Plugin 'stefandtw/quickfix-reflector.vim'
-Plugin 'tpope/vim-vinegar' "Netrw upgrader
-Plugin 'tpope/vim-eunuch' "Commands like :Rename
-Plugin 'artnez/vim-wipeout'
-Plugin 'tpope/vim-repeat' "Extends vim's repeating using '.'
-Plugin 'henrik/vim-open-url'
-Plugin 'moll/vim-bbye'       " Close current buffer (mapped to _b)
+Plugin 'tpope/vim-unimpaired'             " essential: group mappings to [ and ] for common functions
+Plugin 'tpope/vim-surround'               " Essential: Surrounding text with (), {}, [] and more
+Plugin 'tpope/vim-fugitive'               " Git intergration
+Plugin 'tpope/vim-scriptease'             " vim plugin writing improvements
+Plugin 'tpope/vim-speeddating'            " CTRL-X and CTRL-A enhancements for dates etc
+Plugin 'godlygeek/tabular'                " Easy table creation
+Plugin 'tpope/vim-dispatch'               " Async task runner
+Plugin 'stefandtw/quickfix-reflector.vim' " Allows modifying all searchresults in quickfix window
+Plugin 'tpope/vim-vinegar'                " Netrw upgrader > REMOVE?
+Plugin 'tpope/vim-eunuch'                 " Filesystem commands in vim like (:Rename or :Remove)
+Plugin 'artnez/vim-wipeout'               " Removes empty buffers
+Plugin 'tpope/vim-repeat'                 " Improves vim's dot command-repeating
+Plugin 'henrik/vim-open-url'              " Improvements to open an url on the current line
+Plugin 'moll/vim-bbye'                    " Close current buffer without closing split
 
 " CODING
 Plugin 'tpope/vim-commentary'
@@ -43,8 +43,8 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
 Plugin 'meonlol/vim-rubytest'
-"Plugin 'scrooloose/nerdcommenter' " Replaced by tpope/vim-commentary
-"Plugin 'vim-scripts/JavaImp.vim--Lee' " Not used.
+" Plugin 'scrooloose/nerdcommenter' " Replaced by tpope/vim-commentary
+" Plugin 'vim-scripts/JavaImp.vim--Lee' " Not used.
 
 " STYLING & SYNTAX
 Plugin 'altercation/vim-colors-solarized'
@@ -52,7 +52,7 @@ Plugin 'endel/vim-github-colorscheme'
 Plugin 'bling/vim-airline'
 Plugin 'tfnico/vim-gradle'
 
-"MY STUFF
+" MY STUFF
 Plugin 'meonlol/vim-android'
 Plugin 'meonlol/pyunit.vim'
 Plugin 'meonlol/vim-grand'
@@ -62,13 +62,10 @@ Plugin 'meonlol/javacomplete'
 
 " TRIED
 " Maybe try again later
-"Plugin 'dhruvasagar/vim-table-mode' " Interesting for makeing tables (exel
-"Plugin 'jewes/Conque-Shell'         " Interesting shell intergration. Never used it
-"Plugin 'PeterCxy/javacomplete'
-"Plugin 'vim-scripts/javacomplete'
-"Plugin 'Shougo/javacomplete'
-"Plugin 'yegappan/greplace'          " Never used
-"Plugin 'reinh/vim-makegreen' " Do I even use this?
+" Plugin 'dhruvasagar/vim-table-mode' " Interesting for makeing tables (exel
+" Plugin 'Shougo/javacomplete'
+" Plugin 'yegappan/greplace'          " Never used
+" Plugin 'reinh/vim-makegreen'        " Do I even use this?
 
 
 " All of your Plugins must be added before the following line
@@ -82,21 +79,21 @@ filetype plugin indent on    " required by Vundle
 "===============================================================================
 
 
-"ENVIRONMENT
-set nocompatible    " use vim defaults
-set nobackup        " do not keep a backup file
-set noswapfile      " don't want no swapfiles eather. Might disable if ever it causes problems for me. I'm a compulsive saver anyway.
-set visualbell t_vb=    " turn off error beep/flash
-set visualbell  " turn off visual bell
-set hidden  " allow swapping to other buffer when unwritten
+" ENVIRONMENT
+set nocompatible     " use vim defaults
+set nobackup         " do not keep a backup file
+set noswapfile       " don't want no swapfiles eather. Might disable if ever it causes problems for me. I'm a compulsive saver anyway.
+set visualbell t_vb= " turn off error beep/flash
+set visualbell       " turn off visual bell
+set hidden           " allow swapping to other buffer when unwritten
 
 set backspace=indent,eol,start " make that backspace key work the way it should (only in terminal)
-set mouse=a         " Scroling using the mouse if I have my hands there accidentally
-set relativenumber  " Easier moving stuff around.
+set mouse=a                    " Scroling using the mouse if I have my hands there accidentally
+set relativenumber             " Easier moving stuff around.
 
 set hlsearch        " highlight searches. Pratical with * search (see mapleaders)
 
-"UI
+" UI
 set scrolloff=3     " keep 3 lines when scrolling
 set number          " show line numbers
 set ruler           " show the current row and column
@@ -106,25 +103,25 @@ set nowrap          " default: no wrapping
 set wildmenu        " tab completion for help
 
 
-"TEXT EDITING
-set nojoinspaces    " Don't add a second space after a dot on reformatting
-set ai              " set auto-indenting on for programming
-set tabstop=4       " Uses 4 colums (spaces) for a tab
-set shiftwidth=4    " 
-"set noexpandtab        " use tabs in stead of spaces
-set expandtab       " use spaces in stead of tabs
+" TEXT EDITING
+set nojoinspaces " Don't add a second space after a dot on reformatting
+set ai           " set auto-indenting on for programming
+set tabstop=4    " Uses 4 colums (spaces) for a tab
+set shiftwidth=4 "
+" set noexpandtab  " use tabs in stead of spaces
+set expandtab    " use spaces in stead of tabs
 " TRICK: use 'set et|retab' to convert all tabs to spaces or 'set noet|retab!' for the reverse
 
-"SEARCHING
+" SEARCHING
 set incsearch       " do incremental searching
 set ignorecase      " ignore case when searching
 set smartcase       " no ignorecase if Uppercase char present
 
-"FILES
-syntax on       " turn syntax highlighting on by default
-filetype on     " detect type of file
-filetype indent on  " load indent file for specific file type
-filetype plugin on  " ?
+" FILES
+syntax on          " turn syntax highlighting on by default
+filetype on        " detect type of file
+filetype indent on " load indent file for specific file type
+filetype plugin on " ?
 set autoread
 set autowrite
 
@@ -132,12 +129,12 @@ set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
-"au FocusGained,BufEnter * :silent! e
-"au FocusLost,WinLeave * :silent! w
+" au FocusGained,BufEnter * :silent! e
+" au FocusLost,WinLeave * :silent! w
 
 
 
-"THEME
+" THEME
 set background=dark
  let g:solarized_visibility = "high"
  let g:solarized_contrast = "high"
@@ -159,41 +156,41 @@ let NERDTreeHijackNetrw=1
 
 let mapleader = "\<SPACE>"
 
-"Search highlighting toggle
-"map  <F12> :set hls!<CR>
-"imap <F12> <ESC>:set hls!<CR>a
-"vmap <F12> <ESC>:set hls!<CR>gv
+" Search highlighting toggle
+" map  <F12> :set hls!<CR>
+" imap <F12> <ESC>:set hls!<CR>a
+" vmap <F12> <ESC>:set hls!<CR>gv
 
 noremap <leader>n :NERDTreeToggle<CR>
 
 noremap <leader>\| :Tabularize/\|<CR>
 noremap <leader>on :noh<CR>
 
-"switch to last buffer. Like this one best
-"h
+" switch to last buffer. Like this one best
+" h
 noremap ,b :b#<CR>
-"delte current buffer without closing window
+" delte current buffer without closing window
 noremap _b :Bdelete<CR>
 
 " for those anoying wrapping lines
 nmap j gj
 nmap k gk
 
-"easyer window commands
+" easyer window commands
 map <leader>w <C-W>
 map <leader>h <C-W>h
 map <leader>j <C-W>j
 map <leader>k <C-W>k
 map <leader>l <C-W>l
 
-"map [w i<space><ESC>l
-"map ]w a<space><ESC>h
+" map [w i<space><ESC>l
+" map ]w a<space><ESC>h
 
-"QUICK SUBSTITUTE CWORD
-"1. saves word under cursor in g:replacingString
-"2. Opens cmdwin and goes to insert mode
-"3. inputs %s/\<string\>/string/gc (string is g:replacingString and \<\> specifies whole word only)
-"4. Visually selects the second string for easy replacing or changing
+" QUICK SUBSTITUTE CWORD
+" 1. saves word under cursor in g:replacingString
+" 2. Opens cmdwin and goes to insert mode
+" 3. inputs %s/\<string\>/string/gc (string is g:replacingString and \<\> specifies whole word only)
+" 4. Visually selects the second string for easy replacing or changing
 noremap <F6> :let g:replacingString = expand("<cword>")<CR> q:i%s/\<<c-r>=g:replacingString<cr>\>/<c-r>=g:replacingString<cr>/gc<ESC>2T/vet/
 
 noremap <F7> :call VimGrepThis()<CR>
@@ -321,16 +318,11 @@ map <leader>F <Plug>(easymotion-F)
 
 " NERDCommenter
 "----------------------------------------
-"map <leader>/ <plug>NERDCommenterToggle
+" map <leader>/ <plug>NERDCommenterToggle
 
 " JAVACOMPLETE
 "----------------------------------------
 
-" Only do this part when compiled with support for autocommands.
-"if has("autocmd")
-    "autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-"endif
-let g:exclude_tags = 1
 
 " ULTISNIPS
 "----------------------------------------
@@ -341,12 +333,12 @@ let g:UltiSnipsExpandTrigger = "<c-l>"
 "----------------------------------------
 autocmd FileType java let b:dispatch = 'gradle'
 
-"Use vim-dispatch to run gradleTest
+" Use vim-dispatch to run gradleTest
 autocmd FileType java nnoremap <leader>u :w<bar>Dispatch ./gradlew test -q<CR>
-"This runs my android gradle test for this class only
-autocmd FileType java nnoremap <leader>uc :w<bar>Dispatch ./gradlew test -q -Dclasses=%:t:r<CR>
+" This runs my android gradle test for this class only
+autocmd FileType java nnoremap <leader>uc :w<bar>Dispatch ./gradlew testDebug -q -DtestDebug.single=%:t:r<CR>
 
-"Run GrandCtags command every time you save a java file
+" Run GrandCtags command every time you save a java file
 autocmd BufWritePost *.java silent! GrandTags
 
 
@@ -354,18 +346,19 @@ autocmd BufWritePost *.java silent! GrandTags
 "----------------------------------------
 autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
 autocmd BufWritePost *.java     silent! setlocal syntax=java2
-"autocmd BufWritePost *.java        silent! setlocal syntax=java2 | exe "normal! g`\""
-"autocmd BufWritePost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`^" | endif
-"autocmd BufWritePost *  silent!    exe "normal! g`^"
+" autocmd BufWritePost *.java        silent! setlocal syntax=java2 | exe "normal! g`\""
+" autocmd BufWritePost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`^" | endif
+" autocmd BufWritePost *  silent!    exe "normal! g`^"
 
 " VIM-OPEN-URL
 "----------------------------------------
 noremap gx :OpenURL<CR>
 
-" VIM-FUGITIVE
+
+" VIM-COMMENTARY
 "----------------------------------------
-" Open quickfix window after :grep | :Ggrep returns
-"autocmd QuickFixCmdPost *grep* cwindow
+autocmd FileType groovy set commentstring=//%s
+" autocmd FileType groovy let b:commentary_format="//%s"
 
 
 " EXPERIMENTAL
@@ -375,8 +368,8 @@ noremap gx :OpenURL<CR>
 " Use CTRL-P for command-history, using entered text to match.
 cnoremap <C-p> <Up>
 
-"For JavaImp
-"let g:JavaImpPaths = "./src/main/java/,./src/test/java/"
+" For JavaImp
+" let g:JavaImpPaths = "./src/main/java/,./src/test/java/"
 
 " TODO: Fix?
 " Removes quickfix buffer from showing up using :bnext and the like.
