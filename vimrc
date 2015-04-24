@@ -1,10 +1,27 @@
-
 " VIMRC
-"
-" Index
-" ctags −−regex−<LANG>
 
-" VUNDLE SETUP
+
+" _PLUGINS
+" _SETTINGS
+" _MAPPINGS
+" _COMMANDS
+" _PLUGIN SPECIFIC
+"       __YOUCOMPLETEME
+"       __AIRLINE
+"       __COMMAND_T
+"       __NERDTREE
+"       __EASYMOTION
+"       __NERDCommenter
+"       __JAVACOMPLETE
+"       __ULTISNIPS
+"       __VIM_GRAND
+"       __VIM_JAVA_HI_SEMANTICS
+"       __VIM_OPEN_URL
+"       __VIM_COMMENTARY
+" _EXPERIMENTAL
+
+
+" _PLUGINS
 "===============================================================================
 
 set nocompatible                  " be iMproved, required by Vundle
@@ -23,7 +40,7 @@ Plugin 'wincent/command-t'       " Quickly open cwd files by name
 Plugin 'Lokaltog/vim-easymotion' " Direcly moving the cursor somewhere
 Plugin 'rhysd/vim-grammarous'    " Plugin for grammar checking
 
-" => ENHANCEMENTS
+" ENHANCEMENTS
 Plugin 'tpope/vim-unimpaired'             " essential: group mappings to [ and ] for common functions
 Plugin 'tpope/vim-surround'               " Essential: Surrounding text with (), {}, [] and more
 Plugin 'tpope/vim-fugitive'               " Git intergration
@@ -78,7 +95,7 @@ filetype plugin indent on    " required by Vundle
 
 
 
-" SETTINGS
+" _SETTINGS
 "===============================================================================
 
 
@@ -154,7 +171,7 @@ let NERDTreeHijackNetrw=1
 
 
 
-" MAPPINGS
+" _MAPPINGS
 "===============================================================================
 
 let mapleader = "\<SPACE>"
@@ -217,7 +234,7 @@ endfu
 
 
 
-" COMMANDS
+" _COMMANDS
 "===============================================================================
 
 " Toggle spelling or enable the spell checker if the language is specified
@@ -246,10 +263,10 @@ command! Ltwenty2 read ~/.twenty_last
 command! Last Dispatch last -1 reboot
 
 
-" PLUGIN SPECIFIC
+" _PLUGIN SPECIFIC
 "===============================================================================
 
-" YOUCOMPLETEME
+" __YOUCOMPLETEME
 "----------------------------------------
 nnoremap <leader>y :call YcmToggle()<CR>
 
@@ -263,7 +280,7 @@ function! YcmToggle()
     endif
 endfunction
 
-" AIRLINE
+" __AIRLINE
 "----------------------------------------
 let g:airline#extensions#tabline#enabled = 1
 set laststatus=2
@@ -301,38 +318,38 @@ set laststatus=2
       \ }
 
 
-" COMMAND-T
+" __COMMAND_T
 "----------------------------------------
 map <D-O> :CommandT<CR>
 map <leader>t :CommandT<CR>
 map <leader>d :CommandT ~/Dropbox/leon/<CR>
 set wildignore=**/build/*,**/.git/*,*.class
 
-" NERDTREE
+" __NERDTREE
 "----------------------------------------
 let NERDTreeWinSize = 50
 let NERDTreeBookmarksSort = 0
 
-" EASYMOTION
+" __EASYMOTION
 "----------------------------------------
 map <leader>s <Plug>(easymotion-s)
 map <leader>f <Plug>(easymotion-f)
 map <leader>F <Plug>(easymotion-F)
 
-" NERDCommenter
+" __NERDCommenter
 "----------------------------------------
 " map <leader>/ <plug>NERDCommenterToggle
 
-" JAVACOMPLETE
+" __JAVACOMPLETE
 "----------------------------------------
 
 
-" ULTISNIPS
+" __ULTISNIPS
 "----------------------------------------
 let g:UltiSnipsExpandTrigger = "<c-l>"
 
 
-" VIM-GRAND
+" __VIM_GRAND
 "----------------------------------------
 autocmd FileType java let b:dispatch = 'gradle'
 
@@ -345,7 +362,7 @@ autocmd FileType java nnoremap <leader>uc :w<bar>Dispatch ./gradlew testDebug -q
 autocmd BufWritePost *.java silent! GrandTags
 
 
-" VIM-JAVA-HI-SEMANTICS
+" __VIM_JAVA_HI_SEMANTICS
 "----------------------------------------
 autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
 autocmd BufWritePost *.java     silent! setlocal syntax=java2
@@ -353,18 +370,18 @@ autocmd BufWritePost *.java     silent! setlocal syntax=java2
 " autocmd BufWritePost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`^" | endif
 " autocmd BufWritePost *  silent!    exe "normal! g`^"
 
-" VIM-OPEN-URL
+" __VIM_OPEN_URL
 "----------------------------------------
 noremap gx :OpenURL<CR>
 
 
-" VIM-COMMENTARY
+" __VIM_COMMENTARY
 "----------------------------------------
 autocmd FileType groovy set commentstring=//%s
 " autocmd FileType groovy let b:commentary_format="//%s"
 
 
-" EXPERIMENTAL
+" _EXPERIMENTAL
 "===============================================================================
 
 
