@@ -378,7 +378,7 @@ noremap gx :OpenURL<CR>
 " __VIM_COMMENTARY
 "----------------------------------------
 autocmd FileType groovy set commentstring=//%s
-" autocmd FileType groovy let b:commentary_format="//%s"
+autocmd FileType markdown set commentstring=<!--%s-->
 
 
 " _EXPERIMENTAL
