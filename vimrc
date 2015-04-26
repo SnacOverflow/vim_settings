@@ -283,6 +283,7 @@ endfunction
 " __AIRLINE
 "----------------------------------------
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
 set laststatus=2
 
   if !exists('g:airline_symbols')
@@ -351,15 +352,19 @@ let g:UltiSnipsExpandTrigger = "<c-l>"
 
 " __VIM_GRAND
 "----------------------------------------
-autocmd FileType java let b:dispatch = 'gradle'
+augroup grand_autocmd
+    autocmd!
+    autocmd BufReadPost quickfix ruby Grand.loadTestResults()
 
-" Use vim-dispatch to run gradleTest
-autocmd FileType java nnoremap <leader>u :w<bar>Dispatch ./gradlew test -q<CR>
-" This runs my android gradle test for this class only
-autocmd FileType java nnoremap <leader>uc :w<bar>Dispatch ./gradlew testDebug -q -DtestDebug.single=%:t:r<CR>
+    " Use vim-dispatch to run gradleTest
+    autocmd FileType java nnoremap <leader>u :w<bar>Dispatch ./gradlew test<CR>
+    " This runs my android gradle test for this class only
+    autocmd FileType java nnoremap <leader>uc :w<bar>Dispatch ./gradlew testDebug -DtestDebug.single=%:t:r<CR>
 
-" Run GrandCtags command every time you save a java file
-autocmd BufWritePost *.java silent! GrandTags
+    " Run GrandCtags command every time you save a java file
+    autocmd BufWritePost *.java silent! GrandTags
+
+augroup END
 
 
 " __VIM_JAVA_HI_SEMANTICS
