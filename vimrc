@@ -354,17 +354,51 @@ let g:UltiSnipsExpandTrigger = "<c-l>"
 "----------------------------------------
 augroup grand_autocmd
     autocmd!
-    autocmd BufReadPost quickfix ruby Grand.loadTestResults()
+
+    " " works with :make not with :Make
+    " autocmd BufReadPost quickfix :call PostFunction()
+
+    " " doesn't work with :Dispatch or :Make
+    " " autocmd BufReadPost cgetfile :call PostFunction()
+
+    autocmd FileType java compiler gradle
+
+    autocmd FileType java nnoremap <leader>u :call GrandTest("")<CR>
+    autocmd FileType java nnoremap <leader>uc :call GrandTest("-DtestDebug.single=%:t:r")<CR>
+    " autocmd FileType java nnoremap <leader>u :w<bar>make test<CR>
+    " autocmd FileType java nnoremap <leader>uc :w<bar>make test -DtestDebug.single=%:t:r<CR>
+
+
 
     " Use vim-dispatch to run gradleTest
-    autocmd FileType java nnoremap <leader>u :w<bar>Dispatch ./gradlew test<CR>
+    " autocmd FileType java nnoremap <leader>u :w<bar>Dispatch ./gradlew testDebug<CR>
     " This runs my android gradle test for this class only
-    autocmd FileType java nnoremap <leader>uc :w<bar>Dispatch ./gradlew testDebug -DtestDebug.single=%:t:r<CR>
+    " autocmd FileType java nnoremap <leader>u :w<bar>Dispatch ./gradlew testDebug -DtestDebug.single=%:t:r<CR>
 
     " Run GrandCtags command every time you save a java file
     autocmd BufWritePost *.java silent! GrandTags
-
 augroup END
+
+fu! GrandTest(args)
+    w
+    " let g:grand_was_run = 1
+    let base_command = "Make test"
+    " let sed_command = " \| sed -e 's/\\./\\//g' \| sed -e 's/de\\//src\\/test\\/java\\/de\\//'  \| sed -e 's/%:t:r/%:t/g'"
+    let sed_command = " \| ruby -n -e 'if $_.start_with?(\"de.fuenfzig_hertz\"); puts \"src/test/java/\" + $_.gsub(/\\./, \"\\/\").sub(/%:t:r/, \"%:t\"); end'"
+    if strlen(a:args) > 0
+        execute base_command . " " . a:args . sed_command
+    else 
+        execute base_command . sed_command
+    endif
+endfu
+
+fu! PostFunction()
+    echoms "PostFunction called"
+    if exists("g:grand_was_run") && g:grand_was_run == 1
+        let g:grand_was_run = 0
+        ruby Grand.loadTestResults()
+    endif
+endfu
 
 
 " __VIM_JAVA_HI_SEMANTICS
