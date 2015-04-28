@@ -378,10 +378,7 @@ augroup END
 
 fu! GrandTest(args)
     w
-    " let g:grand_was_run = 1
     let base_command = "Make testDebug"
-    " let sed_command = " \| sed -e 's/\\./\\//g' \| sed -e 's/de\\//src\\/test\\/java\\/de\\//'  \| sed -e 's/%:t:r/%:t/g'"
-    " let sed_command = " \| ruby -n -e 'if $_.start_with?(\"de\"); puts \"src/test/java/\" + $_.gsub(/\\./, \"\\/\").sub(/%:t:r/, \"%:t\"); else puts $_; end'"
     let sed_command = " \| ruby -n ~/.vim/bundle/vim-grand/quick_fix_pipe.rb"
 
     if strlen(a:args) > 0
@@ -407,6 +404,7 @@ autocmd BufWritePost *.java     silent! setlocal syntax=java2
 " autocmd BufWritePost *.java        silent! setlocal syntax=java2 | exe "normal! g`\""
 " autocmd BufWritePost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`^" | endif
 " autocmd BufWritePost *  silent!    exe "normal! g`^"
+
 
 " __VIM_OPEN_URL
 "----------------------------------------
