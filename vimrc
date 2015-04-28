@@ -283,7 +283,7 @@ endfunction
 " __AIRLINE
 "----------------------------------------
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#tabline#show_buffers = 0
 set laststatus=2
 
   if !exists('g:airline_symbols')
