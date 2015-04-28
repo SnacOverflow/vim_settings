@@ -2,8 +2,8 @@
 
 
 " _PLUGINS
-" _SETTINGS
-" _MAPPINGS
+" _GENERAL_SETTINGS
+" _GENERAL_MAPPINGS
 " _COMMANDS
 " _PLUGIN SPECIFIC
 "       __YOUCOMPLETEME
@@ -11,13 +11,12 @@
 "       __COMMAND_T
 "       __NERDTREE
 "       __EASYMOTION
-"       __NERDCommenter
-"       __JAVACOMPLETE
 "       __ULTISNIPS
 "       __VIM_GRAND
 "       __VIM_JAVA_HI_SEMANTICS
 "       __VIM_OPEN_URL
 "       __VIM_COMMENTARY
+"       __VIM_RUBYTEST
 " _EXPERIMENTAL
 
 
@@ -95,7 +94,7 @@ filetype plugin indent on    " required by Vundle
 
 
 
-" _SETTINGS
+" _GENERAL_SETTINGS
 "===============================================================================
 
 
@@ -112,6 +111,9 @@ set mouse=a                    " Scroling using the mouse if I have my hands the
 set relativenumber             " Easier moving stuff around.
 
 set hlsearch        " highlight searches. Pratical with * search (see mapleaders)
+
+
+botright cwindow " Make cwindow always full width
 
 " UI
 set scrolloff=3     " keep 3 lines when scrolling
@@ -171,24 +173,18 @@ let NERDTreeHijackNetrw=1
 
 
 
-" _MAPPINGS
+" _GENERAL_MAPPINGS
 "===============================================================================
 
 let mapleader = "\<SPACE>"
 
-" Search highlighting toggle
-" map  <F12> :set hls!<CR>
-" imap <F12> <ESC>:set hls!<CR>a
-" vmap <F12> <ESC>:set hls!<CR>gv
-
 noremap <leader>n :NERDTreeToggle<CR>
 
 noremap <leader>\| :Tabularize/\|<CR>
-noremap <leader>on :noh<CR>
 
-" switch to last buffer. Like this one best
-" h
+" switch to last buffer.
 noremap ,b :b#<CR>
+
 " delte current buffer without closing window
 noremap _b :Bdelete<CR>
 
@@ -203,8 +199,12 @@ map <leader>j <C-W>j
 map <leader>k <C-W>k
 map <leader>l <C-W>l
 
-" map [w i<space><ESC>l
-" map ]w a<space><ESC>h
+" Use CTRL-P for command-history, using entered text to match.
+cnoremap <C-p> <Up>
+
+" Removes quickfix buffer from showing up using :bnext and the like.
+autocmd FileType qf set nobuflisted
+
 
 " QUICK SUBSTITUTE CWORD
 " 1. saves word under cursor in g:replacingString
@@ -337,12 +337,6 @@ map <leader>s <Plug>(easymotion-s)
 map <leader>f <Plug>(easymotion-f)
 map <leader>F <Plug>(easymotion-F)
 
-" __NERDCommenter
-"----------------------------------------
-" map <leader>/ <plug>NERDCommenterToggle
-
-" __JAVACOMPLETE
-"----------------------------------------
 
 
 " __ULTISNIPS
@@ -352,6 +346,9 @@ let g:UltiSnipsExpandTrigger = "<c-l>"
 
 " __VIM_GRAND
 "----------------------------------------
+
+autocmd FileType java noremap <Leader>i :GrandInstall<CR>
+
 augroup grand_autocmd
     autocmd!
 
@@ -382,7 +379,7 @@ augroup END
 fu! GrandTest(args)
     w
     " let g:grand_was_run = 1
-    let base_command = "Make test"
+    let base_command = "Make testDebug"
     " let sed_command = " \| sed -e 's/\\./\\//g' \| sed -e 's/de\\//src\\/test\\/java\\/de\\//'  \| sed -e 's/%:t:r/%:t/g'"
     " let sed_command = " \| ruby -n -e 'if $_.start_with?(\"de\"); puts \"src/test/java/\" + $_.gsub(/\\./, \"\\/\").sub(/%:t:r/, \"%:t\"); else puts $_; end'"
     let sed_command = " \| ruby -n ~/.vim/bundle/vim-grand/quick_fix_pipe.rb"
@@ -422,28 +419,34 @@ autocmd FileType groovy set commentstring=//%s
 autocmd FileType markdown set commentstring=<!--%s-->
 
 
-" _EXPERIMENTAL
-"===============================================================================
-
-
-" Use CTRL-P for command-history, using entered text to match.
-cnoremap <C-p> <Up>
-
-" For JavaImp
-" let g:JavaImpPaths = "./src/main/java/,./src/test/java/"
-
-" TODO: Fix?
-" Removes quickfix buffer from showing up using :bnext and the like.
-autocmd FileType qf set nobuflisted
+" __VIM_RUBYTEST
+"----------------------------------------
 
 " Doesn't work with noremap for some reason
 autocmd FileType ruby map <Leader>ut <Plug>RubyTestRun
 autocmd FileType ruby map <Leader>uc <Plug>RubyFileRun
 autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 
-autocmd FileType java noremap <Leader>i :GrandInstall<CR>
 
-nnoremap ,t :call OpenOther()<CR>
+
+
+" _EXPERIMENTAL
+"===============================================================================
+
+
+" http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
+command -bang -nargs=? QFix call QFixToggle(<bang>0)
+function! QFixToggle(forced)
+  if exists("g:qfix_win") && a:forced == 0
+    cclose
+    unlet g:qfix_win
+  else
+    copen 10
+    let g:qfix_win = bufnr("$")
+  endif
+endfunction
+
+nnoremap <silent> <leader>e :QFix<CR>
 
 
 
@@ -468,10 +471,14 @@ function! s:MapNextFamily(map,cmd)
   endif
 endfunction
 
-
 call s:MapNextFamily('w','tab')
 
 
+
+
+
+
+nnoremap ,t :call OpenOther()<CR>
 
 fu! OpenOther()
     if &filetype == "java"
