@@ -387,9 +387,7 @@ fu! GrandTest(args)
     " let sed_command = " \| ruby -n -e 'if $_.start_with?(\"de\"); puts \"src/test/java/\" + $_.gsub(/\\./, \"\\/\").sub(/%:t:r/, \"%:t\"); else puts $_; end'"
     let sed_command = " \| ruby -n ~/.vim/bundle/vim-grand/quick_fix_pipe.rb"
 
-
     if strlen(a:args) > 0
-        echoms base_command . " " . a:args . sed_command
         execute base_command . " " . a:args . sed_command
     else 
         execute base_command . sed_command
