@@ -379,7 +379,7 @@ augroup END
 fu! GrandTest(args)
     w
     let base_command = "Make testDebug"
-    let sed_command = " \| ruby -n ~/.vim/bundle/vim-grand/quick_fix_pipe.rb"
+    let sed_command = " \| ruby -n ~/.vim/bundle/vim-grand/quick_fix_filter.rb"
 
     if strlen(a:args) > 0
         execute base_command . " " . a:args . sed_command
@@ -433,7 +433,7 @@ autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 
 
 " http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
-command -bang -nargs=? QFix call QFixToggle(<bang>0)
+command! -bang -nargs=? QFix call QFixToggle(<bang>0)
 function! QFixToggle(forced)
   if exists("g:qfix_win") && a:forced == 0
     cclose
