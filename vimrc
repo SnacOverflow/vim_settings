@@ -1,26 +1,5 @@
-" VIMRC
 
-
-" _PLUGINS
-" _GENERAL_SETTINGS
-" _GENERAL_MAPPINGS
-" _COMMANDS
-" _PLUGIN SPECIFIC
-"       __YOUCOMPLETEME
-"       __AIRLINE
-"       __COMMAND_T
-"       __NERDTREE
-"       __EASYMOTION
-"       __ULTISNIPS
-"       __VIM_GRAND
-"       __VIM_JAVA_HI_SEMANTICS
-"       __VIM_OPEN_URL
-"       __VIM_COMMENTARY
-"       __VIM_RUBYTEST
-" _EXPERIMENTAL
-
-
-" _PLUGINS
+" PLUGINS {{{1
 "===============================================================================
 
 set nocompatible                  " be iMproved, required by Vundle
@@ -92,9 +71,8 @@ call vundle#end()            " required by Vundle
 filetype plugin indent on    " required by Vundle
 
 
-
-
-" _GENERAL_SETTINGS
+"}}}
+" GENERAL_SETTINGS {{{1
 "===============================================================================
 
 
@@ -171,9 +149,8 @@ set t_Co=256
 let NERDTreeHijackNetrw=1
 
 
-
-
-" _GENERAL_MAPPINGS
+"}}}
+" GENERAL_MAPPINGS {{{1
 "===============================================================================
 
 let mapleader = "\<SPACE>"
@@ -232,9 +209,8 @@ fu! GitGrepThis()
     cw
 endfu
 
-
-
-" _COMMANDS
+"}}}
+" COMMANDS {{{1
 "===============================================================================
 
 " Toggle spelling or enable the spell checker if the language is specified
@@ -262,11 +238,11 @@ command! Ltwenty read !~/Dropbox/leon/developing/python/major_numbers/twenty.py
 command! Ltwenty2 read ~/.twenty_last
 command! Last Dispatch last -1 reboot
 
-
-" _PLUGIN SPECIFIC
+"}}}
+" PLUGIN SPECIFIC {{{1
 "===============================================================================
 
-" __YOUCOMPLETEME
+" __YOUCOMPLETEME {{{2
 "----------------------------------------
 nnoremap <leader>y :call YcmToggle()<CR>
 
@@ -279,8 +255,8 @@ function! YcmToggle()
         echo "ycm on"
     endif
 endfunction
-
-" __AIRLINE
+"}}}
+" AIRLINE {{{2
 "----------------------------------------
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
@@ -319,19 +295,22 @@ set laststatus=2
       \ }
 
 
-" __COMMAND_T
+"}}}
+" COMMAND_T {{{2
 "----------------------------------------
 map <D-O> :CommandT<CR>
 map <leader>t :CommandT<CR>
 map <leader>d :CommandT ~/Dropbox/leon/<CR>
 set wildignore=**/build/*,**/.git/*,*.class
 
-" __NERDTREE
+"}}}
+" __NERDTREE {{{2
 "----------------------------------------
 let NERDTreeWinSize = 50
 let NERDTreeBookmarksSort = 0
 
-" __EASYMOTION
+"}}}
+" __EASYMOTION {{{2
 "----------------------------------------
 map <leader>s <Plug>(easymotion-s)
 map <leader>f <Plug>(easymotion-f)
@@ -339,12 +318,13 @@ map <leader>F <Plug>(easymotion-F)
 
 
 
-" __ULTISNIPS
+"}}}
+" __ULTISNIPS {{{2
 "----------------------------------------
 let g:UltiSnipsExpandTrigger = "<c-l>"
 
 
-" __VIM_GRAND
+" __VIM_GRAND {{{2
 "----------------------------------------
 
 autocmd FileType java noremap <Leader>i :GrandInstall<CR>
@@ -360,8 +340,13 @@ augroup grand_autocmd
 
     autocmd FileType java compiler gradle
 
-    autocmd FileType java nnoremap <leader>u :call GrandTest("")<CR>
-    autocmd FileType java nnoremap <leader>uc :call GrandTest("-DtestDebug.single=%:t:r")<CR>
+    autocmd FileType java nnoremap <leader>u :GrandTest<CR>
+    autocmd FileType java nnoremap <leader>uc :GrandTest %<CR>
+
+
+    " autocmd FileType java nnoremap <leader>u :call GrandTest("")<CR>
+    " autocmd FileType java nnoremap <leader>uc :call GrandTest("-DtestDebug.single=%:t:r")<CR>
+
     " autocmd FileType java nnoremap <leader>u :w<bar>make test<CR>
     " autocmd FileType java nnoremap <leader>uc :w<bar>make test -DtestDebug.single=%:t:r<CR>
 
@@ -379,7 +364,7 @@ augroup END
 fu! GrandTest(args)
     w
     let base_command = "Make testDebug"
-    let sed_command = " \| ruby -n ~/.vim/bundle/vim-grand/quick_fix_filter.rb"
+    let sed_command = " \| ruby -n ~/.vim/bundle/vim-grand/filter/quick_fix_filter.rb"
 
     if strlen(a:args) > 0
         execute base_command . " " . a:args . sed_command
@@ -397,7 +382,8 @@ fu! PostFunction()
 endfu
 
 
-" __VIM_JAVA_HI_SEMANTICS
+"}}}
+" __VIM_JAVA_HI_SEMANTICS {{{2
 "----------------------------------------
 autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
 autocmd BufWritePost *.java     silent! setlocal syntax=java2
@@ -406,18 +392,21 @@ autocmd BufWritePost *.java     silent! setlocal syntax=java2
 " autocmd BufWritePost *  silent!    exe "normal! g`^"
 
 
-" __VIM_OPEN_URL
+"}}}
+" __VIM_OPEN_URL {{{2
 "----------------------------------------
 noremap gx :OpenURL<CR>
 
 
-" __VIM_COMMENTARY
+"}}}
+" __VIM_COMMENTARY {{{2
 "----------------------------------------
 autocmd FileType groovy set commentstring=//%s
 autocmd FileType markdown set commentstring=<!--%s-->
 
 
-" __VIM_RUBYTEST
+"}}}
+" __VIM_RUBYTEST {{{2
 "----------------------------------------
 
 " Doesn't work with noremap for some reason
@@ -425,10 +414,8 @@ autocmd FileType ruby map <Leader>ut <Plug>RubyTestRun
 autocmd FileType ruby map <Leader>uc <Plug>RubyFileRun
 autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 
-
-
-
-" _EXPERIMENTAL
+"}}}
+" EXPERIMENTAL {{{1
 "===============================================================================
 
 
@@ -548,3 +535,8 @@ fu! GetRelativeFilePath()
     let fullPath = expand('%:p:h')
     return substitute(fullPath, getcwd() . "/" , "", "")
 endfu
+
+"}}}
+
+----------------------------------------------------------------
+ vim:fdm=marker:
