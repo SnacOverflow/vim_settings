@@ -41,6 +41,8 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
 Plugin 'meonlol/vim-rubytest'
+Plugin 'kana/vim-vspec'
+
 
 " STYLING & SYNTAX
 Plugin 'altercation/vim-colors-solarized'
@@ -414,6 +416,15 @@ autocmd FileType ruby map <Leader>uc <Plug>RubyFileRun
 autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 
 "}}}
+
+" VIM_RUBY {{{2
+"----------------------------------------
+
+" see: https://github.com/vim-ruby/vim-ruby/blob/master/doc/ft-ruby-omni.txt
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+
+
 " EXPERIMENTAL {{{1
 "===============================================================================
 
