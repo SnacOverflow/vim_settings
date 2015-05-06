@@ -41,8 +41,6 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
 Plugin 'meonlol/vim-rubytest'
-" Plugin 'scrooloose/nerdcommenter' " Replaced by tpope/vim-commentary
-" Plugin 'vim-scripts/JavaImp.vim--Lee' " Not used.
 
 " STYLING & SYNTAX
 Plugin 'altercation/vim-colors-solarized'
@@ -64,6 +62,7 @@ Plugin 'meonlol/javacomplete'
 " Plugin 'Shougo/javacomplete'
 " Plugin 'yegappan/greplace'          " Never used
 " Plugin 'reinh/vim-makegreen'        " Do I even use this?
+" Plugin 'vim-scripts/JavaImp.vim--Lee' " Not used.
 
 
 " All of your Plugins must be added before the following line
@@ -338,7 +337,7 @@ augroup grand_autocmd
     " " doesn't work with :Dispatch or :Make
     " " autocmd BufReadPost cgetfile :call PostFunction()
 
-    autocmd FileType java compiler gradle
+    " autocmd FileType java compiler gradle
 
     autocmd FileType java nnoremap <leader>u :GrandTest<CR>
     autocmd FileType java nnoremap <leader>uc :GrandTest %<CR>
@@ -538,5 +537,5 @@ endfu
 
 "}}}
 
-----------------------------------------------------------------
- vim:fdm=marker:
+"----------------------------------------------------------------
+" vim:fdm=marker:
