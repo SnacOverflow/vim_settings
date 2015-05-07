@@ -466,9 +466,9 @@ function! ToggleList(bufname, pfx)
     endif
     let winnr = winnr()
     exec(a:pfx.'open')
-    if winnr() != winnr
-        wincmd p
-    endif
+    " if winnr() != winnr
+    "     wincmd p
+    " endif
 endfunction
 
 " nnoremap <silent> <leader>e :QFix<CR>
