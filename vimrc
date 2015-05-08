@@ -237,7 +237,7 @@ command! Lvimrc e ~/.vim/vimrc
 
 command! Ltwenty read !~/Dropbox/leon/developing/python/major_numbers/twenty.py
 command! Ltwenty2 read ~/.twenty_last
-command! Last Dispatch last -1 reboot
+command! Last :ruby puts `last -1 reboot`
 
 "}}}
 " PLUGIN SPECIFIC {{{1
