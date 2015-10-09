@@ -5,6 +5,17 @@ snip.rv = snip.basename or "untitled"`} {
 }
 endsnippet
 
+snippet clTest
+import org.junit.*;
+import static org.junit.Assert.*;
+
+public class ${1:`!p
+snip.rv = snip.basename or "untitled"`} {
+	$0
+}
+endsnippet
+
+
 snippet clRobo 
 import org.junit.*;
 import org.robolectric.*;
