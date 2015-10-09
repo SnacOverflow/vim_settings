@@ -1,5 +1,5 @@
 
-# git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+" git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 " PLUGINS {{{1
 "===============================================================================
@@ -44,7 +44,8 @@ Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
 Plugin 'meonlol/vim-rubytest'
 Plugin 'kana/vim-vspec'
-
+Plugin 'artur-shaik/vim-javacomplete2'
+Plugin 'fatih/vim-go'
 
 " STYLING & SYNTAX
 Plugin 'altercation/vim-colors-solarized'
@@ -57,7 +58,7 @@ Plugin 'meonlol/vim-android'
 Plugin 'meonlol/pyunit.vim'
 Plugin 'meonlol/vim-grand'
 Plugin 'meonlol/vim-java-hi-semantics'
-Plugin 'meonlol/javacomplete'
+" Plugin 'meonlol/javacomplete'
 
 
 " TRIED
@@ -418,7 +419,13 @@ autocmd FileType ruby map <Leader>uc <Plug>RubyFileRun
 autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 
 "}}}
+" JAVACOMPLETE2 {{{2
+"----------------------------------------
 
+	" :setlocal omnifunc=javacomplete#Complete
+    autocmd FileType java set omnifunc=javacomplete#Complete
+
+"}}}
 " VIM_RUBY {{{2
 "----------------------------------------
 
@@ -427,6 +434,13 @@ let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 
 
+"}}}
+" NERDTree {{{2
+"----------------------------------------
+
+let NERDTreeShowLineNumbers=1
+
+"}}}
 " EXPERIMENTAL {{{1
 "===============================================================================
 
