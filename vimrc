@@ -1,5 +1,5 @@
 
-# git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+" git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 " PLUGINS {{{1
 "===============================================================================
@@ -577,6 +577,11 @@ fu! GetRelativeFilePath()
     let fullPath = expand('%:p:h')
     return substitute(fullPath, getcwd() . "/" , "", "")
 endfu
+
+
+" macros
+" Insert member: o,'+ *'
+" Insert arg: o,'*'bbdwwi: "
 
 "}}}
 
