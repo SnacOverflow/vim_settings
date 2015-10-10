@@ -234,7 +234,8 @@ endfu
 " Rebuild tags for central notes
 command! Ltags helptags ~/Dropbox/leon/notes/ | helptags ~/Dropbox/leon/todo/
 command! Lnotes e ~/Dropbox/leon/notes/index.txt
-command! Ltodo e ~/Dropbox/leon/todo/reusable_todo_home.txt
+" command! Ltodo e ~/Dropbox/leon/todo/reusable_todo_home.txt
+command! Ltodo e ~/leon/syncthing/todo_home.md
 command! Lochtend e ~/Dropbox/leon/todo/ochtend-ritueel.txt
 command! Lvimrc e ~/.vim/vimrc
 
