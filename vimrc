@@ -58,6 +58,7 @@ Plugin 'meonlol/vim-android'
 Plugin 'meonlol/pyunit.vim'
 Plugin 'meonlol/vim-grand'
 Plugin 'meonlol/vim-java-hi-semantics'
+Plugin 'meonlol/vim-gosem'
 " Plugin 'meonlol/javacomplete'
 
 
@@ -247,20 +248,6 @@ command! Last :ruby puts `last -1 reboot`
 " PLUGIN SPECIFIC {{{1
 "===============================================================================
 
-" __YOUCOMPLETEME {{{2
-"----------------------------------------
-nnoremap <leader>y :call YcmToggle()<CR>
-
-function! YcmToggle()
-    if g:ycm_auto_trigger == 1
-        let g:ycm_auto_trigger=0
-        echo "ycm off"
-    else
-        let g:ycm_auto_trigger=1
-        echo "ycm on"
-    endif
-endfunction
-"}}}
 " AIRLINE {{{2
 "----------------------------------------
 let g:airline#extensions#tabline#enabled = 1
@@ -309,13 +296,7 @@ map <leader>d :CommandT ~/Dropbox/leon/<CR>
 set wildignore=**/build/*,**/.git/*,*.class
 
 "}}}
-" __NERDTREE {{{2
-"----------------------------------------
-let NERDTreeWinSize = 50
-let NERDTreeBookmarksSort = 0
-
-"}}}
-" __EASYMOTION {{{2
+" EASYMOTION {{{2
 "----------------------------------------
 map <leader>s <Plug>(easymotion-s)
 map <leader>f <Plug>(easymotion-f)
@@ -324,12 +305,44 @@ map <leader>F <Plug>(easymotion-F)
 
 
 "}}}
-" __ULTISNIPS {{{2
+" JAVACOMPLETE2 {{{2
+"----------------------------------------
+
+	" :setlocal omnifunc=javacomplete#Complete
+    autocmd FileType java set omnifunc=javacomplete#Complete
+
+"}}}
+" NERDTREE {{{2
+"----------------------------------------
+let NERDTreeWinSize = 50
+let NERDTreeBookmarksSort = 0
+let NERDTreeShowLineNumbers=1
+
+"}}}
+" ULTISNIPS {{{2
 "----------------------------------------
 let g:UltiSnipsExpandTrigger = "<c-l>"
 
 
-" __VIM_GRAND {{{2
+" VIM_COMMENTARY {{{2
+"----------------------------------------
+autocmd FileType groovy set commentstring=//%s
+autocmd FileType markdown set commentstring=<!--%s-->
+
+"}}}
+" VIM_GO {{{2
+"----------------------------------------
+autocmd FileType go map <Leader>ul :GoTest<CR>
+
+"}}}
+" VIM_GOSEM {{{2
+"----------------------------------------
+autocmd BufRead,BufNewFile *.go       setlocal syntax=go-semantic
+autocmd BufWritePost *.go     silent! setlocal syntax=go-semantic
+
+
+"}}}
+" VIM_GRAND {{{2
 "----------------------------------------
 
 autocmd FileType java noremap <Leader>i :GrandInstall<CR>
@@ -388,7 +401,7 @@ endfu
 
 
 "}}}
-" __VIM_JAVA_HI_SEMANTICS {{{2
+" VIM_JAVA_HI_SEMANTICS {{{2
 "----------------------------------------
 autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
 autocmd BufWritePost *.java     silent! setlocal syntax=java2
@@ -398,33 +411,10 @@ autocmd BufWritePost *.java     silent! setlocal syntax=java2
 
 
 "}}}
-" __VIM_OPEN_URL {{{2
+" VIM_OPEN_URL {{{2
 "----------------------------------------
 noremap gx :OpenURL<CR>
 
-
-"}}}
-" __VIM_COMMENTARY {{{2
-"----------------------------------------
-autocmd FileType groovy set commentstring=//%s
-autocmd FileType markdown set commentstring=<!--%s-->
-
-
-"}}}
-" __VIM_RUBYTEST {{{2
-"----------------------------------------
-
-" Doesn't work with noremap for some reason
-autocmd FileType ruby map <Leader>ut <Plug>RubyTestRun
-autocmd FileType ruby map <Leader>uc <Plug>RubyFileRun
-autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
-
-"}}}
-" JAVACOMPLETE2 {{{2
-"----------------------------------------
-
-	" :setlocal omnifunc=javacomplete#Complete
-    autocmd FileType java set omnifunc=javacomplete#Complete
 
 "}}}
 " VIM_RUBY {{{2
@@ -436,10 +426,27 @@ let g:rubycomplete_classes_in_global = 1
 
 
 "}}}
-" NERDTree {{{2
+" YOUCOMPLETEME {{{2
+"----------------------------------------
+nnoremap <leader>y :call YcmToggle()<CR>
+
+function! YcmToggle()
+    if g:ycm_auto_trigger == 1
+        let g:ycm_auto_trigger=0
+        echo "ycm off"
+    else
+        let g:ycm_auto_trigger=1
+        echo "ycm on"
+    endif
+endfunction
+"}}}
+" VIM_RUBYTEST {{{2
 "----------------------------------------
 
-let NERDTreeShowLineNumbers=1
+" Doesn't work with noremap for some reason
+autocmd FileType ruby map <Leader>ut <Plug>RubyTestRun
+autocmd FileType ruby map <Leader>uc <Plug>RubyFileRun
+autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 
 "}}}
 " EXPERIMENTAL {{{1
