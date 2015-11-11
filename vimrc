@@ -184,6 +184,8 @@ map <leader>l <C-W>l
 " Use CTRL-P for command-history, using entered text to match.
 cnoremap <C-p> <Up>
 
+nmap <leader>a gqap
+
 " Removes quickfix buffer from showing up using :bnext and the like.
 autocmd FileType qf set nobuflisted
 
