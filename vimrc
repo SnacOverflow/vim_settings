@@ -417,6 +417,15 @@ autocmd BufWritePost *.java     silent! setlocal syntax=java2
 "----------------------------------------
 noremap gx :OpenURL<CR>
 
+"}}}
+" VIM-GOSEM {{{2
+"----------------------------------------
+autocmd BufRead,BufNewFile *.go       setlocal syntax=go-semantic
+autocmd BufWritePost *.go     silent! setlocal syntax=go-semantic
+" autocmd BufWritePost *.java        silent! setlocal syntax=java2 | exe "normal! g`\""
+" autocmd BufWritePost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`^" | endif
+" autocmd BufWritePost *  silent!    exe "normal! g`^"
+
 
 "}}}
 " VIM_RUBY {{{2
