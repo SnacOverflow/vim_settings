@@ -334,7 +334,8 @@ autocmd FileType markdown set commentstring=<!--%s-->
 "}}}
 " VIM_GO {{{2
 "----------------------------------------
-autocmd FileType go map <Leader>ul :GoTest<CR>
+autocmd FileType go map <Leader>ul :GoTest!<CR>
+let g:syntastic_go_checkers = ['gofmt']
 
 "}}}
 " VIM_GOSEM {{{2
