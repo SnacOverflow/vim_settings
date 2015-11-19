@@ -184,7 +184,14 @@ map <leader>l <C-W>l
 " Use CTRL-P for command-history, using entered text to match.
 cnoremap <C-p> <Up>
 
+" Quick Reformat paragraph
 nmap <leader>a gqap
+
+" mappings for quick markdown style headers
+nmap <leader>m1 o<ESC>80i=<ESC>0k
+nmap <leader>m2 o<ESC>80i-<ESC>0k
+nmap <leader>m3 I### <ESC>
+nmap <leader>m4 I#### <ESC>
 
 " Removes quickfix buffer from showing up using :bnext and the like.
 autocmd FileType qf set nobuflisted
@@ -335,13 +342,14 @@ autocmd FileType markdown set commentstring=<!--%s-->
 " VIM_GO {{{2
 "----------------------------------------
 autocmd FileType go map <Leader>ul :GoTest!<CR>
-let g:syntastic_go_checkers = ['gofmt']
+autocmd BufWritePre *.go silent! GoImports
+let g:syntastic_go_checkers = ['go']
 
 "}}}
 " VIM_GOSEM {{{2
 "----------------------------------------
-autocmd BufRead,BufNewFile *.go       setlocal syntax=go-semantic
-autocmd BufWritePost *.go     silent! setlocal syntax=go-semantic
+autocmd BufRead,BufNewFile *.go       setlocal syntax=vim-gosem
+autocmd BufWritePost *.go     silent! setlocal syntax=vim-gosem
 
 "}}}
 " VIM_GRAND {{{2
