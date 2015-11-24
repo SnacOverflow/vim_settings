@@ -117,7 +117,7 @@ set shiftwidth=4 "
 set expandtab    " use spaces in stead of tabs
 " TRICK: use 'set et|retab' to convert all tabs to spaces or 'set noet|retab!' for the reverse
 
-set formatprg=par 
+set formatprg=par\ w78
 
 " SEARCHING
 set incsearch       " do incremental searching
