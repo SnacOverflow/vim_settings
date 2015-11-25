@@ -131,6 +131,7 @@ filetype indent on " load indent file for specific file type
 filetype plugin on " ?
 set autoread
 set autowrite
+set tags+=.tags    " I want to use hidden tags files
 
 set tags+=.tags
 
@@ -362,6 +363,7 @@ autocmd FileType go noremap <F6> :let g:replacingString = expand("<cword>")<CR> 
 "----------------------------------------
 autocmd BufRead,BufNewFile *.go       setlocal syntax=vim-gosem
 autocmd BufWritePost *.go     silent! setlocal syntax=vim-gosem
+autocmd BufWritePost *.go     silent! !gotags -f .tags -R .
 
 "}}}
 " VIM_GRAND {{{2
