@@ -133,8 +133,6 @@ set autoread
 set autowrite
 set tags+=.tags    " I want to use hidden tags files
 
-set tags+=.tags
-
 set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
@@ -348,7 +346,7 @@ autocmd FileType markdown set commentstring=<!--%s-->
 "----------------------------------------
 autocmd FileType go map <Leader>ul :GoTest!<CR>
 autocmd BufWritePre *.go silent! GoImports
-autocmd BufWritePost *.go silent! :!gotags -R -f=".tags" .
+autocmd BufWritePost *.go silent! !gotags -R -f=".tags" .
 let g:syntastic_go_checkers = ['go']
 
 " Refactor shortcut
@@ -363,7 +361,6 @@ autocmd FileType go noremap <F6> :let g:replacingString = expand("<cword>")<CR> 
 "----------------------------------------
 autocmd BufRead,BufNewFile *.go       setlocal syntax=vim-gosem
 autocmd BufWritePost *.go     silent! setlocal syntax=vim-gosem
-autocmd BufWritePost *.go     silent! !gotags -f .tags -R .
 
 "}}}
 " VIM_GRAND {{{2
