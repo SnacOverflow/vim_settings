@@ -367,7 +367,7 @@ let g:syntastic_go_checkers = ['go']
 " (see :help c_CTRL-F) with the 'gofmt -r' command filled in. Insert mode
 " is available in this window. Press <CR> from normal mode to execute the
 " refactoring"
-autocmd FileType go noremap <F6> :let g:replacingString = expand("<cword>")<CR> q:i!gofmt -r '<c-r>=g:replacingString<cr> -> <c-r>=g:replacingString<cr>' -w *.go<ESC>3Bvet'
+autocmd FileType go noremap <F6> :let g:replacingString = expand("<cword>")<CR> q:i!gofmt -r '<c-r>=g:replacingString<cr> -> <c-r>=g:replacingString<cr>' -w *.go **/*.go<ESC>4B'
 
 "}}}
 " VIM_GOSEM {{{2
