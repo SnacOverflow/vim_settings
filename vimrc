@@ -212,14 +212,26 @@ inoremap <silent><C-w> <C-o>:call search('\C\<\<Bar>\%(^\<Bar>[^'.g:camelchar.']
 vnoremap <silent><C-b> :<C-U>call search('\C\<\<Bar>\%(^\<Bar>[^'.g:camelchar.']\@<=\)['.g:camelchar.']\<Bar>['.g:camelchar.']\ze\%([^'.g:camelchar.']\&\>\@!\)\<Bar>\%^','bW')<CR>v`>o
 vnoremap <silent><C-w> <Esc>`>:<C-U>call search('\C\<\<Bar>\%(^\<Bar>[^'.g:camelchar.']\@<=\)['.g:camelchar.']\<Bar>['.g:camelchar.']\ze\%([^'.g:camelchar.']\&\>\@!\)\<Bar>\%$','W')<CR>v`<o
 
+" REFACTORING TOOLS & TRICKS
 
-" QUICK SUBSTITUTE CWORD
-" 1. saves word under cursor in g:replacingString
-" 2. Opens cmdwin and goes to insert mode
-" 3. inputs %s/\<string\>/string/gc (string is g:replacingString and \<\> specifies whole word only)
-" 4. Visually selects the second string for easy replacing or changing
-noremap <F6> :let g:replacingString = expand("<cword>")<CR> q:i%s/\<<c-r>=g:replacingString<cr>\>/<c-r>=g:replacingString<cr>/gc<ESC>2T/vet/
+" Quick search and replace
+"
+" Takes the current word under the cursor and opens the command-line window
+" (see :help c_CTRL-F) with the '%s/old/new/gc' command filled in. Insert mode
+" is available in this window for easy editing. Press <CR> from normal mode to
+" execute the search and replace.
+" Protip: add 'windo', 'buffdo' etc to run the find and replace in all windows, buffers etc
+noremap <F6> :let g:replacingString = expand("<cword>")<CR> q:i%s/\<<c-r>=g:replacingString<cr>\>/<c-r>=g:replacingString<cr>/gc<ESC>2T/
 
+" The following commands simply search the word under the cursor,
+" ether through vimgrep or with gitgrep. The results are then simply
+" displayed in the quickfix window. But when we than combine this with the
+" stefandtw/quickfix-reflector plugin, which allows editing in the quickfix
+" window and saving the results into the correct files, it becomes a powerfull
+" refactoring tool.
+" I use this in combenation with the above shortcut, to search all occurrences
+" in the cwd with these commands, and then replace them from the quickfix
+" window with the <F6> one.
 noremap <F7> :call VimGrepThis()<CR>
 noremap <F8> :call GitGrepThis()<CR>
 
@@ -367,7 +379,7 @@ let g:syntastic_go_checkers = ['go']
 " (see :help c_CTRL-F) with the 'gofmt -r' command filled in. Insert mode
 " is available in this window. Press <CR> from normal mode to execute the
 " refactoring"
-autocmd FileType go noremap <F6> :let g:replacingString = expand("<cword>")<CR> q:i!gofmt -r '<c-r>=g:replacingString<cr> -> <c-r>=g:replacingString<cr>' -w *.go **/*.go<ESC>4B'
+" autocmd FileType go noremap <C-F6> :let g:replacingString = expand("<cword>")<CR> q:i!gofmt -r '<c-r>=g:replacingString<cr> -> <c-r>=g:replacingString<cr>' -w *.go **/*.go<ESC>4B'
 
 "}}}
 " VIM_GOSEM {{{2
