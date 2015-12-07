@@ -223,32 +223,38 @@ vnoremap <silent><C-w> <Esc>`>:<C-U>call search('\C\<\<Bar>\%(^\<Bar>[^'.g:camel
 " Protip: add 'windo', 'buffdo' etc to run the find and replace in all windows, buffers etc
 noremap <F6> :let g:replacingString = expand("<cword>")<CR> q:i%s/\<<c-r>=g:replacingString<cr>\>/<c-r>=g:replacingString<cr>/gc<ESC>2T/
 
-" The following commands simply search the word under the cursor,
-" ether through vimgrep or with gitgrep. The results are then simply
-" displayed in the quickfix window. But when we than combine this with the
+" The following commands simply search the word under the cursor, ether using
+" the platinum searcher, with vimgrep as a fallback. The results are then
+" simply displayed in the quickfix window. When we than combine this with the
 " stefandtw/quickfix-reflector plugin, which allows editing in the quickfix
 " window and saving the results into the correct files, it becomes a powerfull
 " refactoring tool.
 " I use this in combenation with the above shortcut, to search all occurrences
 " in the cwd with these commands, and then replace them from the quickfix
 " window with the <F6> one.
-noremap <F7> :call VimGrepThis()<CR>
-noremap <F8> :call GitGrepThis()<CR>
+noremap <F7> :call SeachWordInCwd()<CR>
 
-fu! VimGrepThis()
+fu! SeachWordInCwd()
+    let oldgrepprg = &grepprg
+    let orig_grepformat = &grepformat
     let g:wordUnderCursor = expand("<cword>")
-    let vimGrepCommand = "vimgrep /\\<" . g:wordUnderCursor . "\\>/j **/*." .  expand('%:e')
-    echomsg vimGrepCommand
-    execute vimGrepCommand
-    cw
-endfu
 
-fu! GitGrepThis()
-    let g:wordUnderCursor = expand("<cword>")
-    let gitGrepCommand = "Ggrep " . g:wordUnderCursor
-    echomsg gitGrepCommand
-    execute gitGrepCommand
+    if exepath("pt") != ""
+        " Use the super-fast platinum searcher as a grep replacement
+        " go get -u github.com/monochromegane/the_platinum_searcher/...
+        let &grepprg = "pt --nocolor --nogroup "
+        let searchCmd = "\"" . g:wordUnderCursor . "\" ."
+        let searchCmd = "silent grep! " . searchCmd
+    else
+        let searchCmd = "vimgrep /\\<" . g:wordUnderCursor . "\\>/j **/*." .  expand('%:e')
+    endif
+
+    echomsg searchCmd
+    execute searchCmd
     cw
+
+    let &grepprg = oldgrepprg
+    let &grepformat = orig_grepformat
 endfu
 
 "}}}
