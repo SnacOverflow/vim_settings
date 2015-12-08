@@ -258,7 +258,7 @@ fu! SeachWordInCwd()
 endfu
 
 "}}}
-" COMMANDS {{{1
+" COMMANDS {{{.
 "===============================================================================
 
 " Toggle spelling or enable the spell checker if the language is specified
@@ -276,11 +276,6 @@ fu! SpelCheck(...)
 endfu
 
 " Rebuild tags for central notes
-command! Ltags helptags ~/Dropbox/leon/notes/ | helptags ~/Dropbox/leon/todo/
-command! Lnotes e ~/Dropbox/leon/notes/index.txt
-" command! Ltodo e ~/Dropbox/leon/todo/reusable_todo_home.txt
-command! Ltodo e ~/leon/syncthing/todo_home.md
-command! Lochtend e ~/Dropbox/leon/todo/ochtend-ritueel.txt
 command! Lvimrc e ~/.vim/vimrc
 
 command! Ltwenty read !~/Dropbox/leon/developing/python/major_numbers/twenty.py
@@ -333,9 +328,7 @@ set laststatus=2
 "}}}
 " COMMAND_T {{{2
 "----------------------------------------
-map <D-O> :CommandT<CR>
-map <leader>t :CommandT<CR>
-map <leader>T :CommandT ~/Dropbox/leon/<CR>
+noremap <leader>t :CommandT<CR>
 set wildignore=**/build/*,**/.git/*,*.class
 
 "}}}
