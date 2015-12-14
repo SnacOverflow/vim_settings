@@ -242,7 +242,7 @@ fu! SeachWordInCwd()
     if exepath("pt") != ""
         " Use the super-fast platinum searcher as a grep replacement
         " go get -u github.com/monochromegane/the_platinum_searcher/...
-        let &grepprg = "pt --nocolor --nogroup "
+        let &grepprg = "pt --nocolor --nogroup -w "
         let searchCmd = "\"" . g:wordUnderCursor . "\" ."
         let searchCmd = "silent grep! " . searchCmd
     else
