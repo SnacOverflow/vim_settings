@@ -650,6 +650,13 @@ endfu
 " Insert arg: o,'*'bbdwwi: "
 
 "}}}
+"
+augroup vimp
+    autocmd!
+
+    autocmd BufRead,BufNewFile *.vimp		set filetype=help
+    autocmd BufRead,BufNewFile *.vimp		set isk=!-~,^*,^\|,^\"
+augroup END
 
 "----------------------------------------------------------------
 " vim:fdm=marker:
