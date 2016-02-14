@@ -56,7 +56,7 @@ Plugin 'tfnico/vim-gradle'
 " MY STUFF
 Plugin 'meonlol/vim-android'
 Plugin 'meonlol/pyunit.vim'
-Plugin 'meonlol/vim-grand'
+" Plugin 'meonlol/vim-grand'
 Plugin 'meonlol/vim-java-hi-semantics'
 Plugin 'meonlol/vim-gosem'
 " Plugin 'meonlol/javacomplete'
@@ -199,18 +199,6 @@ nmap <leader>m4 I#### <ESC>
 
 " Removes quickfix buffer from showing up using :bnext and the like.
 autocmd FileType qf set nobuflisted
-
-" CAMEL CASE NAVIATION
-" Use one of the following to define the camel characters.
-" Include '.' for class member, ',' for separator, ';' end-statement,
-" and <[< bracket starts and "'` quotes.
-let g:camelchar = "A-Z0-9.,;:{([`'\"_"
-nnoremap <silent><C-b> :<C-u>call search('\C\<\<Bar>\%(^\<Bar>[^'.g:camelchar.']\@<=\)['.g:camelchar.']\<Bar>['.g:camelchar.']\ze\%([^'.g:camelchar.']\&\>\@!\)\<Bar>\%^','bW')<CR>
-nnoremap <silent><C-w> :<C-u>call search('\C\<\<Bar>\%(^\<Bar>[^'.g:camelchar.']\@<=\)['.g:camelchar.']\<Bar>['.g:camelchar.']\ze\%([^'.g:camelchar.']\&\>\@!\)\<Bar>\%$','W')<CR>
-inoremap <silent><C-b> <C-o>:call search('\C\<\<Bar>\%(^\<Bar>[^'.g:camelchar.']\@<=\)['.g:camelchar.']\<Bar>['.g:camelchar.']\ze\%([^'.g:camelchar.']\&\>\@!\)\<Bar>\%^','bW')<CR>
-inoremap <silent><C-w> <C-o>:call search('\C\<\<Bar>\%(^\<Bar>[^'.g:camelchar.']\@<=\)['.g:camelchar.']\<Bar>['.g:camelchar.']\ze\%([^'.g:camelchar.']\&\>\@!\)\<Bar>\%$','W')<CR>
-vnoremap <silent><C-b> :<C-U>call search('\C\<\<Bar>\%(^\<Bar>[^'.g:camelchar.']\@<=\)['.g:camelchar.']\<Bar>['.g:camelchar.']\ze\%([^'.g:camelchar.']\&\>\@!\)\<Bar>\%^','bW')<CR>v`>o
-vnoremap <silent><C-w> <Esc>`>:<C-U>call search('\C\<\<Bar>\%(^\<Bar>[^'.g:camelchar.']\@<=\)['.g:camelchar.']\<Bar>['.g:camelchar.']\ze\%([^'.g:camelchar.']\&\>\@!\)\<Bar>\%$','W')<CR>v`<o
 
 " REFACTORING TOOLS & TRICKS
 
