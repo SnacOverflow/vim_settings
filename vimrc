@@ -44,7 +44,7 @@ Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
 Plugin 'meonlol/vim-rubytest'
 Plugin 'kana/vim-vspec'
-Plugin 'artur-shaik/vim-javacomplete2'
+" Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'fatih/vim-go'
 
 " STYLING & SYNTAX
@@ -54,10 +54,10 @@ Plugin 'bling/vim-airline'
 Plugin 'tfnico/vim-gradle'
 
 " MY STUFF
-Plugin 'meonlol/vim-android'
+" Plugin 'meonlol/vim-android'
 Plugin 'meonlol/pyunit.vim'
 " Plugin 'meonlol/vim-grand'
-Plugin 'meonlol/vim-java-hi-semantics'
+" Plugin 'meonlol/vim-java-hi-semantics'
 Plugin 'meonlol/vim-gosem'
 " Plugin 'meonlol/javacomplete'
 
@@ -644,6 +644,12 @@ augroup vimp
 
     autocmd BufRead,BufNewFile *.vimp		set filetype=help
     autocmd BufRead,BufNewFile *.vimp		set isk=!-~,^*,^\|,^\"
+augroup END
+
+augroup slog
+    autocmd!
+
+    autocmd BufRead,BufNewFile *.vimp		set filetype=slog
 augroup END
 
 "----------------------------------------------------------------
