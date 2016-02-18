@@ -649,7 +649,7 @@ augroup END
 augroup slog
     autocmd!
 
-    autocmd BufRead,BufNewFile *.vimp		set filetype=slog
+    autocmd BufRead,BufNewFile *.slog		set filetype=slog
 augroup END
 
 "----------------------------------------------------------------
