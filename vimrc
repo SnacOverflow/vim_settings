@@ -44,13 +44,14 @@ Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
 Plugin 'meonlol/vim-rubytest'
 Plugin 'kana/vim-vspec'
-" Plugin 'artur-shaik/vim-javacomplete2'
+Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'fatih/vim-go'
 
 " STYLING & SYNTAX
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'endel/vim-github-colorscheme'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tfnico/vim-gradle'
 
 " MY STUFF
@@ -278,39 +279,43 @@ command! Last :ruby puts `last -1 reboot`
 "----------------------------------------
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
-set laststatus=2
+let g:airline_theme='solarized'
+set laststatus=2    " always show, not just with when the view is split
 
-  if !exists('g:airline_symbols')
+
+" Set custom (shorter) symbols to display
+if !exists('g:airline_symbols')
     let g:airline_symbols = {}
-  endif
+endif
 
-  " unicode symbols
-  let g:airline_left_sep = '»'
-  let g:airline_left_sep = '▶'
-  let g:airline_right_sep = '«'
-  let g:airline_right_sep = '◀'
-  let g:airline_symbols.linenr = '␊'
-  let g:airline_symbols.linenr = '␤'
-  let g:airline_symbols.linenr = '¶'
-  let g:airline_symbols.branch = '⎇'
-  let g:airline_symbols.paste = 'ρ'
-  let g:airline_symbols.paste = 'Þ'
-  let g:airline_symbols.paste = '∥'
-  let g:airline_symbols.whitespace = 'Ξ'
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
 
-  let g:airline_mode_map = {
-      \ '__' : '-',
-      \ 'n'  : 'N',
-      \ 'i'  : 'I',
-      \ 'R'  : 'R',
-      \ 'c'  : 'C',
-      \ 'v'  : 'V',
-      \ 'V'  : 'V',
-      \ '' : 'V',
-      \ 's'  : 'S',
-      \ 'S'  : 'S',
-      \ '' : 'S',
-      \ }
+
+" Displays the current mode, but shorter than the default
+let g:airline_mode_map = {
+            \ '__' : '-',
+            \ 'n'  : 'N',
+            \ 'i'  : 'I',
+            \ 'R'  : 'R',
+            \ 'c'  : 'C',
+            \ 'v'  : 'V',
+            \ 'V'  : 'V',
+            \ '' : 'V',
+            \ 's'  : 'S',
+            \ 'S'  : 'S',
+            \ '' : 'S',
+            \ }
 
 
 "}}}
@@ -639,6 +644,7 @@ endfu
 
 "}}}
 "
+
 augroup vimp
     autocmd!
 
@@ -651,6 +657,8 @@ augroup slog
 
     autocmd BufRead,BufNewFile *.slog		set filetype=slog
 augroup END
+
+
 
 "----------------------------------------------------------------
 " vim:fdm=marker:
