@@ -145,13 +145,13 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " THEME
 set background=dark
- let g:solarized_visibility = "high"
- let g:solarized_contrast = "high"
- "let g:solarized_termcolors= 256 "Guess I shouldn't use this one
+let g:solarized_visibility = "high"
+let g:solarized_contrast = "high"
+" let g:solarized_termcolors= 256 "Guess I shouldn't use this one
 let g:solarized_termtrans = 1
 colorscheme solarized
 
-set guifont=Menlo\ Regular:h12
+" set guifont=Menlo\ Regular:h12
 set t_Co=256
 
 
@@ -278,6 +278,7 @@ command! Last :ruby puts `last -1 reboot`
 " AIRLINE {{{2
 "----------------------------------------
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline_theme='solarized'
 set laststatus=2    " always show, not just with when the view is split
@@ -644,6 +645,8 @@ endfu
 
 "}}}
 "
+
+autocmd FileType groovy map <Leader>ul :Disp ./gradlew test --console plain<CR>
 
 augroup vimp
     autocmd!
