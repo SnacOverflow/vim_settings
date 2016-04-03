@@ -12,13 +12,13 @@ call vundle#begin()
 " ENVIRONMENT
 Plugin 'gmarik/Vundle.vim' " required. Plugin management using Vundle
 Plugin 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
-Plugin 'L9'                " Common library. Is it used?
+" Plugin 'L9'                " Common library. Is it used?
 
 
 Plugin 'scrooloose/nerdtree'     " Easy filesystem navigation
 Plugin 'wincent/command-t'       " Quickly open cwd files by name
 Plugin 'Lokaltog/vim-easymotion' " Direcly moving the cursor somewhere
-Plugin 'rhysd/vim-grammarous'    " Plugin for grammar checking
+" Plugin 'rhysd/vim-grammarous'    " Plugin for grammar checking
 
 " ENHANCEMENTS
 Plugin 'tpope/vim-unimpaired'             " essential: group mappings to [ and ] for common functions
@@ -29,11 +29,11 @@ Plugin 'tpope/vim-speeddating'            " CTRL-X and CTRL-A enhancements for d
 Plugin 'godlygeek/tabular'                " Easy table creation
 Plugin 'tpope/vim-dispatch'               " Async task runner
 Plugin 'stefandtw/quickfix-reflector.vim' " Allows modifying all searchresults in quickfix window
-Plugin 'tpope/vim-vinegar'                " Netrw upgrader > REMOVE?
+"Plugin 'tpope/vim-vinegar'                " Netrw upgrader > REMOVE?
 Plugin 'tpope/vim-eunuch'                 " Filesystem commands in vim like (:Rename or :Remove)
 Plugin 'artnez/vim-wipeout'               " Removes empty buffers
 Plugin 'tpope/vim-repeat'                 " Improves vim's dot command-repeating
-Plugin 'henrik/vim-open-url'              " Improvements to open an url on the current line
+" Plugin 'henrik/vim-open-url'              " Improvements to open an url on the current line
 Plugin 'moll/vim-bbye'                    " Close current buffer without closing split
 
 " CODING
@@ -42,7 +42,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
-Plugin 'meonlol/vim-rubytest'
+" Plugin 'meonlol/vim-rubytest'
 Plugin 'kana/vim-vspec'
 Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'fatih/vim-go'
@@ -53,6 +53,7 @@ Plugin 'endel/vim-github-colorscheme'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tfnico/vim-gradle'
+Plugin 'nelstrom/vim-markdown-folding'    " Markdown folding
 
 " MY STUFF
 " Plugin 'meonlol/vim-android'
@@ -270,6 +271,8 @@ command! Lvimrc e ~/.vim/vimrc
 command! Ltwenty read !~/Dropbox/leon/developing/python/major_numbers/twenty.py
 command! Ltwenty2 read ~/.twenty_last
 command! Last :ruby puts `last -1 reboot`
+
+command! Calc exec '%s:!\(.*\)=.*:\="!". submatch(1) . "= ". eval(submatch(1)):g'
 
 "}}}
 " PLUGIN SPECIFIC {{{1
@@ -661,6 +664,8 @@ augroup slog
     autocmd BufRead,BufNewFile *.slog		set filetype=slog
 augroup END
 
+" :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
+:command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk -layout <q-args> -
 
 
 "----------------------------------------------------------------
