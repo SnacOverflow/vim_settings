@@ -29,12 +29,17 @@ Plugin 'tpope/vim-speeddating'            " CTRL-X and CTRL-A enhancements for d
 Plugin 'godlygeek/tabular'                " Easy table creation
 Plugin 'tpope/vim-dispatch'               " Async task runner
 Plugin 'stefandtw/quickfix-reflector.vim' " Allows modifying all searchresults in quickfix window
-"Plugin 'tpope/vim-vinegar'                " Netrw upgrader > REMOVE?
+Plugin 'tpope/vim-vinegar'                " Netrw upgrader (contains '-' shortcut)
 Plugin 'tpope/vim-eunuch'                 " Filesystem commands in vim like (:Rename or :Remove)
 Plugin 'artnez/vim-wipeout'               " Removes empty buffers
 Plugin 'tpope/vim-repeat'                 " Improves vim's dot command-repeating
-" Plugin 'henrik/vim-open-url'              " Improvements to open an url on the current line
 Plugin 'moll/vim-bbye'                    " Close current buffer without closing split
+Plugin 'vim-voom/VOoM'                    " Shows an index for the current file
+" Plugin 'henrik/vim-open-url'            " Improvements to open an url on the current line
+Plugin 'sk1418/HowMuch'                   " Calculate slections
+
+
+
 
 " CODING
 Plugin 'tpope/vim-commentary'
@@ -53,7 +58,6 @@ Plugin 'endel/vim-github-colorscheme'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tfnico/vim-gradle'
-Plugin 'nelstrom/vim-markdown-folding'    " Markdown folding
 
 " MY STUFF
 " Plugin 'meonlol/vim-android'
@@ -455,7 +459,7 @@ autocmd BufWritePost *.java     silent! setlocal syntax=java2
 "}}}
 " VIM_OPEN_URL {{{2
 "----------------------------------------
-noremap gx :OpenURL<CR>
+" noremap gx :OpenURL<CR>
 
 "}}}
 " VIM_RUBY {{{2
@@ -666,6 +670,8 @@ augroup END
 
 " :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
 :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk -layout <q-args> -
+:command! Rdts :r !date "+\%Y-\%m-\%d \%H:\%M:\%S"
+:command! Rts :r !date "+\%H:\%M"
 
 
 "----------------------------------------------------------------
