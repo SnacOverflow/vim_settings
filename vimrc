@@ -50,7 +50,7 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
 Plugin 'kana/vim-vspec'
-Plugin 'artur-shaik/vim-javacomplete2'
+" Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'fatih/vim-go'
 
 " STYLING & SYNTAX
@@ -59,6 +59,7 @@ Plugin 'endel/vim-github-colorscheme'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tfnico/vim-gradle'
+Plugin 'vim-scripts/Mark--Karkat' " Not used.
 
 " MY STUFF
 " Plugin 'meonlol/vim-android'
@@ -190,6 +191,12 @@ noremap <leader>h <C-W>h
 noremap <leader>j <C-W>j
 noremap <leader>k <C-W>k
 noremap <leader>l <C-W>l
+
+
+noremap <C-h> zhzhzh
+noremap <C-j> <C-e><C-e>
+noremap <C-k> <C-y><C-y>
+noremap <C-l> zlzlzl
 
 " Use CTRL-P for command-history, using entered text to match.
 cnoremap <C-p> <Up>
@@ -452,8 +459,8 @@ endfu
 "}}}
 " VIM_JAVA_HI_SEMANTICS {{{2
 "----------------------------------------
-autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
-autocmd BufWritePost *.java     silent! setlocal syntax=java2
+" autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
+" autocmd BufWritePost *.java     silent! setlocal syntax=java2
 " autocmd BufWritePost *.java        silent! setlocal syntax=java2 | exe "normal! g`\""
 " autocmd BufWritePost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`^" | endif
 " autocmd BufWritePost *  silent!    exe "normal! g`^"
@@ -501,19 +508,21 @@ autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 "===============================================================================
 
 
-" http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
-" command! -bang -nargs=? QFix call QFixToggle(<bang>0)
-" function! QFixToggle(forced)
-"   if exists("g:qfix_win") && a:forced == 0
-"     cclose
-"     unlet g:qfix_win
-"   else
-"     copen 10
-"     let g:qfix_win = bufnr("$")
-"   endif
-" endfunction
+fu! EsoAnalyse()
+    let exprStart = ":cexpr! system('"
+    let rubyScript = "ruby ~/repos/scripts/loglift.rb \""
+    let currentFileName = expand('%:p')
+    let exprEnd = "\"')"
 
-" nnoremap <silent> <leader>e :QFix<CR>
+    echo currentFileName
+    execute exprStart . rubyScript . currentFileName . exprEnd
+endfu
+
+command! EsoAnalyse call EsoAnalyse()
+
+noremap <leader>lh :set ft=slog<CR>
+noremap <leader>la :call EsoAnalyse() <bar> cw <bar> :set ft=slog <bar> :resize 35<CR>
+noremap <leader>ll :split ~/repos/scripts/loglift.rb<CR>
 
 
 function! GetBufferList()
@@ -543,8 +552,8 @@ function! ToggleList(bufname, pfx)
     " endif
 endfunction
 
-" nnoremap <silent> <leader>e :QFix<CR>
 nnoremap <silent> <leader>e :call ToggleList("Quickfix List", 'c')<CR>
+" nnoremap <silent> <leader>el :call ToggleList("Location List", 'l')<CR>
 
 
 " copied from vim-unimpaired
