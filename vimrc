@@ -42,6 +42,7 @@ Plugin 'etnadji/vim-epub'                 " View epub
 
 
 
+Plugin 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
 
 " CODING
 Plugin 'tpope/vim-commentary'
@@ -60,6 +61,9 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tfnico/vim-gradle'
 Plugin 'vim-scripts/Mark--Karkat' " Not used.
+Plugin 'vim-scripts/DrawIt'
+
+
 
 " MY STUFF
 " Plugin 'meonlol/vim-android'
@@ -102,6 +106,7 @@ set relativenumber             " Easier moving stuff around.
 
 set hlsearch        " highlight searches. Pratical with * search (see mapleaders)
 
+set nostartofline   " CTRL-F etc will not go to the start of the line
 
 botright cwindow " Make cwindow always full width
 
@@ -508,7 +513,7 @@ autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 "===============================================================================
 
 
-fu! EsoAnalyse()
+fu! EsoAnalyseOld()
     let exprStart = ":cexpr! system('"
     let rubyScript = "ruby ~/repos/scripts/loglift.rb \""
     let currentFileName = expand('%:p')
@@ -518,11 +523,19 @@ fu! EsoAnalyse()
     execute exprStart . rubyScript . currentFileName . exprEnd
 endfu
 
+fu! EsoAnalyse()
+    execute "set errorformat=%f:%l:%m"
+	au BufReadPost quickfix  set ft=slog
+        \ | call LogHighlight()
+        \ | resize 35
+    call LogSearch()
+endfu
+
 command! EsoAnalyse call EsoAnalyse()
 
-noremap <leader>lh :set ft=slog<CR>
-noremap <leader>la :call EsoAnalyse() <bar> cw <bar> :set ft=slog <bar> :resize 35<CR>
-noremap <leader>ll :split ~/repos/scripts/loglift.rb<CR>
+noremap ,a :call EsoAnalyse() <bar> cw <CR>
+noremap ,h :set ft=slog <bar> call LogHighlight()<CR>
+noremap ,e :split ~/.vim/plugin/hi_search.vim<CR>
 
 
 function! GetBufferList()
