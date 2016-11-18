@@ -37,6 +37,8 @@ Plugin 'moll/vim-bbye'                    " Close current buffer without closing
 Plugin 'vim-voom/VOoM'                    " Shows an index for the current file
 " Plugin 'henrik/vim-open-url'            " Improvements to open an url on the current line
 Plugin 'sk1418/HowMuch'                   " Calculate slections
+Plugin 'etnadji/vim-epub'                 " View epub
+
 
 
 
@@ -47,7 +49,6 @@ Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
-" Plugin 'meonlol/vim-rubytest'
 Plugin 'kana/vim-vspec'
 Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'fatih/vim-go'
@@ -61,9 +62,8 @@ Plugin 'tfnico/vim-gradle'
 
 " MY STUFF
 " Plugin 'meonlol/vim-android'
-Plugin 'meonlol/pyunit.vim'
 " Plugin 'meonlol/vim-grand'
-" Plugin 'meonlol/vim-java-hi-semantics'
+Plugin 'meonlol/vim-java-hi-semantics'
 Plugin 'meonlol/vim-gosem'
 " Plugin 'meonlol/javacomplete'
 
@@ -345,8 +345,11 @@ map <leader>F <Plug>(easymotion-F)
 " JAVACOMPLETE2 {{{2
 "----------------------------------------
 
-	" :setlocal omnifunc=javacomplete#Complete
-    autocmd FileType java set omnifunc=javacomplete#Complete
+" :setlocal omnifunc=javacomplete#Complete
+" autocmd FileType java set omnifunc=javacomplete#Complete
+
+let g:syntastic_java_checkers=['javac']
+let g:syntastic_java_javac_config_file_enabled = 1
 
 "}}}
 " NERDTREE {{{2
