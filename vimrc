@@ -60,7 +60,6 @@ Plugin 'endel/vim-github-colorscheme'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tfnico/vim-gradle'
-Plugin 'vim-scripts/Mark--Karkat' " Not used.
 Plugin 'vim-scripts/DrawIt'
 
 
@@ -513,29 +512,10 @@ autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
 "===============================================================================
 
 
-fu! EsoAnalyseOld()
-    let exprStart = ":cexpr! system('"
-    let rubyScript = "ruby ~/repos/scripts/loglift.rb \""
-    let currentFileName = expand('%:p')
-    let exprEnd = "\"')"
 
-    echo currentFileName
-    execute exprStart . rubyScript . currentFileName . exprEnd
-endfu
-
-fu! EsoAnalyse()
-    execute "set errorformat=%f:%l:%m"
-	au BufReadPost quickfix  set ft=slog
-        \ | call LogHighlight()
-        \ | resize 35
-    call LogSearch()
-endfu
-
-command! EsoAnalyse call EsoAnalyse()
-
-noremap ,a :call EsoAnalyse() <bar> cw <CR>
+noremap ,a :call LogSearch() <bar> cw <CR>
 noremap ,h :set ft=slog <bar> call LogHighlight()<CR>
-noremap ,e :split ~/.vim/plugin/hi_search.vim<CR>
+noremap ,e :tabe ~/.vim/plugin/vim-logsearch/searches.rb<CR>
 
 
 function! GetBufferList()
