@@ -12,13 +12,11 @@ call vundle#begin()
 " ENVIRONMENT
 Plugin 'gmarik/Vundle.vim' " required. Plugin management using Vundle
 Plugin 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
-" Plugin 'L9'                " Common library. Is it used?
 
 
 Plugin 'scrooloose/nerdtree'     " Easy filesystem navigation
 Plugin 'wincent/command-t'       " Quickly open cwd files by name
 Plugin 'Lokaltog/vim-easymotion' " Direcly moving the cursor somewhere
-" Plugin 'rhysd/vim-grammarous'    " Plugin for grammar checking
 
 " ENHANCEMENTS
 Plugin 'tpope/vim-unimpaired'             " essential: group mappings to [ and ] for common functions
@@ -37,11 +35,6 @@ Plugin 'moll/vim-bbye'                    " Close current buffer without closing
 Plugin 'vim-voom/VOoM'                    " Shows an index for the current file
 " Plugin 'henrik/vim-open-url'            " Improvements to open an url on the current line
 Plugin 'sk1418/HowMuch'                   " Calculate slections
-Plugin 'etnadji/vim-epub'                 " View epub
-
-
-
-
 Plugin 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
 
 " CODING
@@ -51,7 +44,7 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
 Plugin 'kana/vim-vspec'
-" Plugin 'artur-shaik/vim-javacomplete2'
+Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'fatih/vim-go'
 
 " STYLING & SYNTAX
@@ -65,20 +58,18 @@ Plugin 'vim-scripts/DrawIt'
 
 
 " MY STUFF
-" Plugin 'meonlol/vim-android'
-" Plugin 'meonlol/vim-grand'
 Plugin 'meonlol/vim-java-hi-semantics'
 Plugin 'meonlol/vim-gosem'
 " Plugin 'meonlol/javacomplete'
+" Plugin 'meonlol/vim-android'
+" Plugin 'meonlol/vim-grand'
 
 
 " TRIED
 " Maybe try again later
-" Plugin 'dhruvasagar/vim-table-mode' " Interesting for makeing tables (exel
-" Plugin 'Shougo/javacomplete'
-" Plugin 'yegappan/greplace'          " Never used
-" Plugin 'reinh/vim-makegreen'        " Do I even use this?
-" Plugin 'vim-scripts/JavaImp.vim--Lee' " Not used.
+" Plugin 'dhruvasagar/vim-table-mode'   " Interesting for makeing tables (exel)
+" Plugin 'etnadji/vim-epub'             " Used once
+" Plugin 'rhysd/vim-grammarous'         " For grammar checking. Uses some webtool
 
 
 " All of your Plugins must be added before the following line
@@ -357,7 +348,7 @@ map <leader>F <Plug>(easymotion-F)
 "----------------------------------------
 
 " :setlocal omnifunc=javacomplete#Complete
-" autocmd FileType java set omnifunc=javacomplete#Complete
+autocmd FileType java set omnifunc=javacomplete#Complete
 
 let g:syntastic_java_checkers=['javac']
 let g:syntastic_java_javac_config_file_enabled = 1
@@ -463,8 +454,8 @@ endfu
 "}}}
 " VIM_JAVA_HI_SEMANTICS {{{2
 "----------------------------------------
-" autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
-" autocmd BufWritePost *.java     silent! setlocal syntax=java2
+autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
+autocmd BufWritePost *.java     silent! setlocal syntax=java2
 " autocmd BufWritePost *.java        silent! setlocal syntax=java2 | exe "normal! g`\""
 " autocmd BufWritePost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`^" | endif
 " autocmd BufWritePost *  silent!    exe "normal! g`^"
