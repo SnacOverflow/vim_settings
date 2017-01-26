@@ -92,16 +92,16 @@ filetype plugin indent on    " required by Vundle
 " ENVIRONMENT
 set nocompatible     " use vim defaults
 set nobackup         " do not keep a backup file
-set noswapfile       " don't want no swapfiles eather. Might disable if ever it causes problems for me. I'm a compulsive saver anyway.
+set noswapfile       " don't want no swap-files either. Might disable if ever it causes problems for me. I'm a compulsive saver anyway.
 set visualbell t_vb= " turn off error beep/flash
 set visualbell       " turn off visual bell
 set hidden           " allow swapping to other buffer when unwritten
 
 set backspace=indent,eol,start " make that backspace key work the way it should (only in terminal)
-set mouse=a                    " Scroling using the mouse if I have my hands there accidentally
+set mouse=a                    " Enable scrolling just in case I have my hands on the mouse accidentally
 set relativenumber             " Easier moving stuff around.
 
-set hlsearch        " highlight searches. Pratical with * search (see mapleaders)
+set hlsearch        " highlight searches. Practical with * search (see mapleaders)
 
 set nostartofline   " CTRL-F etc will not go to the start of the line
 
@@ -122,8 +122,8 @@ set nojoinspaces " Don't add a second space after a dot on reformatting
 set ai           " set auto-indenting on for programming
 set tabstop=4    " Uses 4 colums (spaces) for a tab
 set shiftwidth=4 "
-" set noexpandtab  " use tabs in stead of spaces
 set expandtab    " use spaces in stead of tabs
+" set noexpandtab  " use tabs in stead of spaces
 " TRICK: use 'set et|retab' to convert all tabs to spaces or 'set noet|retab!' for the reverse
 
 
@@ -145,8 +145,6 @@ set tags+=.tags    " I want to use hidden tags files
 
 
 
-let NERDTreeHijackNetrw=1
-
 let mapleader = "\<SPACE>"
 
 " switch to last buffer.
@@ -155,21 +153,6 @@ noremap ,b :b#<CR>
 " delte current buffer without closing window
 noremap _b :Bdelete<CR>
 
-" navigation those anoying wrapped lines like a human
-nmap j gj
-nmap k gk
-
-" easyer window commands
-noremap <leader>w <C-W>
-noremap <leader>h <C-W>h
-noremap <leader>j <C-W>j
-noremap <leader>k <C-W>k
-noremap <leader>l <C-W>l
-
-noremap <C-h> zhzhzh
-noremap <C-j> <C-e><C-e>
-noremap <C-k> <C-y><C-y>
-noremap <C-l> zlzlzl
 
 " Using the arrow-keys in the command-line navigates the command-history
 " filtered by the input text, CTRL-P does the same without filtering. Since I
@@ -255,6 +238,25 @@ let NERDTreeShowLineNumbers=1
 noremap <leader>n :NERDTreeToggle<CR>
 
 command! Lvimrc e ~/.vim/vimrc
+
+let NERDTreeHijackNetrw=1
+
+" easyer window commands
+noremap <leader>w <C-W>
+noremap <leader>h <C-W>h
+noremap <leader>j <C-W>j
+noremap <leader>k <C-W>k
+noremap <leader>l <C-W>l
+
+noremap <C-h> zhzhzh
+noremap <C-j> <C-e><C-e>
+noremap <C-k> <C-y><C-y>
+noremap <C-l> zlzlzl
+
+" navigation those anoying wrapped lines like a human
+nmap j gj
+nmap k gk
+
 
 "}}}
 " CODING {{{1
