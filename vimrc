@@ -43,7 +43,7 @@ Plugin 'neomake/neomake'                  " Neomake (only in NeoVim). NOTE: Can 
 
 " CODING
 Plugin 'tpope/vim-commentary'
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
@@ -85,7 +85,7 @@ filetype plugin indent on    " required by Vundle
 
 
 "}}}
-" GENERAL_SETTINGS {{{1
+" GENERAL {{{1
 "===============================================================================
 
 
@@ -126,7 +126,6 @@ set shiftwidth=4 "
 set expandtab    " use spaces in stead of tabs
 " TRICK: use 'set et|retab' to convert all tabs to spaces or 'set noet|retab!' for the reverse
 
-set formatprg=par\ w78
 
 " SEARCHING
 set incsearch       " do incremental searching
@@ -142,17 +141,52 @@ set autoread
 set autowrite
 set tags+=.tags    " I want to use hidden tags files
 
+
+
+
+
+let NERDTreeHijackNetrw=1
+
+let mapleader = "\<SPACE>"
+
+" switch to last buffer.
+noremap ,b :b#<CR>
+
+" delte current buffer without closing window
+noremap _b :Bdelete<CR>
+
+" navigation those anoying wrapped lines like a human
+nmap j gj
+nmap k gk
+
+" easyer window commands
+noremap <leader>w <C-W>
+noremap <leader>h <C-W>h
+noremap <leader>j <C-W>j
+noremap <leader>k <C-W>k
+noremap <leader>l <C-W>l
+
+noremap <C-h> zhzhzh
+noremap <C-j> <C-e><C-e>
+noremap <C-k> <C-y><C-y>
+noremap <C-l> zlzlzl
+
+" Using the arrow-keys in the command-line navigates the command-history
+" filtered by the input text, CTRL-P does the same without filtering. Since I
+" don't want no arrow key-usage, make CTRL-P use the filtering too.
+cnoremap <C-p> <Up>
+
+" Removes quickfix buffer from showing up using :bnext and the like.
+autocmd FileType qf set nobuflisted
+
+"}}}
+
+" STYLING {{{1
+"----------------------------------------
+
 set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
-
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-
-" au FocusGained,BufEnter * :silent! e
-" au FocusLost,WinLeave * :silent! w
-
-
-
-" THEME
 set background=dark
+
 let g:solarized_visibility = "high"
 let g:solarized_contrast = "high"
 " let g:solarized_termcolors= 256 "Guess I shouldn't use this one
@@ -162,58 +196,103 @@ colorscheme solarized
 " set guifont=Menlo\ Regular:h12
 set t_Co=256
 
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#branch#enabled = 0
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline_theme='solarized'
+set laststatus=2    " always show, not just with when the view is split
 
-let NERDTreeHijackNetrw=1
+
+" Set custom (shorter) symbols to display
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+
+" Displays the current mode, but shorter than the default
+let g:airline_mode_map = {
+            \ '__' : '-',
+            \ 'n'  : 'N',
+            \ 'i'  : 'I',
+            \ 'R'  : 'R',
+            \ 'c'  : 'C',
+            \ 'v'  : 'V',
+            \ 'V'  : 'V',
+            \ '' : 'V',
+            \ 's'  : 'S',
+            \ 'S'  : 'S',
+            \ '' : 'S',
+            \ }
 
 
 "}}}
-" GENERAL_MAPPINGS {{{1
-"===============================================================================
+" NAVIGATION {{{1
+"----------------------------------------
+map <leader>s <Plug>(easymotion-s)
+map <leader>f <Plug>(easymotion-f)
+map <leader>F <Plug>(easymotion-F)
 
-let mapleader = "\<SPACE>"
+noremap <leader>t :CommandT<CR>
+set wildignore=**/build/*,**/.git/*,*.class
+
+let NERDTreeWinSize = 50
+let NERDTreeBookmarksSort = 0
+let NERDTreeShowLineNumbers=1
 
 noremap <leader>n :NERDTreeToggle<CR>
 
-noremap <leader>\| :Tabularize/\|<CR>
+command! Lvimrc e ~/.vim/vimrc
 
-" switch to last buffer.
-noremap ,b :b#<CR>
+"}}}
+" CODING {{{1
+"----------------------------------------
 
-" delte current buffer without closing window
-noremap _b :Bdelete<CR>
+let g:UltiSnipsExpandTrigger = "<c-l>"
 
-" for those anoying wrapping lines
-nmap j gj
-nmap k gk
+autocmd! BufWritePost * Neomake
+
+autocmd FileType java set omnifunc=javacomplete#Complete
+autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
+autocmd BufWritePost *.java     silent! setlocal syntax=java2
+
+autocmd FileType groovy set commentstring=//%s
+autocmd FileType markdown set commentstring=<!--%s-->
+
+autocmd BufRead,BufNewFile *.go       setlocal syntax=vim-gosem
+autocmd BufWritePost *.go     silent! setlocal syntax=vim-gosem
+autocmd FileType go map <Leader>ul :GoTest!<CR>
+autocmd BufWritePre *.go silent! GoImports
+autocmd BufWritePost *.go silent! !gotags -R -f=".tags" .
+let g:syntastic_go_checkers = ['go']
+
+" see: https://github.com/vim-ruby/vim-ruby/blob/master/doc/ft-ruby-omni.txt
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
 
 
-" easyer window commands
-noremap <leader>w <C-W>
-noremap <leader>h <C-W>h
-noremap <leader>j <C-W>j
-noremap <leader>k <C-W>k
-noremap <leader>l <C-W>l
-
-
-noremap <C-h> zhzhzh
-noremap <C-j> <C-e><C-e>
-noremap <C-k> <C-y><C-y>
-noremap <C-l> zlzlzl
-
-" Use CTRL-P for command-history, using entered text to match.
-cnoremap <C-p> <Up>
-
-" Quick Reformat paragraph
-nmap <leader>a gqap
-
-" mappings for quick markdown style headers
-nmap <leader>m1 o<ESC>80i=<ESC>0k
-nmap <leader>m2 o<ESC>80i-<ESC>0k
-nmap <leader>m3 I### <ESC>
-nmap <leader>m4 I#### <ESC>
-
-" Removes quickfix buffer from showing up using :bnext and the like.
-autocmd FileType qf set nobuflisted
+nnoremap <leader>y :call YcmToggle()<CR>
+function! YcmToggle()
+    if g:ycm_auto_trigger == 1
+        let g:ycm_auto_trigger=0
+        echo "ycm off"
+    else
+        let g:ycm_auto_trigger=1
+        echo "ycm on"
+    endif
+endfunction
 
 " REFACTORING TOOLS & TRICKS
 
@@ -260,9 +339,10 @@ fu! SeachWordInCwd()
     let &grepformat = orig_grepformat
 endfu
 
-"}}}
-" COMMANDS {{{.
+" WRITING {{{1
 "===============================================================================
+
+set formatprg=par\ w78
 
 " Toggle spelling or enable the spell checker if the language is specified
 command! -nargs=? Sp call SpelCheck('<args>')
@@ -278,232 +358,18 @@ fu! SpelCheck(...)
     endif
 endfu
 
-" Rebuild tags for central notes
-command! Lvimrc e ~/.vim/vimrc
+" mappings for quick markdown style headers
+nmap <leader>m1 o<ESC>80i=<ESC>0k
+nmap <leader>m2 o<ESC>80i-<ESC>0k
+nmap <leader>m3 I### <ESC>
+nmap <leader>m4 I#### <ESC>
 
-command! Ltwenty read !~/Dropbox/leon/developing/python/major_numbers/twenty.py
-command! Ltwenty2 read ~/.twenty_last
-command! Last :ruby puts `last -1 reboot`
+" Quick Reformat paragraph
+nmap <leader>a gqap
 
-command! Calc exec '%s:!\(.*\)=.*:\="!". submatch(1) . "= ". eval(submatch(1)):g'
+noremap <leader>\| :Tabularize/\|<CR>
 
-"}}}
-" PLUGIN SPECIFIC {{{1
-"===============================================================================
-
-" AIRLINE {{{2
-"----------------------------------------
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#branch#enabled = 0
-let g:airline#extensions#tabline#show_buffers = 0
-let g:airline_theme='solarized'
-set laststatus=2    " always show, not just with when the view is split
-
-
-" Set custom (shorter) symbols to display
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
-
-
-" Displays the current mode, but shorter than the default
-let g:airline_mode_map = {
-            \ '__' : '-',
-            \ 'n'  : 'N',
-            \ 'i'  : 'I',
-            \ 'R'  : 'R',
-            \ 'c'  : 'C',
-            \ 'v'  : 'V',
-            \ 'V'  : 'V',
-            \ '' : 'V',
-            \ 's'  : 'S',
-            \ 'S'  : 'S',
-            \ '' : 'S',
-            \ }
-
-
-"}}}
-" COMMAND_T {{{2
-"----------------------------------------
-noremap <leader>t :CommandT<CR>
-set wildignore=**/build/*,**/.git/*,*.class
-
-"}}}
-" EASYMOTION {{{2
-"----------------------------------------
-map <leader>s <Plug>(easymotion-s)
-map <leader>f <Plug>(easymotion-f)
-map <leader>F <Plug>(easymotion-F)
-
-
-
-"}}}
-" JAVACOMPLETE2 {{{2
-"----------------------------------------
-
-" :setlocal omnifunc=javacomplete#Complete
-autocmd FileType java set omnifunc=javacomplete#Complete
-
-let g:syntastic_java_checkers=['javac']
-let g:syntastic_java_javac_config_file_enabled = 1
-
-"}}}
-" NERDTREE {{{2
-"----------------------------------------
-let NERDTreeWinSize = 50
-let NERDTreeBookmarksSort = 0
-let NERDTreeShowLineNumbers=1
-
-"}}}
-" ULTISNIPS {{{2
-"----------------------------------------
-let g:UltiSnipsExpandTrigger = "<c-l>"
-
-
-" VIM_COMMENTARY {{{2
-"----------------------------------------
-autocmd FileType groovy set commentstring=//%s
-autocmd FileType markdown set commentstring=<!--%s-->
-
-"}}}
-" VIM_GO {{{2
-"----------------------------------------
-autocmd FileType go map <Leader>ul :GoTest!<CR>
-autocmd BufWritePre *.go silent! GoImports
-autocmd BufWritePost *.go silent! !gotags -R -f=".tags" .
-let g:syntastic_go_checkers = ['go']
-
-" Refactor shortcut
-" Takes the current word under the cursor and opens the command-line window
-" (see :help c_CTRL-F) with the 'gofmt -r' command filled in. Insert mode
-" is available in this window. Press <CR> from normal mode to execute the
-" refactoring"
-" autocmd FileType go noremap <C-F6> :let g:replacingString = expand("<cword>")<CR> q:i!gofmt -r '<c-r>=g:replacingString<cr> -> <c-r>=g:replacingString<cr>' -w *.go **/*.go<ESC>4B'
-
-"}}}
-" VIM_GOSEM {{{2
-"----------------------------------------
-autocmd BufRead,BufNewFile *.go       setlocal syntax=vim-gosem
-autocmd BufWritePost *.go     silent! setlocal syntax=vim-gosem
-
-"}}}
-" VIM_GRAND {{{2
-"----------------------------------------
-
-autocmd FileType java noremap <Leader>i :GrandInstall<CR>
-
-augroup grand_autocmd
-    autocmd!
-
-    " " works with :make not with :Make
-    " autocmd BufReadPost quickfix :call PostFunction()
-
-    " " doesn't work with :Dispatch or :Make
-    " " autocmd BufReadPost cgetfile :call PostFunction()
-
-    " autocmd FileType java compiler gradle
-
-    autocmd FileType java nnoremap <leader>u :GrandTest<CR>
-    autocmd FileType java nnoremap <leader>uc :GrandTest %<CR>
-
-
-    " autocmd FileType java nnoremap <leader>u :call GrandTest("")<CR>
-    " autocmd FileType java nnoremap <leader>uc :call GrandTest("-DtestDebug.single=%:t:r")<CR>
-
-    " autocmd FileType java nnoremap <leader>u :w<bar>make test<CR>
-    " autocmd FileType java nnoremap <leader>uc :w<bar>make test -DtestDebug.single=%:t:r<CR>
-
-
-
-    " Use vim-dispatch to run gradleTest
-    " autocmd FileType java nnoremap <leader>u :w<bar>Dispatch ./gradlew testDebug<CR>
-    " This runs my android gradle test for this class only
-    " autocmd FileType java nnoremap <leader>u :w<bar>Dispatch ./gradlew testDebug -DtestDebug.single=%:t:r<CR>
-
-    " Run GrandCtags command every time you save a java file
-    autocmd BufWritePost *.java silent! GrandTags
-augroup END
-
-fu! GrandTest(args)
-    w
-    let base_command = "Make testDebug"
-    let sed_command = " \| ruby -n ~/.vim/bundle/vim-grand/filter/quick_fix_filter.rb"
-
-    if strlen(a:args) > 0
-        execute base_command . " " . a:args . sed_command
-    else 
-        execute base_command . sed_command
-    endif
-endfu
-
-fu! PostFunction()
-    echoms "PostFunction called"
-    if exists("g:grand_was_run") && g:grand_was_run == 1
-        let g:grand_was_run = 0
-        ruby Grand.loadTestResults()
-    endif
-endfu
-
-
-"}}}
-" VIM_JAVA_HI_SEMANTICS {{{2
-"----------------------------------------
-autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
-autocmd BufWritePost *.java     silent! setlocal syntax=java2
-" autocmd BufWritePost *.java        silent! setlocal syntax=java2 | exe "normal! g`\""
-" autocmd BufWritePost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`^" | endif
-" autocmd BufWritePost *  silent!    exe "normal! g`^"
-
-
-"}}}
-" VIM_OPEN_URL {{{2
-"----------------------------------------
-" noremap gx :OpenURL<CR>
-
-"}}}
-" VIM_RUBY {{{2
-"----------------------------------------
-
-" see: https://github.com/vim-ruby/vim-ruby/blob/master/doc/ft-ruby-omni.txt
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-
-
-"}}}
-" YOUCOMPLETEME {{{2
-"----------------------------------------
-nnoremap <leader>y :call YcmToggle()<CR>
-
-function! YcmToggle()
-    if g:ycm_auto_trigger == 1
-        let g:ycm_auto_trigger=0
-        echo "ycm off"
-    else
-        let g:ycm_auto_trigger=1
-        echo "ycm on"
-    endif
-endfunction
-"}}}
-" VIM_RUBYTEST {{{2
-"----------------------------------------
-
-" Doesn't work with noremap for some reason
-autocmd FileType ruby map <Leader>ut <Plug>RubyTestRun
-autocmd FileType ruby map <Leader>uc <Plug>RubyFileRun
-autocmd FileType ruby map <Leader>ul <Plug>RubyTestRunLast
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 "}}}
 " EXPERIMENTAL {{{1
@@ -658,13 +524,6 @@ endfu
 
 autocmd FileType groovy map <Leader>ul :Disp ./gradlew test --console plain<CR>
 
-augroup vimp
-    autocmd!
-
-    autocmd BufRead,BufNewFile *.vimp		set filetype=help
-    autocmd BufRead,BufNewFile *.vimp		set isk=!-~,^*,^\|,^\"
-augroup END
-
 augroup slog
     autocmd!
 
@@ -673,8 +532,6 @@ augroup END
 
 " :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
 :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk -layout <q-args> -
-:command! Rdts :r !date "+\%Y-\%m-\%d \%H:\%M:\%S"
-:command! Rts :r !date "+\%H:\%M"
 
 
 "----------------------------------------------------------------
