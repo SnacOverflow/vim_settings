@@ -36,6 +36,10 @@ Plugin 'vim-voom/VOoM'                    " Shows an index for the current file
 " Plugin 'henrik/vim-open-url'            " Improvements to open an url on the current line
 Plugin 'sk1418/HowMuch'                   " Calculate slections
 Plugin 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
+Plugin 'etnadji/vim-epub'                 " View epub
+Plugin 'neomake/neomake'                  " Neomake (only in NeoVim). NOTE: Can I only enable this in NeoVim?
+
+
 
 " CODING
 Plugin 'tpope/vim-commentary'
@@ -58,6 +62,9 @@ Plugin 'vim-scripts/DrawIt'
 
 
 " MY STUFF
+Plugin 'http://meonlol@192.168.178.23/meonlol/vim-logsearch.git'
+" Plugin 'meonlol/vim-android'
+" Plugin 'meonlol/vim-grand'
 Plugin 'meonlol/vim-java-hi-semantics'
 Plugin 'meonlol/vim-gosem'
 " Plugin 'meonlol/javacomplete'
