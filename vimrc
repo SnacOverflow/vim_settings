@@ -310,7 +310,8 @@ endfunction
 " is available in this window for easy editing. Press <CR> from normal mode to
 " execute the search and replace.
 " Protip: add 'windo', 'buffdo' etc to run the find and replace in all windows, buffers etc
-noremap <F6> :let g:replacingString = expand("<cword>")<CR> q:i%s/\<<c-r>=g:replacingString<cr>\>/<c-r>=g:replacingString<cr>/gc<ESC>2T/
+noremap ,r :let g:replacingString = expand("<cword>")<CR> q:i%s/\<<c-r>=g:replacingString<cr>\>/<c-r>=g:replacingString<cr>/gc<ESC>2T/
+noremap ,R :let g:replacingString = expand("<cword>")<CR> q:iwindo %s/\<<c-r>=g:replacingString<cr>\>/<c-r>=g:replacingString<cr>/gc<ESC>2T/
 
 " The following commands simply search the word under the cursor, ether using
 " the platinum searcher, with vimgrep as a fallback. The results are then
@@ -321,7 +322,7 @@ noremap <F6> :let g:replacingString = expand("<cword>")<CR> q:i%s/\<<c-r>=g:repl
 " I use this in combenation with the above shortcut, to search all occurrences
 " in the cwd with these commands, and then replace them from the quickfix
 " window with the <F6> one.
-noremap <F7> :call SeachWordInCwd()<CR>
+noremap ,/ :call SeachWordInCwd()<CR>
 
 fu! SeachWordInCwd()
     let oldgrepprg = &grepprg
@@ -531,6 +532,7 @@ augroup slog
 
     autocmd BufRead,BufNewFile *.slog		set filetype=slog
 augroup END
+
 
 " :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
 :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk -layout <q-args> -
