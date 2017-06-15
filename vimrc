@@ -37,7 +37,8 @@ Plugin 'vim-voom/VOoM'                    " Shows an index for the current file
 Plugin 'sk1418/HowMuch'                   " Calculate slections
 Plugin 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
 Plugin 'etnadji/vim-epub'                 " View epub
-Plugin 'neomake/neomake'                  " Neomake (only in NeoVim). NOTE: Can I only enable this in NeoVim?
+Plugin 'neomake/neomake'                  " Syntax linter (NeoVim)
+Plugin 'Shougo/deoplete.nvim'             " Asynchronous completion (NeoVim)
 
 
 
@@ -285,14 +286,17 @@ let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 
 
-nnoremap <leader>y :call YcmToggle()<CR>
-function! YcmToggle()
+" nnoremap <leader>y :call YcmToggle()<CR>
+command! ToggleCompletion call ToggleCompletion()
+function! ToggleCompletion()
     if g:ycm_auto_trigger == 1
         let g:ycm_auto_trigger=0
-        echo "ycm off"
+        call deoplete#enable()
+        echo "ycm off, deoplete on"
     else
         let g:ycm_auto_trigger=1
-        echo "ycm on"
+        call deoplete#disable()
+        echo "ycm on, deoplete off"
     endif
 endfunction
 
@@ -515,11 +519,6 @@ fu! GetRelativeFilePath()
     let fullPath = expand('%:p:h')
     return substitute(fullPath, getcwd() . "/" , "", "")
 endfu
-
-
-" macros
-" Insert member: o,'+ *'
-" Insert arg: o,'*'bbdwwi: "
 
 "}}}
 "
