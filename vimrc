@@ -36,9 +36,7 @@ Plugin 'vim-voom/VOoM'                    " Shows an index for the current file
 " Plugin 'henrik/vim-open-url'            " Improvements to open an url on the current line
 Plugin 'sk1418/HowMuch'                   " Calculate slections
 Plugin 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
-Plugin 'etnadji/vim-epub'                 " View epub
-Plugin 'neomake/neomake'                  " Syntax linter (NeoVim)
-Plugin 'Shougo/deoplete.nvim'             " Asynchronous completion (NeoVim)
+" Plugin 'etnadji/vim-epub'                 " View epub -> disabled because slow
 
 
 
@@ -51,6 +49,8 @@ Plugin 'tpope/vim-abolish'
 Plugin 'kana/vim-vspec'
 Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'fatih/vim-go'
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'neomake/neomake'                  " Syntax linter (NeoVim)
 
 " STYLING & SYNTAX
 Plugin 'altercation/vim-colors-solarized'
@@ -59,6 +59,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tfnico/vim-gradle'
 Plugin 'vim-scripts/DrawIt'
+Plugin 'vim-scripts/MultipleSearch'
 
 
 
