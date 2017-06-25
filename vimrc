@@ -33,9 +33,9 @@ Plugin 'artnez/vim-wipeout'               " Removes empty buffers
 Plugin 'tpope/vim-repeat'                 " Improves vim's dot command-repeating
 Plugin 'moll/vim-bbye'                    " Close current buffer without closing split
 Plugin 'vim-voom/VOoM'                    " Shows an index for the current file
-" Plugin 'henrik/vim-open-url'            " Improvements to open an url on the current line
 Plugin 'sk1418/HowMuch'                   " Calculate slections
 Plugin 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
+" Plugin 'henrik/vim-open-url'            " Improvements to open an url on the current line
 " Plugin 'etnadji/vim-epub'                 " View epub -> disabled because slow
 
 
@@ -51,6 +51,8 @@ Plugin 'artur-shaik/vim-javacomplete2'
 Plugin 'fatih/vim-go'
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'neomake/neomake'                  " Syntax linter (NeoVim)
+Plugin 'meonlol/vim-godebug'              " Debugger for go
+
 
 " STYLING & SYNTAX
 Plugin 'altercation/vim-colors-solarized'
@@ -456,6 +458,8 @@ fu! OpenOther()
         call OpenOtherJava()
     elseif &filetype == "ruby"
         call OpenOtherRuby()
+    elseif &filetype == "go"
+        :GoAlternate
     endif
 endfu
 
