@@ -240,6 +240,7 @@ let NERDTreeBookmarksSort = 0
 let NERDTreeShowLineNumbers=1
 
 noremap <leader>n :NERDTreeToggle<CR>
+noremap <leader>N :NERDTreeFind<CR>
 
 command! Lvimrc e ~/.vim/vimrc
 
