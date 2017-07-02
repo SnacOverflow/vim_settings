@@ -39,7 +39,6 @@ Plugin 'airblade/vim-gitgutter'           " Shows the file's git-status in a gut
 " Plugin 'etnadji/vim-epub'                 " View epub -> disabled because slow
 
 
-
 " CODING
 Plugin 'tpope/vim-commentary'
 " Plugin 'scrooloose/syntastic'
@@ -52,6 +51,7 @@ Plugin 'fatih/vim-go'
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'neomake/neomake'                  " Syntax linter (NeoVim)
 Plugin 'meonlol/vim-godebug'              " Debugger for go
+Plugin 'dearrrfish/vim-applescript'
 
 
 " STYLING & SYNTAX
@@ -526,6 +526,12 @@ fu! GetRelativeFilePath()
     let fullPath = expand('%:p:h')
     return substitute(fullPath, getcwd() . "/" , "", "")
 endfu
+
+command! Asformat call AppleScriptFormat()
+function! AppleScriptFormat()
+    execute "%s/},/},\r\t/g | %s/alias/\r\t\t\talias/g | noh"
+endfunction
+
 
 "}}}
 "
