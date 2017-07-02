@@ -303,19 +303,54 @@ function! ToggleCompletion()
         echo "ycm on, deoplete off"
     endif
 endfunction
+"}}}
 
-" REFACTORING TOOLS & TRICKS
+" REFACTORING {{{1
+"----------------------------------------
 
-" Quick search and replace
-"
+" Easy search-and-replace
+"----------------------------------------
 " Takes the current word under the cursor and opens the command-line window
-" (see :help c_CTRL-F) with the '%s/old/new/gc' command filled in. Insert mode
-" is available in this window for easy editing. Press <CR> from normal mode to
-" execute the search and replace.
-" Protip: add 'windo', 'buffdo' etc to run the find and replace in all windows, buffers etc
-noremap ,r :let g:replacingString = expand("<cword>")<CR> q:i%s/\<<c-r>=g:replacingString<cr>\>/<c-r>=g:replacingString<cr>/gc<ESC>2T/
-noremap ,R :let g:replacingString = expand("<cword>")<CR> q:iwindo %s/\<<c-r>=g:replacingString<cr>\>/<c-r>=g:replacingString<cr>/gc<ESC>2T/
+" with the '%s/old/new/gc' command filled in. Insert mode is available in this
+" window for easy editing (see :help c_CTRL-F).
+" If used in visual mode, you can search for multiple words or parts of words.
+vnoremap ,r :call SaveSelection()<CR> q:i<c-r>=SearchAndReplace()<CR><ESC>2T/
+nnoremap ,r :call SaveCurrentWord()<CR> q:i<c-r>=SearchAndReplace()<CR><ESC>2T/
+" runs in all windows
+vnoremap ,R :call SaveSelection()<CR> q:iwindo<c-r>=SearchAndReplace()<CR><ESC>2T/
+nnoremap ,R :call SaveCurrentWord()<CR> q:iwindo<c-r>=SearchAndReplace()<CR><ESC>2T/
 
+fu! SaveCurrentWord()
+    let g:searchAndReplaceString = expand("<cword>")
+    let g:useBoundries = 1
+endfu
+
+fu! SaveSelection()
+    let g:searchAndReplaceString = s:get_visual_selection()
+    let g:useBoundries = 0
+endfu
+
+function! s:get_visual_selection()
+  " Why is this not a built-in Vim script function?!
+  let [lnum1, col1] = getpos("'<")[1:2]
+  let [lnum2, col2] = getpos("'>")[1:2]
+  let lines = getline(lnum1, lnum2)
+  let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
+  let lines[0] = lines[0][col1 - 1:]
+  return join(lines, "\n")
+endfunction
+
+fu! SearchAndReplace()
+    if g:useBoundries
+        return "%s/\\<" . g:searchAndReplaceString . "\\>/" . g:searchAndReplaceString . "/gc"
+    else
+        return "%s/" . g:searchAndReplaceString . "/" . g:searchAndReplaceString . "/gc"
+    endif
+endfu
+
+
+" multi-file search and replace
+"----------------------------------------
 " The following commands simply search the word under the cursor, ether using
 " the platinum searcher, with vimgrep as a fallback. The results are then
 " simply displayed in the quickfix window. When we than combine this with the
@@ -325,6 +360,7 @@ noremap ,R :let g:replacingString = expand("<cword>")<CR> q:iwindo %s/\<<c-r>=g:
 " I use this in combenation with the above shortcut, to search all occurrences
 " in the cwd with these commands, and then replace them from the quickfix
 " window with the <F6> one.
+" TODO: Expand with selection like above
 noremap ,/ :call SeachWordInCwd()<CR>
 
 fu! SeachWordInCwd()
