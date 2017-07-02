@@ -314,20 +314,48 @@ endfunction
 " with the '%s/old/new/gc' command filled in. Insert mode is available in this
 " window for easy editing (see :help c_CTRL-F).
 " If used in visual mode, you can search for multiple words or parts of words.
-vnoremap ,r :call SaveSelection()<CR> q:i<c-r>=SearchAndReplace()<CR><ESC>2T/
-nnoremap ,r :call SaveCurrentWord()<CR> q:i<c-r>=SearchAndReplace()<CR><ESC>2T/
-" runs in all windows
-vnoremap ,R :call SaveSelection()<CR> q:iwindo<c-r>=SearchAndReplace()<CR><ESC>2T/
-nnoremap ,R :call SaveCurrentWord()<CR> q:iwindo<c-r>=SearchAndReplace()<CR><ESC>2T/
+vnoremap <expr> ,r ReplaceCurrentSelection()
+nnoremap <expr> ,r ReplaceCurrentWord()
 
-fu! SaveCurrentWord()
-    let g:searchAndReplaceString = expand("<cword>")
-    let g:useBoundries = 1
+" runs in all windows
+vnoremap <expr> ,R ReplaceCurrentSelection("windo")
+nnoremap <expr> ,R ReplaceCurrentWord("windo")
+
+
+fu! ReplaceCurrentWord(...)
+    let l:wordToReplace = expand("<cword>")
+    let l:openCmdWin = "q:i"     "open cmdline-window in insert mode
+
+    let l:search = "\\<" . l:wordToReplace . "\\>"
+    let l:substitution = "%s/" . l:search . "/" . l:wordToReplace . "/gc"
+
+    " the \u001B is unicode for escape. :map-<expr> is freaky
+    let l:moveToReplacement = " \u001B2T/"
+
+    " add stuff like 'windo' or 'argdo' to perform it on multiple buffers
+    if a:0==1
+        return l:openCmdWin . a:1 . " " . l:substitution . l:moveToReplacement
+    else
+        return l:openCmdWin . l:substitution . l:moveToReplacement
+    endif
 endfu
 
-fu! SaveSelection()
-    let g:searchAndReplaceString = s:get_visual_selection()
-    let g:useBoundries = 0
+fu! ReplaceCurrentSelection(...)
+    let l:wordToReplace = s:get_visual_selection()
+
+    "open cmdline-window, delete \<\> and enter in insert mode
+    let l:openCmdWin = "q:S"
+    let l:substitution = "%s/" . l:wordToReplace . "/" . l:wordToReplace . "/gc"
+
+    " the \u001B is unicode for escape. :map-<expr> is freaky
+    let l:moveToReplacement = " \u001B2T/"
+
+    " add stuff like 'windo' or 'argdo' to perform it on multiple buffers
+    if a:0==1
+        return l:openCmdWin . a:1 . l:substitution . l:moveToReplacement
+    else
+        return l:openCmdWin . l:substitution . l:moveToReplacement
+    endif
 endfu
 
 function! s:get_visual_selection()
@@ -340,13 +368,6 @@ function! s:get_visual_selection()
   return join(lines, "\n")
 endfunction
 
-fu! SearchAndReplace()
-    if g:useBoundries
-        return "%s/\\<" . g:searchAndReplaceString . "\\>/" . g:searchAndReplaceString . "/gc"
-    else
-        return "%s/" . g:searchAndReplaceString . "/" . g:searchAndReplaceString . "/gc"
-    endif
-endfu
 
 
 " multi-file search and replace
