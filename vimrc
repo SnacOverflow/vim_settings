@@ -62,6 +62,8 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tfnico/vim-gradle'
 Plugin 'vim-scripts/DrawIt'
 Plugin 'vim-scripts/MultipleSearch'
+Plugin 'vim-scripts/groovyindent-unix'
+
 
 
 
@@ -165,6 +167,8 @@ cnoremap <C-p> <Up>
 
 " Removes quickfix buffer from showing up using :bnext and the like.
 autocmd FileType qf set nobuflisted
+
+let g:gitgutter_map_keys = 0
 
 "}}}
 
@@ -594,6 +598,7 @@ endfunction
 "
 
 autocmd FileType groovy map <Leader>ul :Disp ./gradlew test --console plain<CR>
+autocmd FileType sh map <Leader>ul :Disp ./runTests.sh<CR>
 
 augroup slog
     autocmd!
