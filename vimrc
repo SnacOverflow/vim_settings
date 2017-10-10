@@ -42,7 +42,7 @@ Plugin 'airblade/vim-gitgutter'           " Shows the file's git-status in a gut
 " CODING
 Plugin 'tpope/vim-commentary'
 " Plugin 'scrooloose/syntastic'
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-abolish'
 Plugin 'kana/vim-vspec'
@@ -273,8 +273,6 @@ nmap k gk
 
 let g:UltiSnipsExpandTrigger = "<c-l>"
 
-autocmd! BufWritePost * Neomake
-
 autocmd FileType java set omnifunc=javacomplete#Complete
 autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
 autocmd BufWritePost *.java     silent! setlocal syntax=java2
@@ -290,24 +288,18 @@ autocmd BufWritePost *.go silent! !gotags -R -f=".tags" .
 let g:syntastic_go_checkers = ['go']
 
 " see: https://github.com/vim-ruby/vim-ruby/blob/master/doc/ft-ruby-omni.txt
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
+" let g:rubycomplete_buffer_loading = 1
+" let g:rubycomplete_classes_in_global = 1
 
+autocmd! BufWritePost * Neomake
+let g:neomake_java_enabled_makers = ['gradle']
 
-" nnoremap <leader>y :call YcmToggle()<CR>
-command! ToggleCompletion call ToggleCompletion()
-function! ToggleCompletion()
-    if g:ycm_auto_trigger == 1
-        let g:ycm_auto_trigger=0
-        call deoplete#enable()
-        echo "ycm off, deoplete on"
-    else
-        let g:ycm_auto_trigger=1
-        call deoplete#disable()
-        echo "ycm on, deoplete off"
-    endif
-endfunction
-"}}}
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
 
 " REFACTORING {{{1
 "----------------------------------------
