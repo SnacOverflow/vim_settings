@@ -52,6 +52,11 @@ Plugin 'Shougo/deoplete.nvim'
 Plugin 'neomake/neomake'                  " Syntax linter (NeoVim)
 Plugin 'meonlol/vim-godebug'              " Debugger for go
 Plugin 'dearrrfish/vim-applescript'
+Plugin 'meonlol/vim-subvenient'           " Debugger for go
+Plugin 'mitsuse/autocomplete-swift'
+Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'vim-scripts/taglist.vim'
+
 
 
 " STYLING & SYNTAX
@@ -126,8 +131,8 @@ set wildmenu        " tab completion for help
 " TEXT EDITING
 set nojoinspaces " Don't add a second space after a dot on reformatting
 set ai           " set auto-indenting on for programming
-set tabstop=4    " Uses 4 colums (spaces) for a tab
-set shiftwidth=4 "
+set tabstop=2    " Uses 4 colums (spaces) for a tab
+set shiftwidth=2 "
 set expandtab    " use spaces in stead of tabs
 " set noexpandtab  " use tabs in stead of spaces
 " TRICK: use 'set et|retab' to convert all tabs to spaces or 'set noet|retab!' for the reverse
@@ -146,6 +151,7 @@ filetype plugin on " ?
 set autoread
 set autowrite
 set tags+=.tags    " I want to use hidden tags files
+let g:gutentags_ctags_tagfile=".tags"
 
 
 
@@ -262,6 +268,8 @@ noremap <C-j> <C-e><C-e>
 noremap <C-k> <C-y><C-y>
 noremap <C-l> zlzlzl
 
+inoremap <S-Tab> <C-d>
+
 " navigation those anoying wrapped lines like a human
 nmap j gj
 nmap k gk
@@ -285,6 +293,7 @@ autocmd BufWritePost *.go     silent! setlocal syntax=vim-gosem
 autocmd FileType go map <Leader>ul :GoTest!<CR>
 autocmd BufWritePre *.go silent! GoImports
 autocmd BufWritePost *.go silent! !gotags -R -f=".tags" .
+autocmd BufNewFile,BufRead *.swift set filetype=swift
 let g:syntastic_go_checkers = ['go']
 
 " see: https://github.com/vim-ruby/vim-ruby/blob/master/doc/ft-ruby-omni.txt
@@ -310,6 +319,9 @@ inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
 " with the '%s/old/new/gc' command filled in. Insert mode is available in this
 " window for easy editing (see :help c_CTRL-F).
 " If used in visual mode, you can search for multiple words or parts of words.
+vnoremap <expr> ,t SubSelection()
+nnoremap <expr> ,t SubWord()
+
 vnoremap <expr> ,r ReplaceCurrentSelection()
 nnoremap <expr> ,r ReplaceCurrentWord()
 
