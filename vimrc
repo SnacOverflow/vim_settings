@@ -1,83 +1,88 @@
 
-" git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 " PLUGINS {{{1
 "===============================================================================
 
 set nocompatible                  " be iMproved, required by Vundle
 filetype off                      " required by Vundle
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+
+call plug#begin('~/.vim/bundle')
+
+" set rtp+=~/.vim/bundle/Vundle.vim
+" call vundle#begin()
 
 " ENVIRONMENT
-Plugin 'gmarik/Vundle.vim' " required. Plugin management using Vundle
-Plugin 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
+Plug 'gmarik/Vundle.vim' " required. Plugin management using Vundle
+Plug 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
 
 
-Plugin 'scrooloose/nerdtree'     " Easy filesystem navigation
-Plugin 'wincent/command-t'       " Quickly open cwd files by name
-Plugin 'Lokaltog/vim-easymotion' " Direcly moving the cursor somewhere
+Plug 'scrooloose/nerdtree'     " Easy filesystem navigation
+Plug 'wincent/command-t'       " Quickly open cwd files by name
+Plug 'Lokaltog/vim-easymotion' " Direcly moving the cursor somewhere
 
 " ENHANCEMENTS
-Plugin 'tpope/vim-unimpaired'             " essential: group mappings to [ and ] for common functions
-Plugin 'tpope/vim-surround'               " Essential: Surrounding text with (), {}, [] and more
-Plugin 'tpope/vim-fugitive'               " Git intergration
-Plugin 'tpope/vim-scriptease'             " vim plugin writing improvements
-Plugin 'tpope/vim-speeddating'            " CTRL-X and CTRL-A enhancements for dates etc
-Plugin 'godlygeek/tabular'                " Easy table creation
-Plugin 'tpope/vim-dispatch'               " Async task runner
-Plugin 'stefandtw/quickfix-reflector.vim' " Allows modifying all searchresults in quickfix window
-Plugin 'tpope/vim-vinegar'                " Netrw upgrader (contains '-' shortcut)
-Plugin 'tpope/vim-eunuch'                 " Filesystem commands in vim like (:Rename or :Remove)
-Plugin 'artnez/vim-wipeout'               " Removes empty buffers
-Plugin 'tpope/vim-repeat'                 " Improves vim's dot command-repeating
-Plugin 'moll/vim-bbye'                    " Close current buffer without closing split
-Plugin 'vim-voom/VOoM'                    " Shows an index for the current file
-Plugin 'sk1418/HowMuch'                   " Calculate slections
-Plugin 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
+Plug 'tpope/vim-unimpaired'             " essential: group mappings to [ and ] for common functions
+Plug 'tpope/vim-surround'               " Essential: Surrounding text with (), {}, [] and more
+Plug 'tpope/vim-fugitive'               " Git intergration
+Plug 'tpope/vim-scriptease'             " vim plugin writing improvements
+Plug 'tpope/vim-speeddating'            " CTRL-X and CTRL-A enhancements for dates etc
+Plug 'godlygeek/tabular'                " Easy table creation
+Plug 'tpope/vim-dispatch'               " Async task runner
+Plug 'stefandtw/quickfix-reflector.vim' " Allows modifying all searchresults in quickfix window
+Plug 'tpope/vim-vinegar'                " Netrw upgrader (contains '-' shortcut)
+Plug 'tpope/vim-eunuch'                 " Filesystem commands in vim like (:Rename or :Remove)
+Plug 'artnez/vim-wipeout'               " Removes empty buffers
+Plug 'tpope/vim-repeat'                 " Improves vim's dot command-repeating
+Plug 'moll/vim-bbye'                    " Close current buffer without closing split
+Plug 'vim-voom/VOoM'                    " Shows an index for the current file
+Plug 'sk1418/HowMuch'                   " Calculate slections
+Plug 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
 " Plugin 'henrik/vim-open-url'            " Improvements to open an url on the current line
 " Plugin 'etnadji/vim-epub'                 " View epub -> disabled because slow
 
 
 " CODING
-Plugin 'tpope/vim-commentary'
+Plug 'tpope/vim-commentary'
 " Plugin 'scrooloose/syntastic'
 " Plugin 'Valloric/YouCompleteMe'
-Plugin 'SirVer/ultisnips'
-Plugin 'tpope/vim-abolish'
-Plugin 'kana/vim-vspec'
-Plugin 'artur-shaik/vim-javacomplete2'
-Plugin 'fatih/vim-go'
-Plugin 'Shougo/deoplete.nvim'
-Plugin 'neomake/neomake'                  " Syntax linter (NeoVim)
-Plugin 'meonlol/vim-godebug'              " Debugger for go
-Plugin 'dearrrfish/vim-applescript'
-Plugin 'meonlol/vim-subvenient'           " Debugger for go
-Plugin 'mitsuse/autocomplete-swift'
-Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'vim-scripts/taglist.vim'
+Plug 'SirVer/ultisnips'
+Plug 'tpope/vim-abolish'
+Plug 'kana/vim-vspec'
+Plug 'artur-shaik/vim-javacomplete2'
+Plug 'fatih/vim-go'
+Plug 'Shougo/deoplete.nvim'
+Plug 'neomake/neomake'                  " Syntax linter (NeoVim)
+Plug 'meonlol/vim-godebug'              " Debugger for go
+Plug 'dearrrfish/vim-applescript'
+Plug 'meonlol/vim-subvenient'           " Debugger for go
+Plug 'mitsuse/autocomplete-swift'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'vim-scripts/taglist.vim'
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 
 
 " STYLING & SYNTAX
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'endel/vim-github-colorscheme'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tfnico/vim-gradle'
-Plugin 'vim-scripts/DrawIt'
-Plugin 'vim-scripts/MultipleSearch'
-Plugin 'vim-scripts/groovyindent-unix'
+Plug 'altercation/vim-colors-solarized'
+Plug 'endel/vim-github-colorscheme'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tfnico/vim-gradle'
+Plug 'vim-scripts/DrawIt'
+Plug 'vim-scripts/MultipleSearch'
+Plug 'vim-scripts/groovyindent-unix'
 
 
 
 
 " MY STUFF
-Plugin 'http://meonlol@192.168.178.23/meonlol/vim-logsearch.git'
+" Plug 'http://meonlol@192.168.178.23/meonlol/vim-logsearch.git'
 " Plugin 'meonlol/vim-android'
 " Plugin 'meonlol/vim-grand'
-Plugin 'meonlol/vim-java-hi-semantics'
-Plugin 'meonlol/vim-gosem'
+Plug 'meonlol/vim-java-hi-semantics'
+Plug 'meonlol/vim-gosem'
 " Plugin 'meonlol/javacomplete'
 " Plugin 'meonlol/vim-android'
 " Plugin 'meonlol/vim-grand'
@@ -91,8 +96,10 @@ Plugin 'meonlol/vim-gosem'
 
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required by Vundle
+" call vundle#end()            " required by Vundle
 filetype plugin indent on    " required by Vundle
+call plug#end()
+
 
 
 "}}}
@@ -279,6 +286,11 @@ nmap k gk
 " CODING {{{1
 "----------------------------------------
 
+" Used by Neovim's plugins
+" let g:python_host_prog = '/home/lemo7242/.linuxbrew/bin/python2'
+" let g:python3_host_prog = '/home/lemo7242/.linuxbrew/bin/python3'
+
+
 let g:UltiSnipsExpandTrigger = "<c-l>"
 
 autocmd FileType java set omnifunc=javacomplete#Complete
@@ -300,14 +312,28 @@ let g:syntastic_go_checkers = ['go']
 " let g:rubycomplete_buffer_loading = 1
 " let g:rubycomplete_classes_in_global = 1
 
+
+" Linting
+"----------------------------------------
+
 autocmd! BufWritePost * Neomake
 let g:neomake_java_enabled_makers = ['gradle']
+
+let g:syntastic_go_checkers = ['go']
+
+
+" Completion
+"----------------------------------------
 
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
+" Use tern_for_vim for javascript completion
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
 
 
 " REFACTORING {{{1
@@ -319,8 +345,8 @@ inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
 " with the '%s/old/new/gc' command filled in. Insert mode is available in this
 " window for easy editing (see :help c_CTRL-F).
 " If used in visual mode, you can search for multiple words or parts of words.
-vnoremap <expr> ,t SubSelection()
-nnoremap <expr> ,t SubWord()
+" vnoremap <expr> ,t SubSelection()
+" nnoremap <expr> ,t SubWord()
 
 vnoremap <expr> ,r ReplaceCurrentSelection()
 nnoremap <expr> ,r ReplaceCurrentWord()
