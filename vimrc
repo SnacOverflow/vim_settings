@@ -17,9 +17,10 @@ Plug 'gmarik/Vundle.vim' " required. Plugin management using Vundle
 Plug 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
 
 
-Plug 'scrooloose/nerdtree'     " Easy filesystem navigation
-Plug 'wincent/command-t'       " Quickly open cwd files by name
-Plug 'Lokaltog/vim-easymotion' " Direcly moving the cursor somewhere
+Plug 'scrooloose/nerdtree'      " Easy filesystem navigation
+" Plug 'wincent/command-t'      " Quickly open cwd files by name
+Plug 'Lokaltog/vim-easymotion'  " Direcly moving the cursor somewhere
+Plug '~/.fzf'                   " fzf is a system fuzzy finder
 
 " ENHANCEMENTS
 Plug 'tpope/vim-unimpaired'             " essential: group mappings to [ and ] for common functions
@@ -38,6 +39,7 @@ Plug 'moll/vim-bbye'                    " Close current buffer without closing s
 Plug 'vim-voom/VOoM'                    " Shows an index for the current file
 Plug 'sk1418/HowMuch'                   " Calculate slections
 Plug 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
+Plug 'udalov/kotlin-vim'
 " Plugin 'henrik/vim-open-url'            " Improvements to open an url on the current line
 " Plugin 'etnadji/vim-epub'                 " View epub -> disabled because slow
 
@@ -51,7 +53,7 @@ Plug 'tpope/vim-abolish'
 Plug 'kana/vim-vspec'
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'fatih/vim-go'
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'neomake/neomake'                  " Syntax linter (NeoVim)
 Plug 'meonlol/vim-godebug'              " Debugger for go
 Plug 'dearrrfish/vim-applescript'
@@ -70,9 +72,10 @@ Plug 'endel/vim-github-colorscheme'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tfnico/vim-gradle'
-Plug 'vim-scripts/DrawIt'
+" Plug 'vim-scripts/DrawIt'
 Plug 'vim-scripts/MultipleSearch'
 Plug 'vim-scripts/groovyindent-unix'
+Plug 'udalov/javap-vim'
 
 
 
@@ -249,7 +252,7 @@ map <leader>s <Plug>(easymotion-s)
 map <leader>f <Plug>(easymotion-f)
 map <leader>F <Plug>(easymotion-F)
 
-noremap <leader>t :CommandT<CR>
+noremap <leader>t :FZF<CR>
 set wildignore=**/build/*,**/.git/*,*.class
 
 let NERDTreeWinSize = 50
@@ -287,8 +290,8 @@ nmap k gk
 "----------------------------------------
 
 " Used by Neovim's plugins
-" let g:python_host_prog = '/home/lemo7242/.linuxbrew/bin/python2'
-" let g:python3_host_prog = '/home/lemo7242/.linuxbrew/bin/python3'
+let g:python_host_prog = '/usr/bin/python'
+let g:python3_host_prog = '/usr/bin/python3'
 
 
 let g:UltiSnipsExpandTrigger = "<c-l>"
@@ -539,6 +542,17 @@ endfunction
 call s:MapNextFamily('w','tab')
 
 
+nnoremap <leader>d :ToggleDiff<CR>
+
+command! ToggleDiff call ToggleDiff()
+fu! ToggleDiff()
+  if &diff == "nodiff"
+    :windo difft
+  else
+    :diffo!
+  endif
+endfu
+
 
 
 
@@ -629,6 +643,8 @@ endfunction
 
 autocmd FileType groovy map <Leader>ul :Disp ./gradlew test --console plain<CR>
 autocmd FileType sh map <Leader>ul :Disp ./runTests.sh<CR>
+autocmd FileType sh map <Leader>uc :Disp ./runTests.sh %<CR>
+" https://stackoverflow.com/questions/13634826/show-function-name-in-status-line
 
 augroup slog
     autocmd!
@@ -642,4 +658,4 @@ augroup END
 
 
 "----------------------------------------------------------------
-" vim:fdm=marker:
+" vim:fdm=marker
