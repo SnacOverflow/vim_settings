@@ -2,3 +2,5 @@ bundle
 spell
 .tags
 .tags*
+init.vim
+autoload
