@@ -5,6 +5,7 @@
 "===============================================================================
 
 set nocompatible                  " be iMproved, required by Vundle
+
 filetype off                      " required by Vundle
 
 call plug#begin('~/.vim/bundle')
@@ -20,7 +21,8 @@ Plug 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
 Plug 'scrooloose/nerdtree'      " Easy filesystem navigation
 " Plug 'wincent/command-t'      " Quickly open cwd files by name
 Plug 'Lokaltog/vim-easymotion'  " Direcly moving the cursor somewhere
-Plug '~/.fzf'                   " fzf is a system fuzzy finder
+" fzf is a system fuzzy finder. His also installs it.
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 " ENHANCEMENTS
 Plug 'tpope/vim-unimpaired'             " essential: group mappings to [ and ] for common functions
@@ -129,13 +131,14 @@ set nostartofline   " CTRL-F etc will not go to the start of the line
 botright cwindow " Make cwindow always full width
 
 " UI
-set scrolloff=3     " keep 3 lines when scrolling
-set number          " show line numbers
-set ruler           " show the current row and column
-set showcmd         " display incomplete commands
-set lbr             " wrapping doesn't break words inbetween
-set nowrap          " default: no wrapping
-set wildmenu        " tab completion for help
+set scrolloff=3           " keep 3 lines when scrolling
+set number                " show line numbers
+set ruler                 " show the current row and column
+set showcmd               " display incomplete commands
+set lbr                   " wrapping doesn't break words inbetween
+set nowrap                " default: no wrapping
+set wildmenu              " tab completion for help
+set wildmode=longest,list " make commanline completion work like bash
 
 
 " TEXT EDITING
@@ -328,6 +331,7 @@ let g:syntastic_go_checkers = ['go']
 " Completion
 "----------------------------------------
 
+let g:python3_host_prog='/usr/bin/python3.6'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 
@@ -357,6 +361,10 @@ nnoremap <expr> ,r ReplaceCurrentWord()
 " runs in all windows
 vnoremap <expr> ,R ReplaceCurrentSelection("windo")
 nnoremap <expr> ,R ReplaceCurrentWord("windo")
+
+" runs in all Buffers
+vnoremap <expr> ,<C-r> ReplaceCurrentSelection("bufdo")
+nnoremap <expr> ,<C-r> ReplaceCurrentWord("bufdo")
 
 
 fu! ReplaceCurrentWord(...)
