@@ -37,7 +37,6 @@ Plug 'tpope/vim-vinegar'                " Netrw upgrader (contains '-' shortcut)
 Plug 'tpope/vim-eunuch'                 " Filesystem commands in vim like (:Rename or :Remove)
 Plug 'artnez/vim-wipeout'               " Removes empty buffers
 Plug 'tpope/vim-repeat'                 " Improves vim's dot command-repeating
-Plug 'moll/vim-bbye'                    " Close current buffer without closing split
 Plug 'vim-voom/VOoM'                    " Shows an index for the current file
 Plug 'sk1418/HowMuch'                   " Calculate slections
 Plug 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
@@ -174,9 +173,6 @@ let mapleader = "\<SPACE>"
 
 " switch to last buffer.
 noremap ,b :b#<CR>
-
-" delte current buffer without closing window
-noremap _b :Bdelete<CR>
 
 
 " Using the arrow-keys in the command-line navigates the command-history
@@ -488,11 +484,14 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 " EXPERIMENTAL {{{1
 "===============================================================================
 
-
-
-noremap ,a :call LogSearch() <bar> cw <CR>
-noremap ,h :set ft=slog <bar> call LogHighlight()<CR>
-noremap ,e :tabe ~/.vim/plugin/vim-logsearch/searches.rb<CR>
+function! ToggleWhiteSpace()
+  if &diffopt =~ 'iwhite'
+    set diffopt-=iwhite
+  else
+    set diffopt+=iwhite
+  endif
+endfunction
+noremap ,s :call ToggleWhiteSpace()<CR>
 
 
 function! GetBufferList()
