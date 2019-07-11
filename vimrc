@@ -106,7 +106,6 @@ call plug#end()
 
 
 
-"}}}
 " GENERAL {{{1
 "===============================================================================
 
@@ -184,8 +183,6 @@ cnoremap <C-p> <Up>
 autocmd FileType qf set nobuflisted
 
 let g:gitgutter_map_keys = 0
-
-"}}}
 
 " STYLING {{{1
 "----------------------------------------
@@ -481,18 +478,10 @@ noremap <leader>\| :Tabularize/\|<CR>
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 "}}}
-" EXPERIMENTAL {{{1
+" FUNCTIONS {{{1
 "===============================================================================
 
-function! ToggleWhiteSpace()
-  if &diffopt =~ 'iwhite'
-    set diffopt-=iwhite
-  else
-    set diffopt+=iwhite
-  endif
-endfunction
-noremap ,s :call ToggleWhiteSpace()<CR>
-
+" Toggle quickfix list {{{2
 
 function! GetBufferList()
     redir =>buflist
@@ -524,7 +513,8 @@ endfunction
 nnoremap <silent> <leader>e :call ToggleList("Quickfix List", 'c')<CR>
 " nnoremap <silent> <leader>el :call ToggleList("Location List", 'l')<CR>
 
-
+" }}}
+" Move between tabs with [w ]w {{{2
 " copied from vim-unimpaired
 function! s:MapNextFamily(map,cmd)
   let map = '<Plug>unimpairedCustom'.toupper(a:map)
@@ -548,9 +538,8 @@ endfunction
 
 call s:MapNextFamily('w','tab')
 
-
+" toggle diff mode in open split {{{2
 nnoremap <leader>d :ToggleDiff<CR>
-
 command! ToggleDiff call ToggleDiff()
 fu! ToggleDiff()
   if &diff == "nodiff"
@@ -560,10 +549,21 @@ fu! ToggleDiff()
   endif
 endfu
 
+" EXPERIMENTAL {{{1
+"===============================================================================
+
+" Toggle whitespace when diffing {{{2
+function! ToggleWhiteSpace()
+  if &diffopt =~ 'iwhite'
+    set diffopt-=iwhite
+  else
+    set diffopt+=iwhite
+  endif
+endfunction
+noremap ,s :call ToggleWhiteSpace()<CR>
 
 
-
-
+" Switch between test and implementation {{{2
 nnoremap ,t :call OpenOther()<CR>
 
 fu! OpenOther()
@@ -639,27 +639,22 @@ fu! GetRelativeFilePath()
     return substitute(fullPath, getcwd() . "/" , "", "")
 endfu
 
+
 command! Asformat call AppleScriptFormat()
 function! AppleScriptFormat()
     execute "%s/},/},\r\t/g | %s/alias/\r\t\t\talias/g | noh"
 endfunction
 
 
-"}}}
-"
+" run tests for different file types {{{2
 
 autocmd FileType groovy map <Leader>ul :Disp ./gradlew test --console plain<CR>
 autocmd FileType sh map <Leader>ul :Disp ./runTests.sh<CR>
 autocmd FileType sh map <Leader>uc :Disp ./runTests.sh %<CR>
-" https://stackoverflow.com/questions/13634826/show-function-name-in-status-line
 
-augroup slog
-    autocmd!
+"}}}
 
-    autocmd BufRead,BufNewFile *.slog		set filetype=slog
-augroup END
-
-
+" convert pdf file to vim-readable text using the 'pdftotext' command line tool
 " :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
 :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk -layout <q-args> -
 
