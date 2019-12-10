@@ -1,0 +1,37 @@
+# Using the Vader testing library for vim
+# https://github.com/junegunn/vader.vim
+# 
+# Examples:
+# https://github.com/junegunn/vader.vim/blob/master/test/feature/suite1.vader
+#
+# To run:
+# :Vader <file>
+
+# Test case
+Execute (should toggle whitespace in diff):
+  let &diffopt = "internal,filler"
+  AssertEqual "internal,filler", &diffopt
+
+  call ToggleWhiteSpace()
+
+  AssertEqual "internal,filler,iwhite", &diffopt
+
+  call ToggleWhiteSpace()
+
+  AssertEqual "internal,filler", &diffopt
+
+Execute (should cycle diff algorithms):
+  let &diffopt = "internal,filler"
+
+  " add when unset
+  call CycleDiffAlgorithms()
+  AssertEqual "internal,filler,algorithm:minimal", &diffopt
+
+  " add cycle when sett
+  call CycleDiffAlgorithms()
+  AssertEqual "internal,filler,algorithm:patience", &diffopt
+
+  " should loop list
+  call CycleDiffAlgorithms()
+  call CycleDiffAlgorithms()
+  AssertEqual "internal,filler,algorithm:myers", &diffopt

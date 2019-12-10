@@ -43,7 +43,8 @@ Plug 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutte
 Plug 'udalov/kotlin-vim'
 " Plugin 'henrik/vim-open-url'            " Improvements to open an url on the current line
 " Plugin 'etnadji/vim-epub'                 " View epub -> disabled because slow
-
+" Plug 'tpope/vim-dadbod'                 " Db access
+Plug 'junegunn/vader.vim'               " Testing library
 
 " CODING
 Plug 'tpope/vim-commentary'
@@ -64,6 +65,9 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-scripts/taglist.vim'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+" Plug 'sheerun/vim-polyglot'
+" Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
+
 
 
 
@@ -104,6 +108,10 @@ Plug 'meonlol/vim-gosem'
 filetype plugin indent on    " required by Vundle
 call plug#end()
 
+" MY CODE {{{1
+"===============================================================================
+
+source ~/.vim/funcs.vim
 
 
 " GENERAL {{{1
@@ -292,6 +300,9 @@ let g:python3_host_prog = '/usr/bin/python3'
 
 let g:UltiSnipsExpandTrigger = "<c-l>"
 
+autocmd FileType kotlin set tabstop=4
+autocmd FileType kotlin set shiftwidth=4
+
 autocmd FileType java set omnifunc=javacomplete#Complete
 autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
 autocmd BufWritePost *.java     silent! setlocal syntax=java2
@@ -323,6 +334,11 @@ let g:syntastic_go_checkers = ['go']
 
 " Completion
 "----------------------------------------
+
+
+" let g:LanguageClient_serverCommands = {
+"     \ 'kotlin': ["kotlin-language-server"],
+"     \ }
 
 let g:python3_host_prog='/usr/bin/python3.6'
 let g:deoplete#enable_at_startup = 1
@@ -480,87 +496,11 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 "}}}
 " FUNCTIONS {{{1
 "===============================================================================
+"
 
-" Toggle quickfix list {{{2
-
-function! GetBufferList()
-    redir =>buflist
-    silent! ls!
-    redir END
-    return buflist
-endfunction
-
-function! ToggleList(bufname, pfx)
-    let buflist = GetBufferList()
-    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-        if bufwinnr(bufnum) != -1
-            exec(a:pfx.'close')
-            return
-        endif
-    endfor
-    if a:pfx == 'l' && len(getloclist(0)) == 0
-        echohl ErrorMsg
-        echo "Location List is Empty."
-        return
-    endif
-    let winnr = winnr()
-    exec(a:pfx.'open')
-    " if winnr() != winnr
-    "     wincmd p
-    " endif
-endfunction
-
-nnoremap <silent> <leader>e :call ToggleList("Quickfix List", 'c')<CR>
-" nnoremap <silent> <leader>el :call ToggleList("Location List", 'l')<CR>
-
-" }}}
-" Move between tabs with [w ]w {{{2
-" copied from vim-unimpaired
-function! s:MapNextFamily(map,cmd)
-  let map = '<Plug>unimpairedCustom'.toupper(a:map)
-  let cmd = '".(v:count ? v:count : "")."'.a:cmd
-  let end = '"<CR>'.(a:cmd == 'l' || a:cmd == 'c' ? 'zv' : '')
-  execute 'nnoremap <silent> '.map.'Previous :<C-U>exe "'.cmd.'previous'.end
-  execute 'nnoremap <silent> '.map.'Next     :<C-U>exe "'.cmd.'next'.end
-  execute 'nnoremap <silent> '.map.'First    :<C-U>exe "'.cmd.'first'.end
-  execute 'nnoremap <silent> '.map.'Last     :<C-U>exe "'.cmd.'last'.end
-  execute 'nmap <silent> ['.        a:map .' '.map.'Previous'
-  execute 'nmap <silent> ]'.        a:map .' '.map.'Next'
-  execute 'nmap <silent> ['.toupper(a:map).' '.map.'First'
-  execute 'nmap <silent> ]'.toupper(a:map).' '.map.'Last'
-  if exists(':'.a:cmd.'nfile')
-    execute 'nnoremap <silent> '.map.'PFile :<C-U>exe "'.cmd.'pfile'.end
-    execute 'nnoremap <silent> '.map.'NFile :<C-U>exe "'.cmd.'nfile'.end
-    execute 'nmap <silent> [<C-'.a:map.'> '.map.'PFile'
-    execute 'nmap <silent> ]<C-'.a:map.'> '.map.'NFile'
-  endif
-endfunction
-
-call s:MapNextFamily('w','tab')
-
-" toggle diff mode in open split {{{2
-nnoremap <leader>d :ToggleDiff<CR>
-command! ToggleDiff call ToggleDiff()
-fu! ToggleDiff()
-  if &diff == "nodiff"
-    :windo difft
-  else
-    :diffo!
-  endif
-endfu
 
 " EXPERIMENTAL {{{1
 "===============================================================================
-
-" Toggle whitespace when diffing {{{2
-function! ToggleWhiteSpace()
-  if &diffopt =~ 'iwhite'
-    set diffopt-=iwhite
-  else
-    set diffopt+=iwhite
-  endif
-endfunction
-noremap ,s :call ToggleWhiteSpace()<CR>
 
 
 " Switch between test and implementation {{{2
