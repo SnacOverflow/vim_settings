@@ -294,8 +294,12 @@ nmap k gk
 "----------------------------------------
 
 " Used by Neovim's plugins
-let g:python_host_prog = '/usr/bin/python'
-let g:python3_host_prog = '/usr/bin/python3'
+
+let g:python3_host_prog = substitute(system('which python3'), '\n', '', 'g')
+" let g:python_host_prog = '/usr/bin/python'
+if g:python3_host_prog == ""
+  let g:python3_host_prog = '/usr/bin/python3'
+endif
 
 
 let g:UltiSnipsExpandTrigger = "<c-l>"
@@ -335,12 +339,6 @@ let g:syntastic_go_checkers = ['go']
 " Completion
 "----------------------------------------
 
-
-" let g:LanguageClient_serverCommands = {
-"     \ 'kotlin': ["kotlin-language-server"],
-"     \ }
-
-let g:python3_host_prog='/usr/bin/python3.6'
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 
