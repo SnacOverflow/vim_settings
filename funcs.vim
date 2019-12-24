@@ -8,8 +8,8 @@ function! GetBufferList()
     return buflist
 endfunction
 
-nnoremap <silent> <leader>e :call ToggleList("Quickfix List", 'c')<CR>
 " nnoremap <silent> <leader>el :call ToggleList("Location List", 'l')<CR>
+nnoremap <silent> <leader>e :call ToggleList("Quickfix List", 'c')<CR>
 function! ToggleList(bufname, pfx)
     let buflist = GetBufferList()
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
@@ -32,7 +32,8 @@ endfunction
 
 
 " }}}
-" Move between tabs with [w ]w {{{
+" [w ]w {{{
+" Move between tabs with [w ]w
 " copied basic [] implementation from vim-unimpaired
 function! s:MapNextFamily(map,cmd)
   let map = '<Plug>unimpairedCustom'.toupper(a:map)
@@ -57,7 +58,7 @@ endfunction
 call s:MapNextFamily('w','tab')
 
 " }}}
-" diffing {{{
+" diff {{{
 
 " toggle diff mode in open split
 nnoremap <leader>d :ToggleDiff<CR>

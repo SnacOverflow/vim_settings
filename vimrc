@@ -108,11 +108,6 @@ Plug 'meonlol/vim-gosem'
 filetype plugin indent on    " required by Vundle
 call plug#end()
 
-" MY CODE {{{1
-"===============================================================================
-
-source ~/.vim/funcs.vim
-
 
 " GENERAL {{{1
 "===============================================================================
@@ -207,46 +202,41 @@ colorscheme solarized
 " set guifont=Menlo\ Regular:h12
 set t_Co=256
 
-let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#branch#enabled = 0
-let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#hunks#enabled = 0  " show summary of git changes like: '+16 ~32 -6'
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_tab_count = 0 " for example: 'tab 1/2' in top left
+let g:airline#extensions#tabline#show_splits = 0 " show names of splits at the right
+let g:airline#extensions#tabline#show_buffers = 0 " Show buffers if no tabs available
+let g:airline#extensions#tabline#show_tab_type = 0 " only show tabs, so printing 'tabs' is irrelevant
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#buffer_nr_show = 0 " doesn't work for some reason
 let g:airline_theme='solarized'
 set laststatus=2    " always show, not just with when the view is split
 
 
-" Set custom (shorter) symbols to display
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
-
-
 " Displays the current mode, but shorter than the default
 let g:airline_mode_map = {
-            \ '__' : '-',
-            \ 'n'  : 'N',
-            \ 'i'  : 'I',
-            \ 'R'  : 'R',
-            \ 'c'  : 'C',
-            \ 'v'  : 'V',
-            \ 'V'  : 'V',
-            \ '' : 'V',
-            \ 's'  : 'S',
-            \ 'S'  : 'S',
-            \ '' : 'S',
-            \ }
+    \ '__'     : '-',
+    \ 'c'      : 'C',
+    \ 'i'      : 'I',
+    \ 'ic'     : 'I',
+    \ 'ix'     : 'I',
+    \ 'n'      : 'N',
+    \ 'multi'  : 'M',
+    \ 'ni'     : 'N',
+    \ 'no'     : 'N',
+    \ 'R'      : 'R',
+    \ 'Rv'     : 'R',
+    \ 's'      : 'S',
+    \ 'S'      : 'S',
+    \ ''     : 'S',
+    \ 't'      : 'T',
+    \ 'v'      : 'V',
+    \ 'V'      : 'V',
+    \ ''     : 'V',
+    \ }
 
 
 "}}}
@@ -494,7 +484,8 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 "}}}
 " FUNCTIONS {{{1
 "===============================================================================
-"
+
+source ~/.vim/funcs.vim
 
 
 " EXPERIMENTAL {{{1
