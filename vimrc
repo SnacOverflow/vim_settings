@@ -67,6 +67,7 @@ Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 " Plug 'sheerun/vim-polyglot'
 " Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
+Plug 'editorconfig/editorconfig-vim'
 
 
 
@@ -285,8 +286,11 @@ nmap k gk
 
 " Used by Neovim's plugins
 
-let g:python3_host_prog = substitute(system('which python3'), '\n', '', 'g')
-" let g:python_host_prog = '/usr/bin/python'
+let g:python3_host_prog = substitute(system('which python3.6'), '\n', '', 'g')
+
+if g:python3_host_prog == ""
+  let g:python3_host_prog = substitute(system('which python3'), '\n', '', 'g')
+endif
 if g:python3_host_prog == ""
   let g:python3_host_prog = '/usr/bin/python3'
 endif
