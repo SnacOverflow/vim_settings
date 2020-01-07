@@ -101,5 +101,50 @@ endfunction
 
 " }}}
 
+function! CustomPar(start, end)
+  let lines = getline(a:start, a:end) 
+  let lines = AddNewlineAfterSlash(lines)
+
+  let formattedLines = systemlist("par", lines)
+  let formattedLines = RemoveNewlineAfterSlash(formattedLines)
+  call add(formattedLines, "")		" Last newline was removed before
+
+  execute 'silent ' . a:start . "," . a:end . "delete" 
+  call append(a:start -1, formattedLines)
+endfunction
+
+fu! AddNewlineAfterSlash(lines)
+  let specialLines = GetLinesEndingInSlash(a:lines)
+  for cIndex in reverse(specialLines)
+    call insert(a:lines, "", cIndex+1)
+  endfor
+  return a:lines
+endfu
+
+fu! RemoveNewlineAfterSlash(lines)
+  let specialLines = GetLinesEndingInSlash(a:lines)
+  for cIndex in reverse(specialLines)
+    call remove(a:lines, cIndex+1)
+  endfor
+  return a:lines
+endfu
+
+fu! GetLinesEndingInSlash(lines)
+  let specialLines = []
+	let index = 0
+	while index < len(a:lines)
+	   let item = a:lines[index]
+     if item =~ "\\\\$"
+       call add(specialLines, index)
+     endif
+	   let index = index + 1
+	endwhile
+  return specialLines
+endfu
+
+
+set formatexpr=CustomPar(v:lnum,v:lnum+v:count-1)
+
+
 "----------------------------------------------------------------
 " vim:fdm=marker

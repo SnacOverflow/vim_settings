@@ -35,3 +35,81 @@ Execute (should cycle diff algorithms):
   call CycleDiffAlgorithms()
   call CycleDiffAlgorithms()
   AssertEqual "internal,filler,algorithm:myers", &diffopt
+
+
+Given:
+  line 1
+  line 2
+
+  line 3
+
+Do:
+  gqap
+
+Expect:
+  line 1 line 2
+
+  line 3
+
+
+Given:
+  Deff to long dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+
+  line 3
+
+Do:
+  gqap
+
+Expect:
+  Deff to long dolor sit amet, consetetur sadipscing elitr, sed diam
+  nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+  sed diam voluptua.
+
+  line 3
+
+
+Given:
+  line 1
+  line 2
+
+
+  line 3
+
+Do:
+  gqap
+
+Expect:
+  line 1 line 2
+
+
+  line 3
+
+
+
+Given:
+  line 1\
+  line 2
+
+
+  line 3
+
+Do:
+  gqap
+
+Expect:
+  line 1\
+  line 2
+
+
+  line 3
+
+
+" 1: 1
+" 2:
+" 3: 1
+" 4: 1
+" 5: 0
+" 6:
+" 7: 0
+" 8: 1
+
