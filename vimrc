@@ -205,6 +205,11 @@ set t_Co=256
 
 let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#hunks#enabled = 0  " show summary of git changes like: '+16 ~32 -6'
+let g:airline#extensions#wordcount#enabled = 0 " no need for wordcount. Not in school any more.
+
+let g:airline#extensions#whitespace#trailing_format = '·%s'
+" let g:airline#extensions#whitespace#mixed_indent_format = '%s▸'
+let g:airline#extensions#whitespace#mixed_indent_file_format = '▸%s'
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tab_count = 0 " for example: 'tab 1/2' in top left
