@@ -592,9 +592,11 @@ endfunction
 
 " run tests for different file types {{{2
 
-autocmd FileType groovy map <Leader>ul :Disp ./gradlew test --console plain<CR>
-autocmd FileType sh map <Leader>ul :Disp ./runTests.sh<CR>
-autocmd FileType sh map <Leader>uc :Disp ./runTests.sh %<CR>
+autocmd FileType groovy map <Leader>ul :Dispatch ./gradlew test --console plain<CR>
+"repeats last Dispatch command
+autocmd FileType sh map <Leader>ul :Dispatch<Up><CR> 
+autocmd FileType sh map <Leader>uc :Dispatch ./runTests.sh %<CR>
+autocmd FileType sh map <Leader>ua :Dispatch ./runTests.sh<CR>
 
 "}}}
 
