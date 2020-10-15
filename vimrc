@@ -110,6 +110,7 @@ filetype plugin indent on    " required by Vundle
 call plug#end()
 
 
+
 " GENERAL {{{1
 "===============================================================================
 
@@ -331,6 +332,7 @@ let g:syntastic_go_checkers = ['go']
 " let g:rubycomplete_buffer_loading = 1
 " let g:rubycomplete_classes_in_global = 1
 
+autocmd BufReadCmd *.jar,*.xpi,*.aar call zip#Browse(expand("<amatch>"))
 
 " Linting
 "----------------------------------------
@@ -347,7 +349,7 @@ let g:syntastic_go_checkers = ['go']
 let g:deoplete#enable_at_startup = 1
 
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-d>"
 
 " Use tern_for_vim for javascript completion
 " let g:tern#command = ["tern"]
@@ -452,7 +454,11 @@ fu! SeachWordInCwd()
         let searchCmd = "\"" . g:wordUnderCursor . "\" ."
         let searchCmd = "silent grep! " . searchCmd
     else
-        let searchCmd = "vimgrep /\\<" . g:wordUnderCursor . "\\>/j **/*." .  expand('%:e')
+        let searchCmd = "vimgrep /\\<" . g:wordUnderCursor . "\\>/j **/*"
+        let ext = expand('%:e')
+        if ext != ""
+          let searchCmd = searchCmd . '.' . ext
+        endif
     endif
 
     echomsg searchCmd
