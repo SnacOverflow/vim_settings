@@ -466,7 +466,8 @@ endfu
 " WRITING {{{1
 "===============================================================================
 
-set formatprg=par\ w78
+" set formatprg=par\ w78
+set formatprg=~/repos/other/parkdown/parkdown.sh\ -w78
 
 " Toggle spelling or enable the spell checker if the language is specified
 command! -nargs=? Sp call SpelCheck('<args>')

@@ -143,7 +143,7 @@ fu! GetLinesEndingInSlash(lines)
 endfu
 
 
-set formatexpr=CustomPar(v:lnum,v:lnum+v:count-1)
+" autocmd FileType markdown set formatexpr=CustomPar(v:lnum,v:lnum+v:count-1)
 
 
 "----------------------------------------------------------------
