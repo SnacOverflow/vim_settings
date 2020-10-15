@@ -63,8 +63,8 @@ Plug 'meonlol/vim-subvenient'           " Debugger for go
 Plug 'mitsuse/autocomplete-swift'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-scripts/taglist.vim'
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+" Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+" Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 " Plug 'sheerun/vim-polyglot'
 " Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 Plug 'editorconfig/editorconfig-vim'
@@ -339,14 +339,13 @@ let g:syntastic_go_checkers = ['go']
 "----------------------------------------
 
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
 
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 " Use tern_for_vim for javascript completion
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
+" let g:tern#command = ["tern"]
+" let g:tern#arguments = ["--persistent"]
 
 
 " REFACTORING {{{1
