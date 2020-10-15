@@ -186,7 +186,13 @@ cnoremap <C-p> <Up>
 " Removes quickfix buffer from showing up using :bnext and the like.
 autocmd FileType qf set nobuflisted
 
+" Defaults like <leader>h is mapped to left window already
 let g:gitgutter_map_keys = 0
+nmap gp <Plug>GitGutterPreviewHunk
+nmap ga <Plug>GitGutterStageHunk
+nmap gu <Plug>GitGutterUndoHunk
+nmap [c <Plug>GitGutterPrevHunk
+nmap ]c <Plug>GitGutterNextHunk
 
 " STYLING {{{1
 "----------------------------------------
