@@ -222,11 +222,34 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tab_count = 0 " for example: 'tab 1/2' in top left
 let g:airline#extensions#tabline#show_splits = 0 " show names of splits at the right
 let g:airline#extensions#tabline#show_buffers = 0 " Show buffers if no tabs available
-let g:airline#extensions#tabline#show_tab_type = 0 " only show tabs, so printing 'tabs' is irrelevant
+let g:airline#extensions#tabline#show_tab_nr = 0 " don't show number of splits on tab
+let g:airline#extensions#tabline#show_tab_type = 0 " only show tabs, so don't print 'tabs'/'buffers'
 let g:airline#extensions#tabline#show_close_button = 0
-let g:airline#extensions#tabline#buffer_nr_show = 0 " doesn't work for some reason
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline_theme='solarized'
 set laststatus=2    " always show, not just with when the view is split
+
+let g:airline#extensions#tabline#tabtitle_formatter = 'AirlineTablineCurrentBuffer'
+" copied from docs. This used to be the default?
+function AirlineTablineCurrentBuffer(n)
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  let bufnr = buflist[winnr - 1]
+  let winid = win_getid(winnr, a:n)
+  let title = bufname(bufnr)
+
+  if empty(title)
+    if getqflist({'qfbufnr' : 0}).qfbufnr == bufnr
+      let title = '[Quickfix List]'
+    elseif winid && getloclist(winid, {'qfbufnr' : 0}).qfbufnr == bufnr
+      let title = '[Location List]'
+    else
+      let title = '[No Name]'
+    endif
+  endif
+
+  return title
+endfunction
 
 
 " Displays the current mode, but shorter than the default
