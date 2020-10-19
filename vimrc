@@ -10,9 +10,6 @@ filetype off                      " required by Vundle
 
 call plug#begin('~/.vim/bundle')
 
-" set rtp+=~/.vim/bundle/Vundle.vim
-" call vundle#begin()
-
 " ENVIRONMENT
 Plug 'gmarik/Vundle.vim' " required. Plugin management using Vundle
 Plug 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
@@ -54,20 +51,22 @@ Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-abolish'
 Plug 'kana/vim-vspec'
 Plug 'artur-shaik/vim-javacomplete2'
-Plug 'fatih/vim-go'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'neomake/neomake'                  " Syntax linter (NeoVim)
-Plug 'meonlol/vim-godebug'              " Debugger for go
 Plug 'dearrrfish/vim-applescript'
-Plug 'meonlol/vim-subvenient'           " Debugger for go
+Plug 'meonlol/vim-subvenient'
 Plug 'mitsuse/autocomplete-swift'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-scripts/taglist.vim'
 " Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 " Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 " Plug 'sheerun/vim-polyglot'
-" Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 Plug 'editorconfig/editorconfig-vim'
+" neovim only plugins
+if has("nvim")
+  Plug 'fatih/vim-go'
+  Plug 'meonlol/vim-godebug'              " Debugger for go
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+endif
 
 
 
@@ -75,13 +74,14 @@ Plug 'editorconfig/editorconfig-vim'
 " STYLING & SYNTAX
 Plug 'altercation/vim-colors-solarized'
 Plug 'endel/vim-github-colorscheme'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'tfnico/vim-gradle'
-" Plug 'vim-scripts/DrawIt'
 Plug 'vim-scripts/MultipleSearch'
 Plug 'vim-scripts/groovyindent-unix'
 Plug 'udalov/javap-vim'
+if has("nvim")
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+endif
 
 
 
