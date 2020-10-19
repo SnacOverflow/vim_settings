@@ -207,6 +207,9 @@ let g:solarized_contrast = "high"
 let g:solarized_termtrans = 1
 colorscheme solarized
 
+" Make sure gitgutter looks like the linenumber column
+highlight! link SignColumn LineNr
+
 " set guifont=Menlo\ Regular:h12
 set t_Co=256
 
