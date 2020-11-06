@@ -66,9 +66,11 @@ if has("nvim")
   Plug 'fatih/vim-go'
   Plug 'meonlol/vim-godebug'              " Debugger for go
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete-lsp'
 endif
 
 
+Plug 'rust-lang/rust.vim'
 
 
 " STYLING & SYNTAX
@@ -83,6 +85,7 @@ if has("nvim")
   Plug 'vim-airline/vim-airline-themes'
 endif
 
+Plug 'lervag/vimtex'                      " for latex
 
 
 
@@ -201,6 +204,8 @@ nmap ]c <Plug>GitGutterNextHunk
 set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
 set background=dark
 
+let g:tex_flavor = 'latex'
+let g:vimtex_compiler_method = "tectonic"
 let g:solarized_visibility = "high"
 let g:solarized_contrast = "high"
 " let g:solarized_termcolors= 256 "Guess I shouldn't use this one
@@ -321,6 +326,10 @@ nmap k gk
 "}}}
 " CODING {{{1
 "----------------------------------------
+
+" Mapping for quick calculations
+" from http://vimcasts.org/episodes/simple-calculations-with-vims-expression-register/
+nnoremap Q 0yt=A<C-r>=<C-r>"<CR><Esc>
 
 " Used by Neovim's plugins
 
