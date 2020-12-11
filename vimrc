@@ -636,6 +636,13 @@ autocmd FileType sh map <Leader>ua :Dispatch ./runTests.sh<CR>
 " :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
 :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk -layout <q-args> -
 
+       " \ 'bb': 'git ls-files -- . ":!:old-*" ":!:bb"; ./bb listDeps',
+       " \ 'bb': 'find ~/.bb/ -type f -executable',
+let g:gutentags_file_list_command = {
+   \ 'markers': {
+       \ 'bb': 'git ls-files -- . ":!:old-*" ":!:bb"; ./bb listDeps',
+       \ },
+   \ }
 
 "----------------------------------------------------------------
 " vim:fdm=marker
