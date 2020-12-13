@@ -247,13 +247,7 @@ function AirlineTablineCurrentBuffer(n)
   let title = bufname(bufnr)
 
   if empty(title)
-    if getqflist({'qfbufnr' : 0}).qfbufnr == bufnr
-      let title = '[Quickfix List]'
-    elseif winid && getloclist(winid, {'qfbufnr' : 0}).qfbufnr == bufnr
-      let title = '[Location List]'
-    else
-      let title = '[No Name]'
-    endif
+    let title = '[No Name]'
   endif
 
   return title
@@ -633,9 +627,9 @@ endfunction
 
 " run tests for different file types {{{2
 
-autocmd FileType groovy map <Leader>ul :Dispatch ./gradlew test --console plain<CR>
-"repeats last Dispatch command
-autocmd FileType sh map <Leader>ul :Dispatch<Up><CR> 
+" repeats last Dispatch command
+map <Leader>ul :Dispatch<Up><CR>
+autocmd FileType groovy map <Leader>al :Dispatch ./gradlew test --console plain<CR>
 autocmd FileType sh map <Leader>uc :Dispatch ./runTests.sh %<CR>
 autocmd FileType sh map <Leader>ua :Dispatch ./runTests.sh<CR>
 
