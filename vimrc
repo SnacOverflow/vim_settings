@@ -44,33 +44,54 @@ Plug 'udalov/kotlin-vim'
 Plug 'junegunn/vader.vim'               " Testing library
 
 " CODING
+" ============================================================
+
+" -- General
 Plug 'tpope/vim-commentary'
 " Plugin 'scrooloose/syntastic'
 " Plugin 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-abolish'
-Plug 'kana/vim-vspec'
-Plug 'artur-shaik/vim-javacomplete2'
 Plug 'neomake/neomake'                  " Syntax linter (NeoVim)
-Plug 'dearrrfish/vim-applescript'
-Plug 'meonlol/vim-subvenient'
-Plug 'mitsuse/autocomplete-swift'
+Plug 'meonlol/vim-subvenient'   " TODO
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'vim-scripts/taglist.vim'
-" Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-" Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-" Plug 'sheerun/vim-polyglot'
+Plug 'vim-scripts/taglist.vim'    " tags overview window :TlistToggle
 Plug 'editorconfig/editorconfig-vim'
-" neovim only plugins
 if has("nvim")
-  Plug 'fatih/vim-go'
-  Plug 'meonlol/vim-godebug'              " Debugger for go
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'Shougo/deoplete-lsp'
+  " Plug 'neovim/nvim-lsp'
+  " Plug 'Shougo/deoplete-lsp'
 endif
 
+" -- Vimscript
+Plug 'kana/vim-vspec'
+
+" -- Java
+Plug 'artur-shaik/vim-javacomplete2'
+
+" -- Applescript
+" Plug 'dearrrfish/vim-applescript'
+
+" -- Swift
+" Plug 'mitsuse/autocomplete-swift'
+
+" -- Javascript
+" Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+" Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+
+
+" -- go
+" neovim only plugins
+" if has("nvim")
+"   Plug 'fatih/vim-go'
+"   Plug 'meonlol/vim-godebug'              " Debugger for go
+" endif
+
+" -- rust
 
 Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
+
 
 
 " STYLING & SYNTAX
