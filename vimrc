@@ -10,7 +10,7 @@ filetype off                      " required by Vundle
 
 call plug#begin('~/.vim/bundle')
 
-" ENVIRONMENT
+" ENVIRONMENT {{{2
 Plug 'gmarik/Vundle.vim' " required. Plugin management using Vundle
 Plug 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
 
@@ -21,11 +21,23 @@ Plug 'Lokaltog/vim-easymotion'  " Direcly moving the cursor somewhere
 " fzf is a system fuzzy finder. His also installs it.
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
-" ENHANCEMENTS
+" STYLING & SYNTAX {{{2
+Plug 'altercation/vim-colors-solarized'
+Plug 'endel/vim-github-colorscheme'
+Plug 'tfnico/vim-gradle'
+Plug 'vim-scripts/MultipleSearch'
+Plug 'vim-scripts/groovyindent-unix'
+Plug 'udalov/javap-vim'
+if has("nvim")
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+endif
+
+" OTHER ENHANCEMENTS {{{2
 Plug 'tpope/vim-unimpaired'             " essential: group mappings to [ and ] for common functions
 Plug 'tpope/vim-surround'               " Essential: Surrounding text with (), {}, [] and more
 Plug 'tpope/vim-fugitive'               " Git intergration
-Plug 'tpope/vim-scriptease'             " vim plugin writing improvements
+Plug 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
 Plug 'tpope/vim-speeddating'            " CTRL-X and CTRL-A enhancements for dates etc
 Plug 'godlygeek/tabular'                " Easy table creation
 Plug 'tpope/vim-dispatch'               " Async task runner
@@ -36,15 +48,10 @@ Plug 'artnez/vim-wipeout'               " Removes empty buffers
 Plug 'tpope/vim-repeat'                 " Improves vim's dot command-repeating
 Plug 'vim-voom/VOoM'                    " Shows an index for the current file
 Plug 'sk1418/HowMuch'                   " Calculate slections
-Plug 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
-Plug 'udalov/kotlin-vim'
-" Plugin 'henrik/vim-open-url'            " Improvements to open an url on the current line
-" Plugin 'etnadji/vim-epub'                 " View epub -> disabled because slow
 " Plug 'tpope/vim-dadbod'                 " Db access
-Plug 'junegunn/vader.vim'               " Testing library
+Plug 'junegunn/vader.vim'               " Vimscript Testing library
 
-" CODING
-" ============================================================
+" CODING {{{2
 
 " -- General
 Plug 'tpope/vim-commentary'
@@ -59,58 +66,54 @@ Plug 'vim-scripts/taglist.vim'    " tags overview window :TlistToggle
 Plug 'editorconfig/editorconfig-vim'
 if has("nvim")
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  " Plug 'neovim/nvim-lsp'
+  " Plug 'neovim/nvim-lspconfig'
   " Plug 'Shougo/deoplete-lsp'
 endif
 
-" -- Vimscript
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+" -- Vimscript {{{3
 Plug 'kana/vim-vspec'
+Plug 'tpope/vim-scriptease'             " vim plugin writing improvements
 
-" -- Java
-Plug 'artur-shaik/vim-javacomplete2'
+" -- Kotlin {{{3
+Plug 'udalov/kotlin-vim'
 
-" -- Applescript
+" -- Java {{{3
+" Plug 'artur-shaik/vim-javacomplete2'
+
+" -- Applescript {{{3
 " Plug 'dearrrfish/vim-applescript'
 
-" -- Swift
+" -- Swift {{{3
 " Plug 'mitsuse/autocomplete-swift'
 
-" -- Javascript
+" -- Javascript {{{3
 " Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 " Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 
-" -- go
+" -- go {{{3
 " neovim only plugins
 " if has("nvim")
 "   Plug 'fatih/vim-go'
 "   Plug 'meonlol/vim-godebug'              " Debugger for go
 " endif
 
-" -- rust
-
-Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
-
+" -- rust {{{3
+" Plug 'rust-lang/rust.vim'
+" Plug 'racer-rust/vim-racer'
 
 
-" STYLING & SYNTAX
-Plug 'altercation/vim-colors-solarized'
-Plug 'endel/vim-github-colorscheme'
-Plug 'tfnico/vim-gradle'
-Plug 'vim-scripts/MultipleSearch'
-Plug 'vim-scripts/groovyindent-unix'
-Plug 'udalov/javap-vim'
-if has("nvim")
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
-endif
-
+" -- latex {{{3
 Plug 'lervag/vimtex'                      " for latex
 
 
 
-" MY STUFF
+" MY PLUGINS {{{2
 " Plug 'http://meonlol@192.168.178.23/meonlol/vim-logsearch.git'
 " Plugin 'meonlol/vim-android'
 " Plugin 'meonlol/vim-grand'
@@ -120,19 +123,168 @@ Plug 'meonlol/vim-gosem'
 " Plugin 'meonlol/vim-android'
 " Plugin 'meonlol/vim-grand'
 
-
-" TRIED
-" Maybe try again later
-" Plugin 'dhruvasagar/vim-table-mode'   " Interesting for makeing tables (exel)
-" Plugin 'etnadji/vim-epub'             " Used once
-" Plugin 'rhysd/vim-grammarous'         " For grammar checking. Uses some webtool
-
+" }}}
 
 " All of your Plugins must be added before the following line
 " call vundle#end()            " required by Vundle
 filetype plugin indent on    " required by Vundle
 call plug#end()
 
+
+" PLUGIN CONFIG {{{1
+"===============================================================================
+
+" -- Nerdtree {{{2
+let NERDTreeWinSize = 50
+let NERDTreeBookmarksSort = 0
+let NERDTreeShowLineNumbers=1
+let NERDTreeHijackNetrw=1
+
+" -- deoplete {{{2
+let g:deoplete#enable_at_startup = 1
+" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-d>"
+call deoplete#custom#option('smart_case', v:true)
+
+" -- gutentags {{{2
+set tags+=.tags    " I want to use hidden tags files
+let g:gutentags_ctags_tagfile=".tags"
+
+" -- neomake {{{2
+autocmd! BufWritePost * Neomake
+let g:neomake_java_enabled_makers = ['gradle']
+
+" -- ultisnips {{{2
+let g:UltiSnipsExpandTrigger = "<c-l>"
+
+" -- GitGutter {{{2
+" Defaults like <leader>h I have mapped to left window already
+let g:gitgutter_map_keys = 0
+nmap gp <Plug>GitGutterPreviewHunk
+nmap ga <Plug>GitGutterStageHunk
+nmap gu <Plug>GitGutterUndoHunk
+nmap [c <Plug>GitGutterPrevHunk
+nmap ]c <Plug>GitGutterNextHunk
+
+" -- Airline
+let g:airline#extensions#branch#enabled = 0
+let g:airline#extensions#hunks#enabled = 0  " show summary of git changes like: '+16 ~32 -6'
+let g:airline#extensions#wordcount#enabled = 0 " no need for wordcount. Not in school any more.
+
+let g:airline#extensions#whitespace#trailing_format = '·%s'
+" let g:airline#extensions#whitespace#mixed_indent_format = '%s▸'
+let g:airline#extensions#whitespace#mixed_indent_file_format = '▸%s'
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_tab_count = 0 " for example: 'tab 1/2' in top left
+let g:airline#extensions#tabline#show_splits = 0 " show names of splits at the right
+let g:airline#extensions#tabline#show_buffers = 0 " Show buffers if no tabs available
+let g:airline#extensions#tabline#show_tab_nr = 0 " don't show number of splits on tab
+let g:airline#extensions#tabline#show_tab_type = 0 " only show tabs, so don't print 'tabs'/'buffers'
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline_theme='solarized'
+set laststatus=2    " always show, not just with when the view is split
+
+let g:airline#extensions#tabline#tabtitle_formatter = 'AirlineTablineCurrentBuffer'
+" copied from docs. This used to be the default?
+function! AirlineTablineCurrentBuffer(n)
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  let bufnr = buflist[winnr - 1]
+  let winid = win_getid(winnr, a:n)
+  let title = bufname(bufnr)
+
+  if empty(title)
+    let title = '[No Name]'
+  endif
+
+  return title
+endfunction
+
+
+" Displays the current mode, but shorter than the default
+let g:airline_mode_map = {
+    \ '__'     : '-',
+    \ 'c'      : 'C',
+    \ 'i'      : 'I',
+    \ 'ic'     : 'I',
+    \ 'ix'     : 'I',
+    \ 'n'      : 'N',
+    \ 'multi'  : 'M',
+    \ 'ni'     : 'N',
+    \ 'no'     : 'N',
+    \ 'R'      : 'R',
+    \ 'Rv'     : 'R',
+    \ 's'      : 'S',
+    \ 'S'      : 'S',
+    \ ''     : 'S',
+    \ 't'      : 'T',
+    \ 'v'      : 'V',
+    \ 'V'      : 'V',
+    \ ''     : 'V',
+    \ }
+
+
+
+" LANGUAGE CONFIG {{{1
+"===============================================================================
+
+" -- rust {{{2
+let g:LanguageClient_serverCommands = {
+\ 'rust': ['rust-analyzer'],
+\ }
+" with nvim-lspconfig
+" lua require('lspconfig').rust_analyzer.setup{}
+" autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
+
+" -- kotlin {{{2
+autocmd FileType kotlin set tabstop=4
+autocmd FileType kotlin set shiftwidth=4
+
+" -- java {{{2
+autocmd FileType java set omnifunc=javacomplete#Complete
+autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
+autocmd BufWritePost *.java     silent! setlocal syntax=java2
+
+autocmd BufReadCmd *.jar,*.xpi,*.aar call zip#Browse(expand("<amatch>"))
+
+" -- groovy {{{2
+autocmd FileType groovy set commentstring=//%s
+
+" -- markdown {{{2
+autocmd FileType markdown set commentstring=<!--%s-->
+
+" -- go {{{2
+" autocmd BufRead,BufNewFile *.go       setlocal syntax=vim-gosem
+" autocmd BufWritePost *.go     silent! setlocal syntax=vim-gosem
+" autocmd FileType go map <Leader>ul :GoTest!<CR>
+" autocmd BufWritePre *.go silent! GoImports
+" autocmd BufWritePost *.go silent! !gotags -R -f=".tags" .
+" let g:syntastic_go_checkers = ['go']
+
+" -- swift {{{2
+autocmd BufNewFile,BufRead *.swift set filetype=swift
+
+" -- python {{{2
+let g:python3_host_prog = substitute(system('which python3.6'), '\n', '', 'g')
+
+if g:python3_host_prog == ""
+  let g:python3_host_prog = substitute(system('which python3'), '\n', '', 'g')
+endif
+if g:python3_host_prog == ""
+  let g:python3_host_prog = '/usr/bin/python3'
+endif
+
+
+" -- ruby {{{2
+" see: https://github.com/vim-ruby/vim-ruby/blob/master/doc/ft-ruby-omni.txt
+" let g:rubycomplete_buffer_loading = 1
+" let g:rubycomplete_classes_in_global = 1
+
+" -- javascript {{{2
+" let g:tern#command = ["tern"]
+" let g:tern#arguments = ["--persistent"]
 
 
 " GENERAL {{{1
@@ -190,12 +342,6 @@ filetype indent on " load indent file for specific file type
 filetype plugin on " ?
 set autoread
 set autowrite
-set tags+=.tags    " I want to use hidden tags files
-let g:gutentags_ctags_tagfile=".tags"
-
-
-
-
 
 let mapleader = "\<SPACE>"
 
@@ -211,13 +357,6 @@ cnoremap <C-p> <Up>
 " Removes quickfix buffer from showing up using :bnext and the like.
 autocmd FileType qf set nobuflisted
 
-" Defaults like <leader>h is mapped to left window already
-let g:gitgutter_map_keys = 0
-nmap gp <Plug>GitGutterPreviewHunk
-nmap ga <Plug>GitGutterStageHunk
-nmap gu <Plug>GitGutterUndoHunk
-nmap [c <Plug>GitGutterPrevHunk
-nmap ]c <Plug>GitGutterNextHunk
 
 " STYLING {{{1
 "----------------------------------------
@@ -239,64 +378,6 @@ highlight! link SignColumn LineNr
 " set guifont=Menlo\ Regular:h12
 set t_Co=256
 
-let g:airline#extensions#branch#enabled = 0
-let g:airline#extensions#hunks#enabled = 0  " show summary of git changes like: '+16 ~32 -6'
-let g:airline#extensions#wordcount#enabled = 0 " no need for wordcount. Not in school any more.
-
-let g:airline#extensions#whitespace#trailing_format = '·%s'
-" let g:airline#extensions#whitespace#mixed_indent_format = '%s▸'
-let g:airline#extensions#whitespace#mixed_indent_file_format = '▸%s'
-
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_tab_count = 0 " for example: 'tab 1/2' in top left
-let g:airline#extensions#tabline#show_splits = 0 " show names of splits at the right
-let g:airline#extensions#tabline#show_buffers = 0 " Show buffers if no tabs available
-let g:airline#extensions#tabline#show_tab_nr = 0 " don't show number of splits on tab
-let g:airline#extensions#tabline#show_tab_type = 0 " only show tabs, so don't print 'tabs'/'buffers'
-let g:airline#extensions#tabline#show_close_button = 0
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline_theme='solarized'
-set laststatus=2    " always show, not just with when the view is split
-
-let g:airline#extensions#tabline#tabtitle_formatter = 'AirlineTablineCurrentBuffer'
-" copied from docs. This used to be the default?
-function AirlineTablineCurrentBuffer(n)
-  let buflist = tabpagebuflist(a:n)
-  let winnr = tabpagewinnr(a:n)
-  let bufnr = buflist[winnr - 1]
-  let winid = win_getid(winnr, a:n)
-  let title = bufname(bufnr)
-
-  if empty(title)
-    let title = '[No Name]'
-  endif
-
-  return title
-endfunction
-
-
-" Displays the current mode, but shorter than the default
-let g:airline_mode_map = {
-    \ '__'     : '-',
-    \ 'c'      : 'C',
-    \ 'i'      : 'I',
-    \ 'ic'     : 'I',
-    \ 'ix'     : 'I',
-    \ 'n'      : 'N',
-    \ 'multi'  : 'M',
-    \ 'ni'     : 'N',
-    \ 'no'     : 'N',
-    \ 'R'      : 'R',
-    \ 'Rv'     : 'R',
-    \ 's'      : 'S',
-    \ 'S'      : 'S',
-    \ ''     : 'S',
-    \ 't'      : 'T',
-    \ 'v'      : 'V',
-    \ 'V'      : 'V',
-    \ ''     : 'V',
-    \ }
-
 
 "}}}
 " NAVIGATION {{{1
@@ -308,16 +389,12 @@ map <leader>F <Plug>(easymotion-F)
 noremap <leader>t :FZF<CR>
 set wildignore=**/build/*,**/.git/*,*.class
 
-let NERDTreeWinSize = 50
-let NERDTreeBookmarksSort = 0
-let NERDTreeShowLineNumbers=1
 
 noremap <leader>n :NERDTreeToggle<CR>
 noremap <leader>N :NERDTreeFind<CR>
 
 command! Lvimrc e ~/.vim/vimrc
 
-let NERDTreeHijackNetrw=1
 
 " easyer window commands
 noremap <leader>w <C-W>
@@ -346,64 +423,7 @@ nmap k gk
 " from http://vimcasts.org/episodes/simple-calculations-with-vims-expression-register/
 nnoremap Q 0yt=A<C-r>=<C-r>"<CR><Esc>
 
-" Used by Neovim's plugins
 
-let g:python3_host_prog = substitute(system('which python3.6'), '\n', '', 'g')
-
-if g:python3_host_prog == ""
-  let g:python3_host_prog = substitute(system('which python3'), '\n', '', 'g')
-endif
-if g:python3_host_prog == ""
-  let g:python3_host_prog = '/usr/bin/python3'
-endif
-
-
-let g:UltiSnipsExpandTrigger = "<c-l>"
-
-autocmd FileType kotlin set tabstop=4
-autocmd FileType kotlin set shiftwidth=4
-
-autocmd FileType java set omnifunc=javacomplete#Complete
-autocmd BufRead,BufNewFile *.java       setlocal syntax=java2
-autocmd BufWritePost *.java     silent! setlocal syntax=java2
-
-autocmd FileType groovy set commentstring=//%s
-autocmd FileType markdown set commentstring=<!--%s-->
-
-autocmd BufRead,BufNewFile *.go       setlocal syntax=vim-gosem
-autocmd BufWritePost *.go     silent! setlocal syntax=vim-gosem
-autocmd FileType go map <Leader>ul :GoTest!<CR>
-autocmd BufWritePre *.go silent! GoImports
-autocmd BufWritePost *.go silent! !gotags -R -f=".tags" .
-autocmd BufNewFile,BufRead *.swift set filetype=swift
-let g:syntastic_go_checkers = ['go']
-
-" see: https://github.com/vim-ruby/vim-ruby/blob/master/doc/ft-ruby-omni.txt
-" let g:rubycomplete_buffer_loading = 1
-" let g:rubycomplete_classes_in_global = 1
-
-autocmd BufReadCmd *.jar,*.xpi,*.aar call zip#Browse(expand("<amatch>"))
-
-" Linting
-"----------------------------------------
-
-autocmd! BufWritePost * Neomake
-let g:neomake_java_enabled_makers = ['gradle']
-
-let g:syntastic_go_checkers = ['go']
-
-
-" Completion
-"----------------------------------------
-
-let g:deoplete#enable_at_startup = 1
-
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-d>"
-
-" Use tern_for_vim for javascript completion
-" let g:tern#command = ["tern"]
-" let g:tern#arguments = ["--persistent"]
 
 
 " REFACTORING {{{1
@@ -522,8 +542,11 @@ endfu
 " WRITING {{{1
 "===============================================================================
 
-" set formatprg=par\ w78
-set formatprg=~/repos/other/parkdown/parkdown.sh\ -w78
+if exists('~/repos/other/parkdown/parkdown.sh')
+  set formatprg=~/repos/other/parkdown/parkdown.sh\ -w78
+elseif substitute(system('which par'), '\n', '', 'g') != ""
+  set formatprg=par\ w78
+endif
 
 " Toggle spelling or enable the spell checker if the language is specified
 command! -nargs=? Sp call SpelCheck('<args>')
