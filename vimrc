@@ -56,7 +56,6 @@ Plug 'junegunn/vader.vim'               " Vimscript Testing library
 " -- General
 Plug 'tpope/vim-commentary'
 " Plugin 'scrooloose/syntastic'
-" Plugin 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-abolish'
 Plug 'neomake/neomake'                  " Syntax linter (NeoVim)
@@ -119,7 +118,6 @@ Plug 'lervag/vimtex'                      " for latex
 " Plugin 'meonlol/vim-grand'
 Plug 'meonlol/vim-java-hi-semantics'
 Plug 'meonlol/vim-gosem'
-" Plugin 'meonlol/javacomplete'
 " Plugin 'meonlol/vim-android'
 " Plugin 'meonlol/vim-grand'
 
@@ -145,6 +143,36 @@ let g:deoplete#enable_at_startup = 1
 " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-d>"
 call deoplete#custom#option('smart_case', v:true)
+
+inoremap <silent><expr> <C-Space>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ deoplete#mappings#manual_complete()
+
+function! s:check_back_space() abort "{{{
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction "}}}
+
+" -- LanguageClient  {{{2
+
+
+function LC_maps()
+  if has_key(g:LanguageClient_serverCommands, &filetype)
+    nnoremap <silent> ,d :call LanguageClient#textDocument_hover()<CR>
+    nnoremap <silent> ,i :call LanguageClient#textDocument_implementation()<CR>
+    nnoremap <silent> <C-]> :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <silent> <leader>,r :call LanguageClient#textDocument_rename()<CR>
+  endif
+endfunction
+autocmd FileType * call LC_maps() " so we call it on-load per filetype
+
+" let g:LanguageClient_semanticHighlightMaps = {
+"     \ 'rust': {
+"     \     'function': 'Type'
+"     \   }
+"     \ }
+
 
 " -- gutentags {{{2
 set tags+=.tags    " I want to use hidden tags files
