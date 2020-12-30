@@ -162,7 +162,7 @@ function LC_maps()
     nnoremap <silent> ,d :call LanguageClient#textDocument_hover()<CR>
     nnoremap <silent> ,i :call LanguageClient#textDocument_implementation()<CR>
     nnoremap <silent> <C-]> :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <silent> <leader>,r :call LanguageClient#textDocument_rename()<CR>
+    nnoremap <silent> <leader>rr :call LanguageClient#textDocument_rename()<CR>
   endif
 endfunction
 autocmd FileType * call LC_maps() " so we call it on-load per filetype
