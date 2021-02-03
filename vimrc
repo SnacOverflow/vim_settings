@@ -514,16 +514,19 @@ fu! ReplaceCurrentSelection(...)
     endif
 endfu
 
-function! s:get_visual_selection()
-  " Why is this not a built-in Vim script function?!
-  let [lnum1, col1] = getpos("'<")[1:2]
-  let [lnum2, col2] = getpos("'>")[1:2]
-  let lines = getline(lnum1, lnum2)
-  let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
-  let lines[0] = lines[0][col1 - 1:]
-  return join(lines, "\n")
-endfunction
 
+function! s:get_visual_selection()
+    " Why is this not a built-in Vim script function?!
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+        return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
+endfunction
 
 
 " multi-file search and replace
@@ -538,33 +541,37 @@ endfunction
 " in the cwd with these commands, and then replace them from the quickfix
 " window with the <F6> one.
 " TODO: Expand with selection like above
-noremap ,/ :call SeachWordInCwd()<CR>
+nnoremap ,/ :call SeachWordInCwd()<CR>
+vnoremap ,/ :call SeachSelectedWordInCwd()<CR>
 
 fu! SeachWordInCwd()
-    let oldgrepprg = &grepprg
-    let orig_grepformat = &grepformat
-    let g:wordUnderCursor = expand("<cword>")
+  call SearchWord(expand("<cword>"))
+endfu
 
-    if exepath("pt") != ""
-        " Use the super-fast platinum searcher as a grep replacement
-        " go get -u github.com/monochromegane/the_platinum_searcher/...
-        let &grepprg = "pt --nocolor --nogroup -w "
-        let searchCmd = "\"" . g:wordUnderCursor . "\" ."
-        let searchCmd = "silent grep! " . searchCmd
-    else
-        let searchCmd = "vimgrep /\\<" . g:wordUnderCursor . "\\>/j **/*"
-        let ext = expand('%:e')
-        if ext != ""
-          let searchCmd = searchCmd . '.' . ext
-        endif
-    endif
+fu! SeachSelectedWordInCwd()
+  call SearchWord(s:get_visual_selection())
+endfu
 
-    echomsg searchCmd
-    execute searchCmd
-    cw
+fu! SearchWord(searchString)
+  let oldgrepprg = &grepprg
+  let orig_grepformat = &grepformat
 
-    let &grepprg = oldgrepprg
-    let &grepformat = orig_grepformat
+  if exepath("rg") != ""
+      " Use the super-fast ripgrep for faster search
+      let &grepprg = "rg"
+      " TODO: Escape searchString?
+      let searchCmd = "silent grep! \"" . a:searchString . "\""
+  else
+      let searchCmd = "vimgrep /\\<" . a:searchString . "\\>/j **/*"
+  endif
+
+  echomsg searchCmd
+  execute searchCmd
+  copen
+
+  let &grepprg = oldgrepprg
+  let &grepformat = orig_grepformat
+
 endfu
 
 " WRITING {{{1
