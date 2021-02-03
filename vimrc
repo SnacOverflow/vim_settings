@@ -157,7 +157,7 @@ endfunction "}}}
 " -- LanguageClient  {{{2
 
 
-function LC_maps()
+function! ApplyLanguageClientMappings()
   if has_key(g:LanguageClient_serverCommands, &filetype)
     nnoremap <silent> ,d :call LanguageClient#textDocument_hover()<CR>
     nnoremap <silent> ,i :call LanguageClient#textDocument_implementation()<CR>
@@ -165,7 +165,7 @@ function LC_maps()
     nnoremap <silent> <leader>rr :call LanguageClient#textDocument_rename()<CR>
   endif
 endfunction
-autocmd FileType * call LC_maps() " so we call it on-load per filetype
+autocmd! FileType * call ApplyLanguageClientMappings() " so we call it on-load per filetype
 
 " let g:LanguageClient_semanticHighlightMaps = {
 "     \ 'rust': {
@@ -699,11 +699,28 @@ endfunction
 
 " run tests for different file types {{{2
 
-" repeats last Dispatch command
-map <Leader>ul :Dispatch<Up><CR>
+" Run dispatch without arguments, assuming last command was run with FocusDispatch
+noremap <Leader>ul :Dispatch<CR>
 autocmd FileType groovy map <Leader>al :Dispatch ./gradlew test --console plain<CR>
-autocmd FileType sh map <Leader>uc :Dispatch ./runTests.sh %<CR>
-autocmd FileType sh map <Leader>ua :Dispatch ./runTests.sh<CR>
+" 
+
+" rerun Dispatch, but adding the provided arguments after the executable (at index 1)
+function! AppendDispatch(args)
+  " inject args at position 1
+  let g:Dispatch=join(insert(split(g:Dispatch), a:args, 1))
+  :Dispatch
+endfunction
+:command! -nargs=* AppendDispatch :call AppendDispatch(<q-args>)  "let g:Dispatch=g:Dispatch . " " . <q-args>  | :Dispatch
+
+
+function! ApplyShellMappings()
+  " set g:Dispatch with the command first, so we can rerun by calling :Dispatch without arguments
+  " <c-r>=   call vimscript by using the '=' buffer in the command
+  noremap <Leader>uc :let g:Dispatch='./runTests.sh <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
+  noremap <Leader>uf :let g:Dispatch='./runTests.sh -m <c-r>=expand("<cword>")<cr> <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
+  noremap <Leader>ua :let g:Dispatch='./runTests.sh' <bar> :Dispatch<CR>
+endfunction
+autocmd! FileType sh call ApplyShellMappings() " so we call it on-load per filetype
 
 "}}}
 
