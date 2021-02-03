@@ -463,86 +463,54 @@ nnoremap Q 0yt=A<C-r>=<C-r>"<CR><Esc>
 " with the '%s/old/new/gc' command filled in. Insert mode is available in this
 " window for easy editing (see :help c_CTRL-F).
 " If used in visual mode, you can search for multiple words or parts of words.
-" vnoremap <expr> ,t SubSelection()
-" nnoremap <expr> ,t SubWord()
 
-vnoremap <expr> ,r ReplaceCurrentSelection()
-nnoremap <expr> ,r ReplaceCurrentWord()
+nnoremap ,r :call ReplaceCurrentWord()<CR>
+vnoremap ,r :call ReplaceCurrentSelection()<CR>
 
 " runs in all windows
-vnoremap <expr> ,R ReplaceCurrentSelection("windo")
-nnoremap <expr> ,R ReplaceCurrentWord("windo")
+nnoremap ,R :call ReplaceCurrentWord("windo")<CR>
+vnoremap ,R :call ReplaceCurrentSelection("windo")<CR>
 
 " runs in all Buffers
-vnoremap <expr> ,<C-r> ReplaceCurrentSelection("bufdo")
-nnoremap <expr> ,<C-r> ReplaceCurrentWord("bufdo")
+nnoremap ,<C-r> :call ReplaceCurrentWord("bufdo")<CR>
+vnoremap ,<C-r> :call ReplaceCurrentSelection("bufdo")<CR>
+
+" multi-file search
+"----------------------------------------
+" The following commands simply search the word under the cursor, ether using
+" one of the supported quick searches, or internal vimgrep as a fallback. The
+" results are then simply displayed in the quickfix window.
+" 
+" When this command is combined this with the stefandtw/quickfix-reflector plugin,
+" to allow editing the quickfix window and saving the results to the
+" corresponding files, and using the above ReplaceCurrentWord() mappings
+" to modify the search results, this becomes a powerfull refactoring tool.
+nnoremap ,/ :call SeachWordInCwd()<CR>
+vnoremap ,/ :call SeachSelectedWordInCwd()<CR>
 
 
 fu! ReplaceCurrentWord(...)
-    let l:wordToReplace = expand("<cword>")
-    let l:openCmdWin = "q:i"     "open cmdline-window in insert mode
-
-    let l:search = "\\<" . l:wordToReplace . "\\>"
-    let l:substitution = "%s/" . l:search . "/" . l:wordToReplace . "/gc"
-
-    " the \u001B is unicode for escape. :map-<expr> is freaky
-    let l:moveToReplacement = " \u001B2T/"
-
-    " add stuff like 'windo' or 'argdo' to perform it on multiple buffers
-    if a:0==1
-        return l:openCmdWin . a:1 . " " . l:substitution . l:moveToReplacement
-    else
-        return l:openCmdWin . l:substitution . l:moveToReplacement
-    endif
+  let l:currentWord = expand("<cword>")
+  let l:searchString = "\\<" . l:currentWord . "\\>" "add the word-boundries, as this searches for the selected word only
+  call StageSearchAndReplaceInCommandWindow(l:searchString, l:currentWord, a:0 == 1 ? a:1 : "")
 endfu
 
 fu! ReplaceCurrentSelection(...)
-    let l:wordToReplace = s:get_visual_selection()
+  let l:selectedString = s:get_visual_selection()
+  call StageSearchAndReplaceInCommandWindow(l:selectedString, l:selectedString, a:0 == 1 ? a:1 : "")
+endfu
 
-    "open cmdline-window, delete \<\> and enter in insert mode
-    let l:openCmdWin = "q:S"
-    let l:substitution = "%s/" . l:wordToReplace . "/" . l:wordToReplace . "/gc"
-
-    " the \u001B is unicode for escape. :map-<expr> is freaky
-    let l:moveToReplacement = " \u001B2T/"
-
-    " add stuff like 'windo' or 'argdo' to perform it on multiple buffers
-    if a:0==1
-        return l:openCmdWin . a:1 . l:substitution . l:moveToReplacement
-    else
-        return l:openCmdWin . l:substitution . l:moveToReplacement
-    endif
+" write a search and replace as provided in the command window, ready for the user to change and run it
+fu! StageSearchAndReplaceInCommandWindow(searchString, replacementString, target)
+  " open cmd-line window and change to insert mode
+  call feedkeys("q:i")
+  " write typical search and replace string '%s/search/replace/gc'
+  call feedkeys(a:target . "%s/" . a:searchString . "/" . a:replacementString . "/gc")
+  " exit insert mode, and go to the start of the replacement, ready for the user to change it
+  call feedkeys("\<Esc>2T/")
 endfu
 
 
-function! s:get_visual_selection()
-    " Why is this not a built-in Vim script function?!
-    let [line_start, column_start] = getpos("'<")[1:2]
-    let [line_end, column_end] = getpos("'>")[1:2]
-    let lines = getline(line_start, line_end)
-    if len(lines) == 0
-        return ''
-    endif
-    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
-    let lines[0] = lines[0][column_start - 1:]
-    return join(lines, "\n")
-endfunction
-
-
-" multi-file search and replace
-"----------------------------------------
-" The following commands simply search the word under the cursor, ether using
-" the platinum searcher, with vimgrep as a fallback. The results are then
-" simply displayed in the quickfix window. When we than combine this with the
-" stefandtw/quickfix-reflector plugin, which allows editing in the quickfix
-" window and saving the results into the correct files, it becomes a powerfull
-" refactoring tool.
-" I use this in combenation with the above shortcut, to search all occurrences
-" in the cwd with these commands, and then replace them from the quickfix
-" window with the <F6> one.
-" TODO: Expand with selection like above
-nnoremap ,/ :call SeachWordInCwd()<CR>
-vnoremap ,/ :call SeachSelectedWordInCwd()<CR>
 
 fu! SeachWordInCwd()
   call SearchWord(expand("<cword>"))
@@ -553,6 +521,8 @@ fu! SeachSelectedWordInCwd()
 endfu
 
 fu! SearchWord(searchString)
+  " so we don't ediit the grepprg in case someone was using it, the current
+  " values are saved and restored
   let oldgrepprg = &grepprg
   let orig_grepformat = &grepformat
 
@@ -567,12 +537,25 @@ fu! SearchWord(searchString)
 
   echomsg searchCmd
   execute searchCmd
-  copen
+  copen " open the results in the quickfix window
 
   let &grepprg = oldgrepprg
   let &grepformat = orig_grepformat
-
 endfu
+
+" credit: https://stackoverflow.com/a/6271254/3968618
+function! s:get_visual_selection()
+    " Why is this not a built-in Vim script function?!
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+        return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
+endfunction
 
 " WRITING {{{1
 "===============================================================================
