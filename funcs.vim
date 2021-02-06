@@ -99,7 +99,7 @@ function! CycleDiffAlgorithms()
     endif
 endfunction
 
-" }}}
+" Custom Par {{{
 
 function! CustomPar(start, end)
   let lines = getline(a:start, a:end) 
@@ -142,6 +142,65 @@ fu! GetLinesEndingInSlash(lines)
   return specialLines
 endfu
 
+" OpenOther {{{
+nnoremap ,t :call OpenOther()<CR>
+
+fu! OpenOther()
+    if &filetype == "java"
+        call OpenOtherJava()
+    elseif &filetype == "ruby"
+        call OpenOtherRuby()
+    elseif &filetype == "go"
+        :GoAlternate
+    endif
+endfu
+
+fu! OpenOtherJava()
+    let testSuffix = "Test.java"
+    let nonTestSuffix = ".java"
+    let mainDir = "/main/"
+    let testDir = "/test/"
+
+    " Files & paths
+    let relPath = GetRelativeFilePath()
+    let srcFile = expand('%:t')
+
+    " Change path
+    let targetPath = ""
+    if (stridx(relPath, mainDir) > -1)
+        let targetPath = substitute(relPath, mainDir, testDir, "")
+    elseif (stridx( relPath, testDir) > -1)
+        let targetPath = substitute(relPath, testDir, mainDir, "")
+    endif
+
+    " Change fileName
+    let targetFile = ""
+    if (stridx(srcFile, testSuffix) > -1)
+        let targetFile = substitute(srcFile, testSuffix, nonTestSuffix, "")
+    else
+        let targetFile = substitute(srcFile, nonTestSuffix, testSuffix, "")
+    endif
+
+    call OpenFileAtPath(targetFile, targetPath)
+endfu
+
+
+fu! OpenFileAtPath(fileName, path)
+    let completePath = a:path . '/' . a:fileName
+    if filereadable(completePath)
+        execute "edit " . completePath
+    " else
+    "     echomsg "File not found: " . completePath
+    endif
+endfu
+
+
+fu! GetRelativeFilePath()
+    let fullPath = expand('%:p:h')
+    return substitute(fullPath, getcwd() . "/" , "", "")
+endfu
+
+" }}}
 
 " autocmd FileType markdown set formatexpr=CustomPar(v:lnum,v:lnum+v:count-1)
 

@@ -14,20 +14,15 @@ call plug#begin('~/.vim/bundle')
 Plug 'gmarik/Vundle.vim' " required. Plugin management using Vundle
 Plug 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
 
-
 Plug 'scrooloose/nerdtree'      " Easy filesystem navigation
-" Plug 'wincent/command-t'      " Quickly open cwd files by name
-Plug 'Lokaltog/vim-easymotion'  " Direcly moving the cursor somewhere
-" fzf is a system fuzzy finder. His also installs it.
+" Plug 'Lokaltog/vim-easymotion'  " Direcly moving the cursor somewhere
+" fzf is a system fuzzy finder. This also installs it.
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 " STYLING & SYNTAX {{{2
 Plug 'altercation/vim-colors-solarized'
-Plug 'endel/vim-github-colorscheme'
-Plug 'tfnico/vim-gradle'
 Plug 'vim-scripts/MultipleSearch'
-Plug 'vim-scripts/groovyindent-unix'
-Plug 'udalov/javap-vim'
+" Plug 'endel/vim-github-colorscheme'   " colorscheme based on githubs syntax highlighting
 if has("nvim")
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
@@ -44,45 +39,50 @@ Plug 'tpope/vim-dispatch'               " Async task runner
 Plug 'stefandtw/quickfix-reflector.vim' " Allows modifying all searchresults in quickfix window
 Plug 'tpope/vim-vinegar'                " Netrw upgrader (contains '-' shortcut)
 Plug 'tpope/vim-eunuch'                 " Filesystem commands in vim like (:Rename or :Remove)
-Plug 'artnez/vim-wipeout'               " Removes empty buffers
+Plug 'artnez/vim-wipeout'               " Removes empty buffers with :Wipe
 Plug 'tpope/vim-repeat'                 " Improves vim's dot command-repeating
 Plug 'vim-voom/VOoM'                    " Shows an index for the current file
 Plug 'sk1418/HowMuch'                   " Calculate slections
 " Plug 'tpope/vim-dadbod'                 " Db access
-Plug 'junegunn/vader.vim'               " Vimscript Testing library
 
 " CODING {{{2
 
-" -- General
-Plug 'tpope/vim-commentary'
-" Plugin 'scrooloose/syntastic'
-Plug 'SirVer/ultisnips'
-Plug 'tpope/vim-abolish'
+" -- General {{{3
+Plug 'tpope/vim-commentary'             " Comment stuff out.
+Plug 'tpope/vim-abolish'                " quickly switch myCammelCase to MY_CAMMEL_CASE etc
 Plug 'neomake/neomake'                  " Syntax linter (NeoVim)
-Plug 'meonlol/vim-subvenient'   " TODO
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'vim-scripts/taglist.vim'    " tags overview window :TlistToggle
-Plug 'editorconfig/editorconfig-vim'
+Plug 'meonlol/vim-subvenient'           " TODO
+Plug 'ludovicchabant/vim-gutentags'     " Tags handling
+Plug 'vim-scripts/taglist.vim'          " tags overview window :TlistToggle
+Plug 'editorconfig/editorconfig-vim'    " Support for reading config from .editorconfig file
+" Plugin 'scrooloose/syntastic'         " Better support from other plugin
+" Plug 'SirVer/ultisnips'               " Snippet integration. rearly used. Requires python
 if has("nvim")
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   " Plug 'neovim/nvim-lspconfig'
   " Plug 'Shougo/deoplete-lsp'
+
+  Plug 'autozimu/LanguageClient-neovim', {
+      \ 'branch': 'next',
+      \ 'do': 'bash install.sh',
+      \ }
 endif
 
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
 
 " -- Vimscript {{{3
-Plug 'kana/vim-vspec'
 Plug 'tpope/vim-scriptease'             " vim plugin writing improvements
+Plug 'junegunn/vader.vim'               " Vimscript Testing library
 
 " -- Kotlin {{{3
 Plug 'udalov/kotlin-vim'
 
 " -- Java {{{3
+Plug 'udalov/javap-vim'                 " view bytecode of class files using javap
 " Plug 'artur-shaik/vim-javacomplete2'
+
+" -- Groovy {{{3
+Plug 'tfnico/vim-gradle'                " grooy highlighting and gradle compiling
+Plug 'vim-scripts/groovyindent-unix'    " indentation for groovy scripts
 
 " -- Applescript {{{3
 " Plug 'dearrrfish/vim-applescript'
@@ -113,11 +113,11 @@ Plug 'lervag/vimtex'                      " for latex
 
 
 " MY PLUGINS {{{2
+Plug 'meonlol/vim-java-hi-semantics'
+Plug 'meonlol/vim-gosem'
 " Plug 'http://meonlol@192.168.178.23/meonlol/vim-logsearch.git'
 " Plugin 'meonlol/vim-android'
 " Plugin 'meonlol/vim-grand'
-Plug 'meonlol/vim-java-hi-semantics'
-Plug 'meonlol/vim-gosem'
 " Plugin 'meonlol/vim-android'
 " Plugin 'meonlol/vim-grand'
 
@@ -138,16 +138,32 @@ let NERDTreeBookmarksSort = 0
 let NERDTreeShowLineNumbers=1
 let NERDTreeHijackNetrw=1
 
-" -- deoplete {{{2
-let g:deoplete#enable_at_startup = 1
-" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-d>"
-call deoplete#custom#option('smart_case', v:true)
+" -- Dispatch {{{2
+" Run dispatch without arguments, assuming last command was run with FocusDispatch
+noremap <Leader>ul :Dispatch<CR>
 
-inoremap <silent><expr> <C-Space>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ deoplete#mappings#manual_complete()
+" rerun Dispatch, but adding the provided arguments after the executable (at index 1)
+function! AppendDispatch(args)
+  " inject args at position 1
+  let g:Dispatch=join(insert(split(g:Dispatch), a:args, 1))
+  :Dispatch
+endfunction
+:command! -nargs=* AppendDispatch :call AppendDispatch(<q-args>)  "let g:Dispatch=g:Dispatch . " " . <q-args>  | :Dispatch
+
+
+" -- deoplete {{{2
+if has("nvim")
+  let g:deoplete#enable_at_startup = 1
+  " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  " inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-d>"
+  call deoplete#custom#option('smart_case', v:true)
+
+  inoremap <silent><expr> <C-Space>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ deoplete#mappings#manual_complete()
+
+endif
 
 function! s:check_back_space() abort "{{{
   let col = col('.') - 1
@@ -155,7 +171,6 @@ function! s:check_back_space() abort "{{{
 endfunction "}}}
 
 " -- LanguageClient  {{{2
-
 
 function! ApplyLanguageClientMappings()
   if has_key(g:LanguageClient_serverCommands, &filetype)
@@ -177,6 +192,14 @@ autocmd! FileType * call ApplyLanguageClientMappings() " so we call it on-load p
 " -- gutentags {{{2
 set tags+=.tags    " I want to use hidden tags files
 let g:gutentags_ctags_tagfile=".tags"
+
+       " \ 'bb': 'git ls-files -- . ":!:old-*" ":!:bb"; ./bb listDeps',
+       " \ 'bb': 'find ~/.bb/ -type f -executable',
+let g:gutentags_file_list_command = {
+   \ 'markers': {
+       \ 'bb': 'git ls-files -- . ":!:old-*" ":!:bb"; ./bb listDeps',
+       \ },
+   \ }
 
 " -- neomake {{{2
 autocmd! BufWritePost * Neomake
@@ -258,6 +281,17 @@ let g:airline_mode_map = {
 " LANGUAGE CONFIG {{{1
 "===============================================================================
 
+" -- bash {{{2
+function! ApplyShellMappings()
+  " set g:Dispatch with the command first, so we can rerun by calling :Dispatch without arguments
+  " <c-r>=   call vimscript by using the '=' buffer in the command
+  noremap <Leader>uc :let g:Dispatch='./runTests.sh <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
+  noremap <Leader>uf :let g:Dispatch='./runTests.sh -m <c-r>=expand("<cword>")<cr> <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
+  noremap <Leader>ua :let g:Dispatch='./runTests.sh' <bar> :Dispatch<CR>
+endfunction
+autocmd! FileType sh call ApplyShellMappings() " so we call it on-load per filetype
+
+
 " -- rust {{{2
 let g:LanguageClient_serverCommands = {
 \ 'rust': ['rust-analyzer'],
@@ -279,6 +313,7 @@ autocmd BufReadCmd *.jar,*.xpi,*.aar call zip#Browse(expand("<amatch>"))
 
 " -- groovy {{{2
 autocmd FileType groovy set commentstring=//%s
+autocmd FileType groovy map <Leader>al :Dispatch ./gradlew test --console plain<CR>
 
 " -- markdown {{{2
 autocmd FileType markdown set commentstring=<!--%s-->
@@ -295,6 +330,7 @@ autocmd FileType markdown set commentstring=<!--%s-->
 autocmd BufNewFile,BufRead *.swift set filetype=swift
 
 " -- python {{{2
+
 let g:python3_host_prog = substitute(system('which python3.6'), '\n', '', 'g')
 
 if g:python3_host_prog == ""
@@ -313,6 +349,12 @@ endif
 " -- javascript {{{2
 " let g:tern#command = ["tern"]
 " let g:tern#arguments = ["--persistent"]
+
+" -- Applescript {{{2
+command! Asformat call AppleScriptFormat()
+function! AppleScriptFormat()
+    execute "%s/},/},\r\t/g | %s/alias/\r\t\t\talias/g | noh"
+endfunction
 
 
 " GENERAL {{{1
@@ -604,127 +646,10 @@ source ~/.vim/funcs.vim
 "===============================================================================
 
 
-" Switch between test and implementation {{{2
-nnoremap ,t :call OpenOther()<CR>
-
-fu! OpenOther()
-    if &filetype == "java"
-        call OpenOtherJava()
-    elseif &filetype == "ruby"
-        call OpenOtherRuby()
-    elseif &filetype == "go"
-        :GoAlternate
-    endif
-endfu
-
-fu! OpenOtherJava()
-    let testSuffix = "Test.java"
-    let nonTestSuffix = ".java"
-    let mainDir = "/main/"
-    let testDir = "/test/"
-
-    " Files & paths
-    let relPath = GetRelativeFilePath()
-    let srcFile = expand('%:t')
-
-    " Change path
-    let targetPath = ""
-    if (stridx(relPath, mainDir) > -1)
-        let targetPath = substitute(relPath, mainDir, testDir, "")
-    elseif (stridx( relPath, testDir) > -1)
-        let targetPath = substitute(relPath, testDir, mainDir, "")
-    endif
-
-    " Change fileName
-    let targetFile = ""
-    if (stridx(srcFile, testSuffix) > -1)
-        let targetFile = substitute(srcFile, testSuffix, nonTestSuffix, "")
-    else
-        let targetFile = substitute(srcFile, nonTestSuffix, testSuffix, "")
-    endif
-
-    call OpenFileAtPath(targetFile, targetPath)
-endfu
-
-
-fu! OpenOtherRuby()
-    let testPrefix = "tc_"
-
-    " Files & paths
-    let srcFile = expand('%:t')
-
-    " Change fileName
-    let targetFile = ""
-    if (stridx(srcFile, testPrefix) > -1)
-        let targetFile = substitute(srcFile, testPrefix, "", "")
-    else
-        let targetFile = testPrefix . srcFile
-    endif
-
-    call OpenFileAtPath(targetFile, GetRelativeFilePath())
-endfu
-
-
-fu! OpenFileAtPath(fileName, path)
-    let completePath = a:path . '/' . a:fileName
-    if filereadable(completePath)
-        execute "edit " . completePath
-    " else
-    "     echomsg "File not found: " . completePath
-    endif
-endfu
-
-
-fu! GetRelativeFilePath()
-    let fullPath = expand('%:p:h')
-    return substitute(fullPath, getcwd() . "/" , "", "")
-endfu
-
-
-command! Asformat call AppleScriptFormat()
-function! AppleScriptFormat()
-    execute "%s/},/},\r\t/g | %s/alias/\r\t\t\talias/g | noh"
-endfunction
-
-
-" run tests for different file types {{{2
-
-" Run dispatch without arguments, assuming last command was run with FocusDispatch
-noremap <Leader>ul :Dispatch<CR>
-autocmd FileType groovy map <Leader>al :Dispatch ./gradlew test --console plain<CR>
-" 
-
-" rerun Dispatch, but adding the provided arguments after the executable (at index 1)
-function! AppendDispatch(args)
-  " inject args at position 1
-  let g:Dispatch=join(insert(split(g:Dispatch), a:args, 1))
-  :Dispatch
-endfunction
-:command! -nargs=* AppendDispatch :call AppendDispatch(<q-args>)  "let g:Dispatch=g:Dispatch . " " . <q-args>  | :Dispatch
-
-
-function! ApplyShellMappings()
-  " set g:Dispatch with the command first, so we can rerun by calling :Dispatch without arguments
-  " <c-r>=   call vimscript by using the '=' buffer in the command
-  noremap <Leader>uc :let g:Dispatch='./runTests.sh <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
-  noremap <Leader>uf :let g:Dispatch='./runTests.sh -m <c-r>=expand("<cword>")<cr> <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
-  noremap <Leader>ua :let g:Dispatch='./runTests.sh' <bar> :Dispatch<CR>
-endfunction
-autocmd! FileType sh call ApplyShellMappings() " so we call it on-load per filetype
-
-"}}}
-
 " convert pdf file to vim-readable text using the 'pdftotext' command line tool
 " :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
 :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk -layout <q-args> -
 
-       " \ 'bb': 'git ls-files -- . ":!:old-*" ":!:bb"; ./bb listDeps',
-       " \ 'bb': 'find ~/.bb/ -type f -executable',
-let g:gutentags_file_list_command = {
-   \ 'markers': {
-       \ 'bb': 'git ls-files -- . ":!:old-*" ":!:bb"; ./bb listDeps',
-       \ },
-   \ }
 
 "----------------------------------------------------------------
 " vim:fdm=marker
