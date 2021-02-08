@@ -113,8 +113,8 @@ Plug 'lervag/vimtex'                      " for latex
 
 
 " MY PLUGINS {{{2
-Plug 'meonlol/vim-java-hi-semantics'
-Plug 'meonlol/vim-gosem'
+" Plug 'meonlol/vim-java-hi-semantics'
+" Plug 'meonlol/vim-gosem'
 " Plug 'http://meonlol@192.168.178.23/meonlol/vim-logsearch.git'
 " Plugin 'meonlol/vim-android'
 " Plugin 'meonlol/vim-grand'
@@ -288,9 +288,16 @@ function! ApplyShellMappings()
   noremap <Leader>uc :let g:Dispatch='./runTests.sh <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
   noremap <Leader>uf :let g:Dispatch='./runTests.sh -m <c-r>=expand("<cword>")<cr> <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
   noremap <Leader>ua :let g:Dispatch='./runTests.sh' <bar> :Dispatch<CR>
+  nnoremap ,p echo "<c-r>0:'${<c-r>0}'"<ESC><CR>
 endfunction
 autocmd! FileType sh call ApplyShellMappings() " so we call it on-load per filetype
 
+" -- vimscript {{{2
+function! ApplyVimscriptMappings()
+   nnoremap ,p oechomsg "<c-r>0:'" . <c-r>0 . "'"<ESC><CR>
+endfunction
+autocmd! FileType vim call ApplyVimscriptMappings()
+autocmd! FileType vader call ApplyVimscriptMappings()
 
 " -- rust {{{2
 let g:LanguageClient_serverCommands = {
@@ -659,6 +666,7 @@ source ~/.vim/funcs.vim
 " EXPERIMENTAL {{{1
 "===============================================================================
 
+  
 
 " convert pdf file to vim-readable text using the 'pdftotext' command line tool
 " :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
