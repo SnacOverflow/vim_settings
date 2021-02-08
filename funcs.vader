@@ -6,6 +6,20 @@
 #
 # To run:
 # :Vader <file>
+Execute (fileSetup):
+  let g:ORIG_WD = getcwd()
+
+Before:
+  let g:TEMP_DIR = "tmpTest"
+  call mkdir(g:TEMP_DIR)
+
+
+After:
+  execute 'cd' g:ORIG_WD
+  call delete(g:TEMP_DIR, "rf")
+
+
+" diff {{{1
 
 # Test case
 Execute (should toggle whitespace in diff):
@@ -36,7 +50,48 @@ Execute (should cycle diff algorithms):
   call CycleDiffAlgorithms()
   AssertEqual "internal,filler,algorithm:myers", &diffopt
 
+" OpenOther {{{1
 
+Execute (Should open other file java):
+  execute 'cd' g:TEMP_DIR
+  let dirMain = "src/main/some/java"
+  let dirTest = "src/test/some/java"
+  let mainFile = dirMain . '/File.java'
+  let testFile = dirTest . '/FileTest.java'
+  call system('mkdir -p ' . dirMain . ' ' . dirTest)
+  call system('touch ' . mainFile . ' ' . testFile)
+
+  echomsg "LEBUG"
+
+  execute 'e' mainFile
+  AssertEqual mainFile, expand('%')
+
+  call OpenOther()
+  AssertEqual testFile, expand('%')
+
+  call OpenOther()
+  AssertEqual mainFile, expand('%')
+
+Execute (Should open other file bashbuilder):
+  execute 'cd' g:TEMP_DIR
+  let dirMain = "src/main/some/path"
+  let dirTest = "src/test/some/path"
+  let mainFile = dirMain . '/mainscript.sh'
+  let testFile = dirTest . '/test_mainscript.sh'
+  call system('mkdir -p ' . dirMain . ' ' . dirTest)
+  call system('touch ' . mainFile . ' ' . testFile)
+
+  execute 'e' mainFile
+  AssertEqual mainFile, expand('%')
+
+  call OpenOther()
+  AssertEqual testFile, expand('%')
+
+  call OpenOther()
+  AssertEqual mainFile, expand('%')
+
+
+" custom par {{{1
 Given:
   line 1
   line 2
@@ -113,3 +168,7 @@ Expect:
 " 7: 0
 " 8: 1
 
+" }}}
+
+
+" vim:fdm=marker

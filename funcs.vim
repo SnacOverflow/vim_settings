@@ -31,8 +31,7 @@ function! ToggleList(bufname, pfx)
 endfunction
 
 
-" }}}
-" [w ]w {{{
+" [w ]w {{{1
 " Move between tabs with [w ]w
 " copied basic [] implementation from vim-unimpaired
 function! s:MapNextFamily(map,cmd)
@@ -57,8 +56,7 @@ endfunction
 
 call s:MapNextFamily('w','tab')
 
-" }}}
-" diff {{{
+" diff {{{1
 
 " toggle diff mode in open split
 nnoremap <leader>d :ToggleDiff<CR>
@@ -99,7 +97,7 @@ function! CycleDiffAlgorithms()
     endif
 endfunction
 
-" Custom Par {{{
+" Custom Par {{{1
 
 function! CustomPar(start, end)
   let lines = getline(a:start, a:end) 
@@ -142,56 +140,65 @@ fu! GetLinesEndingInSlash(lines)
   return specialLines
 endfu
 
-" OpenOther {{{
+" OpenOther {{{1
 nnoremap ,t :call OpenOther()<CR>
 
 fu! OpenOther()
-    if &filetype == "java"
-        call OpenOtherJava()
-    elseif &filetype == "ruby"
-        call OpenOtherRuby()
-    elseif &filetype == "go"
-        :GoAlternate
-    endif
+  if &filetype == "java"
+    call OpenOtherOnSuffix("/main/", "/test/", "Test")
+  elseif &filetype == "sh"
+    call OpenOtherOnPrefix("/main/", "/test/", "test_")
+  endif
 endfu
 
-fu! OpenOtherJava()
-    let testSuffix = "Test.java"
-    let nonTestSuffix = ".java"
-    let mainDir = "/main/"
-    let testDir = "/test/"
+fu! OpenOtherOnPrefix(mainDirId, testDirId, testPrefix)
+  " Files & paths
+  let srcDir = GetRelativeFilePath()
+  let srcFile = expand('%:t')
 
-    " Files & paths
-    let relPath = GetRelativeFilePath()
-    let srcFile = expand('%:t')
+  " Change path
+  let targetPath = ""
+  if (stridx(srcDir, a:mainDirId) > -1)
+    let targetPath = substitute(srcDir, a:mainDirId, a:testDirId, "")
+  elseif (stridx( srcDir, a:testDirId) > -1)
+    let targetPath = substitute(srcDir, a:testDirId, a:mainDirId, "")
+  endif
 
-    " Change path
-    let targetPath = ""
-    if (stridx(relPath, mainDir) > -1)
-        let targetPath = substitute(relPath, mainDir, testDir, "")
-    elseif (stridx( relPath, testDir) > -1)
-        let targetPath = substitute(relPath, testDir, mainDir, "")
-    endif
+  " Change fileName
+  let targetFile = ""
+  if (stridx(srcFile, a:testPrefix) > -1)
+    let targetFile = substitute(srcFile, a:testPrefix, "", "")
+  else
+    let targetFile = a:testPrefix . srcFile
+  endif
 
-    " Change fileName
-    let targetFile = ""
-    if (stridx(srcFile, testSuffix) > -1)
-        let targetFile = substitute(srcFile, testSuffix, nonTestSuffix, "")
-    else
-        let targetFile = substitute(srcFile, nonTestSuffix, testSuffix, "")
-    endif
-
-    call OpenFileAtPath(targetFile, targetPath)
+  execute 'edit ' . targetPath . '/' . targetFile
 endfu
 
+fu! OpenOtherOnSuffix(mainDirId, testDirId, testSuffix)
+  " Files & paths
+  let srcDir = GetRelativeFilePath()
+  let srcFile = expand('%:t')
+  let extension = "." . expand('%:e')
 
-fu! OpenFileAtPath(fileName, path)
-    let completePath = a:path . '/' . a:fileName
-    if filereadable(completePath)
-        execute "edit " . completePath
-    " else
-    "     echomsg "File not found: " . completePath
-    endif
+  " Change path
+  let targetPath = ""
+  if (stridx(srcDir, a:mainDirId) > -1)
+    let targetPath = substitute(srcDir, a:mainDirId, a:testDirId, "")
+  elseif (stridx( srcDir, a:testDirId) > -1)
+    let targetPath = substitute(srcDir, a:testDirId, a:mainDirId, "")
+  endif
+
+  " Change fileName
+  let targetFile = ""
+  if (stridx(srcFile, a:testSuffix . extension) > -1)
+    let targetFile = substitute(srcFile, a:testSuffix . extension, extension, "")
+  else
+    let targetFile = substitute(srcFile, extension, a:testSuffix . extension, "")
+  endif
+
+  execute 'edit ' . targetPath . '/' . targetFile
+
 endfu
 
 
