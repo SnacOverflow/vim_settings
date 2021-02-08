@@ -197,7 +197,7 @@ let g:gutentags_ctags_tagfile=".tags"
        " \ 'bb': 'find ~/.bb/ -type f -executable',
 let g:gutentags_file_list_command = {
    \ 'markers': {
-       \ 'bb': 'git ls-files -- . ":!:old-*" ":!:bb"; ./bb listDeps',
+       \ 'bashbuilder': 'git ls-files -- . ":!:old-*" ":!:bashbuilder"; ./bashbuilder listDeps',
        \ },
    \ }
 
@@ -533,13 +533,13 @@ vnoremap ,/ :call SeachSelectedWordInCwd()<CR>
 
 fu! ReplaceCurrentWord(...)
   let l:currentWord = expand("<cword>")
-  let l:searchString = "\\<" . l:currentWord . "\\>" "add the word-boundries, as this searches for the selected word only
+  let l:searchString = "\\<" . EscapeForVimRegexp(l:currentWord) . "\\>" "add the word-boundries, as this searches for the selected word only
   call StageSearchAndReplaceInCommandWindow(l:searchString, l:currentWord, a:0 == 1 ? a:1 : "")
 endfu
 
 fu! ReplaceCurrentSelection(...)
   let l:selectedString = s:get_visual_selection()
-  call StageSearchAndReplaceInCommandWindow(l:selectedString, l:selectedString, a:0 == 1 ? a:1 : "")
+  call StageSearchAndReplaceInCommandWindow(EscapeForVimRegexp(l:selectedString), l:selectedString, a:0 == 1 ? a:1 : "")
 endfu
 
 " write a search and replace as provided in the command window, ready for the user to change and run it
@@ -555,27 +555,33 @@ endfu
 
 
 fu! SeachWordInCwd()
-  call SearchWord(expand("<cword>"))
+  call SearchWord(expand("<cword>"), 1)
 endfu
 
 fu! SeachSelectedWordInCwd()
-  call SearchWord(s:get_visual_selection())
+  call SearchWord(s:get_visual_selection(), 0)
 endfu
 
-fu! SearchWord(searchString)
+fu! SearchWord(searchString, fullWord)
   " so we don't ediit the grepprg in case someone was using it, the current
   " values are saved and restored
   let oldgrepprg = &grepprg
   let orig_grepformat = &grepformat
 
-  if exepath("rg") != ""
-      " Use the super-fast ripgrep for faster search
-      let &grepprg = "rg"
-      " TODO: Escape searchString?
-      let searchCmd = "silent grep! \"" . a:searchString . "\""
-  else
-      let searchCmd = "vimgrep /\\<" . a:searchString . "\\>/j **/*"
+
+  " TODO: This breaks saving from quickfix-reflector for some reason. Research
+  " if exepath("rg") != ""
+  "     " Use the super-fast ripgrep for faster search
+  "     let &grepprg = "rg"
+  "     " TODO: Escape searchString?
+  "     let searchCmd = "silent grep! \"" . a:searchString . "\""
+  " else
+  if a:fullWord == 1
+      let searchCmd = "vimgrep /\\<" . EscapeForVimRegexp(a:searchString) . "\\>/j **/*"
+    else
+      let searchCmd = "vimgrep /" . EscapeForVimRegexp(a:searchString) . "/j **/*"
   endif
+  " endif
 
   echomsg searchCmd
   execute searchCmd
@@ -584,6 +590,14 @@ fu! SearchWord(searchString)
   let &grepprg = oldgrepprg
   let &grepformat = orig_grepformat
 endfu
+
+" credit: https://stackoverflow.com/a/61517520/3968618
+function! EscapeForVimRegexp(str)
+  return escape(a:str, '^$.*?/\[]')
+endfunction
+function! EscapeForGNURegexp(str)
+  return escape(a:str, '^$.*?/\[]()' . '"' . "'")
+endfunction
 
 " credit: https://stackoverflow.com/a/6271254/3968618
 function! s:get_visual_selection()
