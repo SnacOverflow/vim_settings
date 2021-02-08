@@ -147,32 +147,34 @@ fu! OpenOther()
   if &filetype == "java"
     call OpenOtherOnSuffix("/main/", "/test/", "Test")
   elseif &filetype == "sh"
-    call OpenOtherOnPrefix("/main/", "/test/", "test_")
+    call OpenOtherOnPrefix("main", "test", "test_")
   endif
 endfu
 
 fu! OpenOtherOnPrefix(mainDirId, testDirId, testPrefix)
   " Files & paths
   let srcDir = GetRelativeFilePath()
-  let srcFile = expand('%:t')
+  let srcFileName = expand('%:t')
 
   " Change path
-  let targetPath = ""
-  if (stridx(srcDir, a:mainDirId) > -1)
-    let targetPath = substitute(srcDir, a:mainDirId, a:testDirId, "")
-  elseif (stridx( srcDir, a:testDirId) > -1)
-    let targetPath = substitute(srcDir, a:testDirId, a:mainDirId, "")
+  let targetPathItems = split(srcDir, '/')
+  let mainIdIndex = index(targetPathItems, a:mainDirId)
+  let testIdIndex = index(targetPathItems, a:testDirId)
+
+  if (mainIdIndex > -1)
+    let targetPathItems[mainIdIndex] = a:testDirId
+  elseif (testIdIndex > -1)
+    let targetPathItems[testIdIndex] = a:mainDirId
   endif
 
   " Change fileName
-  let targetFile = ""
-  if (stridx(srcFile, a:testPrefix) > -1)
-    let targetFile = substitute(srcFile, a:testPrefix, "", "")
+  if (srcFileName =~ "^" . a:testPrefix)
+    call add(targetPathItems, substitute(srcFileName, a:testPrefix, "", ""))
   else
-    let targetFile = a:testPrefix . srcFile
+    call add(targetPathItems, a:testPrefix . srcFileName)
   endif
 
-  execute 'edit ' . targetPath . '/' . targetFile
+  execute 'edit ' . join(targetPathItems, "/")
 endfu
 
 fu! OpenOtherOnSuffix(mainDirId, testDirId, testSuffix)

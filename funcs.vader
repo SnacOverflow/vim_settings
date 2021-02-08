@@ -61,8 +61,6 @@ Execute (Should open other file java):
   call system('mkdir -p ' . dirMain . ' ' . dirTest)
   call system('touch ' . mainFile . ' ' . testFile)
 
-  echomsg "LEBUG"
-
   execute 'e' mainFile
   AssertEqual mainFile, expand('%')
 
