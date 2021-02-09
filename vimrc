@@ -129,6 +129,120 @@ filetype plugin indent on    " required by Vundle
 call plug#end()
 
 
+" GENERAL {{{1
+"===============================================================================
+
+
+" ENVIRONMENT
+set nocompatible     " use vim defaults
+set nobackup         " do not keep a backup file
+set noswapfile       " don't want no swap-files either. Might disable if ever it causes problems for me. I'm a compulsive saver anyway.
+set visualbell t_vb= " turn off error beep/flash
+set visualbell       " turn off visual bell
+set hidden           " allow swapping to other buffer when unwritten
+
+set backspace=indent,eol,start " make that backspace key work the way it should (only in terminal)
+set mouse=a                    " Enable scrolling just in case I have my hands on the mouse accidentally
+set relativenumber             " Easier moving stuff around.
+
+set hlsearch        " highlight searches. Practical with * search (see mapleaders)
+
+set nostartofline   " CTRL-F etc will not go to the start of the line
+
+botright cwindow " Make cwindow always full width
+
+" UI
+set scrolloff=3           " keep 3 lines when scrolling
+set number                " show line numbers
+set ruler                 " show the current row and column
+set showcmd               " display incomplete commands
+set lbr                   " wrapping doesn't break words inbetween
+set nowrap                " default: no wrapping
+set wildmenu              " tab completion for help
+set wildmode=longest,list " make commanline completion work like bash
+
+
+" TEXT EDITING
+set nojoinspaces " Don't add a second space after a dot on reformatting
+set ai           " set auto-indenting on for programming
+set tabstop=2    " Uses 4 colums (spaces) for a tab
+set shiftwidth=2 "
+set expandtab    " use spaces in stead of tabs
+" set noexpandtab  " use tabs in stead of spaces
+" TRICK: use 'set et|retab' to convert all tabs to spaces or 'set noet|retab!' for the reverse
+
+
+" SEARCHING
+set incsearch       " do incremental searching
+set ignorecase      " ignore case when searching
+set smartcase       " no ignorecase if Uppercase char present
+
+" FILES
+syntax on          " turn syntax highlighting on by default
+filetype on        " detect type of file
+filetype indent on " load indent file for specific file type
+filetype plugin on " ?
+set autoread
+set autowrite
+
+let mapleader = "\<SPACE>"
+
+" switch to last buffer.
+noremap ,b :b#<CR>
+
+
+" Using the arrow-keys in the command-line navigates the command-history
+" filtered by the input text, CTRL-P does the same without filtering. Since I
+" don't want no arrow key-usage, make CTRL-P use the filtering too.
+cnoremap <C-p> <Up>
+
+" Removes quickfix buffer from showing up using :bnext and the like.
+autocmd FileType qf set nobuflisted
+
+" easyer window commands
+noremap <leader>w <C-W>
+noremap <leader>h <C-W>h
+noremap <leader>j <C-W>j
+noremap <leader>k <C-W>k
+noremap <leader>l <C-W>l
+
+noremap <C-h> zhzhzh
+noremap <C-j> <C-e><C-e>
+noremap <C-k> <C-y><C-y>
+noremap <C-l> zlzlzl
+
+inoremap <S-Tab> <C-d>
+
+" navigation those anoying wrapped lines like a human
+nmap j gj
+nmap k gk
+
+set wildignore=**/build/*,**/.git/*,*.class
+
+command! Lvimrc e ~/.vim/vimrc
+
+" STYLING {{{1
+"----------------------------------------
+
+set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
+set background=dark
+
+let g:tex_flavor = 'latex'
+let g:vimtex_compiler_method = "tectonic"
+let g:solarized_visibility = "high"
+let g:solarized_contrast = "high"
+" let g:solarized_termcolors= 256 "Guess I shouldn't use this one
+let g:solarized_termtrans = 1
+colorscheme solarized
+
+" Make sure gitgutter looks like the linenumber column
+highlight! link SignColumn LineNr
+
+" set guifont=Menlo\ Regular:h12
+set t_Co=256
+
+
+"}}}
 " PLUGIN CONFIG {{{1
 "===============================================================================
 
@@ -137,6 +251,9 @@ let NERDTreeWinSize = 50
 let NERDTreeBookmarksSort = 0
 let NERDTreeShowLineNumbers=1
 let NERDTreeHijackNetrw=1
+
+noremap <leader>n :NERDTreeToggle<CR>
+noremap <leader>N :NERDTreeFind<CR>
 
 " -- Dispatch {{{2
 " Run dispatch without arguments, assuming last command was run with FocusDispatch
@@ -148,7 +265,7 @@ function! AppendDispatch(args)
   let g:Dispatch=join(insert(split(g:Dispatch), a:args, 1))
   :Dispatch
 endfunction
-:command! -nargs=* AppendDispatch :call AppendDispatch(<q-args>)  "let g:Dispatch=g:Dispatch . " " . <q-args>  | :Dispatch
+command! -nargs=* AppendDispatch :call AppendDispatch(<q-args>)  "let g:Dispatch=g:Dispatch . " " . <q-args>  | :Dispatch
 
 
 " -- deoplete {{{2
@@ -165,10 +282,11 @@ if has("nvim")
 
 endif
 
-function! s:check_back_space() abort "{{{
+function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
-endfunction "}}}
+endfunction
+
 
 " -- LanguageClient  {{{2
 
@@ -217,7 +335,7 @@ nmap gu <Plug>GitGutterUndoHunk
 nmap [c <Plug>GitGutterPrevHunk
 nmap ]c <Plug>GitGutterNextHunk
 
-" -- Airline
+" -- Airline {{{2
 let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#hunks#enabled = 0  " show summary of git changes like: '+16 ~32 -6'
 let g:airline#extensions#wordcount#enabled = 0 " no need for wordcount. Not in school any more.
@@ -276,7 +394,14 @@ let g:airline_mode_map = {
     \ ''     : 'V',
     \ }
 
+" -- EasyMotion {{{2
+map <leader>s <Plug>(easymotion-s)
+map <leader>f <Plug>(easymotion-f)
+map <leader>F <Plug>(easymotion-F)
 
+
+" -- FZF {{{2
+noremap <leader>t :FZF<CR>
 
 " LANGUAGE CONFIG {{{1
 "===============================================================================
@@ -288,9 +413,10 @@ function! ApplyShellMappings()
   noremap <Leader>uc :let g:Dispatch='./runTests.sh <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
   noremap <Leader>uf :let g:Dispatch='./runTests.sh -m <c-r>=expand("<cword>")<cr> <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
   noremap <Leader>ua :let g:Dispatch='./runTests.sh' <bar> :Dispatch<CR>
-  nnoremap ,p echo "<c-r>0:'${<c-r>0}'"<ESC><CR>
+  nnoremap ,p oecho "<c-r>0:'${<c-r>0}'"<ESC><CR>
 endfunction
 autocmd! FileType sh call ApplyShellMappings() " so we call it on-load per filetype
+
 
 " -- vimscript {{{2
 function! ApplyVimscriptMappings()
@@ -364,135 +490,6 @@ function! AppleScriptFormat()
 endfunction
 
 
-" GENERAL {{{1
-"===============================================================================
-
-
-" ENVIRONMENT
-set nocompatible     " use vim defaults
-set nobackup         " do not keep a backup file
-set noswapfile       " don't want no swap-files either. Might disable if ever it causes problems for me. I'm a compulsive saver anyway.
-set visualbell t_vb= " turn off error beep/flash
-set visualbell       " turn off visual bell
-set hidden           " allow swapping to other buffer when unwritten
-
-set backspace=indent,eol,start " make that backspace key work the way it should (only in terminal)
-set mouse=a                    " Enable scrolling just in case I have my hands on the mouse accidentally
-set relativenumber             " Easier moving stuff around.
-
-set hlsearch        " highlight searches. Practical with * search (see mapleaders)
-
-set nostartofline   " CTRL-F etc will not go to the start of the line
-
-botright cwindow " Make cwindow always full width
-
-" UI
-set scrolloff=3           " keep 3 lines when scrolling
-set number                " show line numbers
-set ruler                 " show the current row and column
-set showcmd               " display incomplete commands
-set lbr                   " wrapping doesn't break words inbetween
-set nowrap                " default: no wrapping
-set wildmenu              " tab completion for help
-set wildmode=longest,list " make commanline completion work like bash
-
-
-" TEXT EDITING
-set nojoinspaces " Don't add a second space after a dot on reformatting
-set ai           " set auto-indenting on for programming
-set tabstop=2    " Uses 4 colums (spaces) for a tab
-set shiftwidth=2 "
-set expandtab    " use spaces in stead of tabs
-" set noexpandtab  " use tabs in stead of spaces
-" TRICK: use 'set et|retab' to convert all tabs to spaces or 'set noet|retab!' for the reverse
-
-
-" SEARCHING
-set incsearch       " do incremental searching
-set ignorecase      " ignore case when searching
-set smartcase       " no ignorecase if Uppercase char present
-
-" FILES
-syntax on          " turn syntax highlighting on by default
-filetype on        " detect type of file
-filetype indent on " load indent file for specific file type
-filetype plugin on " ?
-set autoread
-set autowrite
-
-let mapleader = "\<SPACE>"
-
-" switch to last buffer.
-noremap ,b :b#<CR>
-
-
-" Using the arrow-keys in the command-line navigates the command-history
-" filtered by the input text, CTRL-P does the same without filtering. Since I
-" don't want no arrow key-usage, make CTRL-P use the filtering too.
-cnoremap <C-p> <Up>
-
-" Removes quickfix buffer from showing up using :bnext and the like.
-autocmd FileType qf set nobuflisted
-
-
-" STYLING {{{1
-"----------------------------------------
-
-set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
-set background=dark
-
-let g:tex_flavor = 'latex'
-let g:vimtex_compiler_method = "tectonic"
-let g:solarized_visibility = "high"
-let g:solarized_contrast = "high"
-" let g:solarized_termcolors= 256 "Guess I shouldn't use this one
-let g:solarized_termtrans = 1
-colorscheme solarized
-
-" Make sure gitgutter looks like the linenumber column
-highlight! link SignColumn LineNr
-
-" set guifont=Menlo\ Regular:h12
-set t_Co=256
-
-
-"}}}
-" NAVIGATION {{{1
-"----------------------------------------
-map <leader>s <Plug>(easymotion-s)
-map <leader>f <Plug>(easymotion-f)
-map <leader>F <Plug>(easymotion-F)
-
-noremap <leader>t :FZF<CR>
-set wildignore=**/build/*,**/.git/*,*.class
-
-
-noremap <leader>n :NERDTreeToggle<CR>
-noremap <leader>N :NERDTreeFind<CR>
-
-command! Lvimrc e ~/.vim/vimrc
-
-
-" easyer window commands
-noremap <leader>w <C-W>
-noremap <leader>h <C-W>h
-noremap <leader>j <C-W>j
-noremap <leader>k <C-W>k
-noremap <leader>l <C-W>l
-
-noremap <C-h> zhzhzh
-noremap <C-j> <C-e><C-e>
-noremap <C-k> <C-y><C-y>
-noremap <C-l> zlzlzl
-
-inoremap <S-Tab> <C-d>
-
-" navigation those anoying wrapped lines like a human
-nmap j gj
-nmap k gk
-
-
-"}}}
 " CODING {{{1
 "----------------------------------------
 
