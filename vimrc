@@ -133,7 +133,7 @@ call plug#end()
 "===============================================================================
 
 
-" ENVIRONMENT
+" env {{{2
 set nocompatible     " use vim defaults
 set nobackup         " do not keep a backup file
 set noswapfile       " don't want no swap-files either. Might disable if ever it causes problems for me. I'm a compulsive saver anyway.
@@ -162,7 +162,7 @@ set wildmenu              " tab completion for help
 set wildmode=longest,list " make commanline completion work like bash
 
 
-" TEXT EDITING
+" Text Editing {{{2
 set nojoinspaces " Don't add a second space after a dot on reformatting
 set ai           " set auto-indenting on for programming
 set tabstop=2    " Uses 4 colums (spaces) for a tab
@@ -171,13 +171,16 @@ set expandtab    " use spaces in stead of tabs
 " set noexpandtab  " use tabs in stead of spaces
 " TRICK: use 'set et|retab' to convert all tabs to spaces or 'set noet|retab!' for the reverse
 
+" Removes quickfix buffer from showing up using :bnext and the like.
+autocmd FileType qf set nobuflisted
 
-" SEARCHING
+
+" Searching {{{2
 set incsearch       " do incremental searching
 set ignorecase      " ignore case when searching
 set smartcase       " no ignorecase if Uppercase char present
 
-" FILES
+" Files {{{2
 syntax on          " turn syntax highlighting on by default
 filetype on        " detect type of file
 filetype indent on " load indent file for specific file type
@@ -185,19 +188,18 @@ filetype plugin on " ?
 set autoread
 set autowrite
 
+" Mappings {{{2
+
 let mapleader = "\<SPACE>"
 
 " switch to last buffer.
 noremap ,b :b#<CR>
-
 
 " Using the arrow-keys in the command-line navigates the command-history
 " filtered by the input text, CTRL-P does the same without filtering. Since I
 " don't want no arrow key-usage, make CTRL-P use the filtering too.
 cnoremap <C-p> <Up>
 
-" Removes quickfix buffer from showing up using :bnext and the like.
-autocmd FileType qf set nobuflisted
 
 " easyer window commands
 noremap <leader>w <C-W>
@@ -206,10 +208,11 @@ noremap <leader>j <C-W>j
 noremap <leader>k <C-W>k
 noremap <leader>l <C-W>l
 
-noremap <C-h> zhzhzh
-noremap <C-j> <C-e><C-e>
-noremap <C-k> <C-y><C-y>
-noremap <C-l> zlzlzl
+" move up/down/left/right
+noremap <C-j> 3<C-e>
+noremap <C-k> 3<C-y>
+noremap <C-h> 10zh
+noremap <C-l> 10zl
 
 inoremap <S-Tab> <C-d>
 
@@ -221,7 +224,7 @@ set wildignore=**/build/*,**/.git/*,*.class
 
 command! Lvimrc e ~/.vim/vimrc
 
-" STYLING {{{1
+" Styling {{{2
 "----------------------------------------
 
 set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
@@ -329,11 +332,11 @@ let g:UltiSnipsExpandTrigger = "<c-l>"
 " -- GitGutter {{{2
 " Defaults like <leader>h I have mapped to left window already
 let g:gitgutter_map_keys = 0
-nmap gp <Plug>GitGutterPreviewHunk
-nmap ga <Plug>GitGutterStageHunk
-nmap gu <Plug>GitGutterUndoHunk
-nmap [c <Plug>GitGutterPrevHunk
-nmap ]c <Plug>GitGutterNextHunk
+" nmap gp <Plug>GitGutterPreviewHunk
+" nmap ga <Plug>GitGutterStageHunk
+" nmap gu <Plug>GitGutterUndoHunk
+" nmap [c <Plug>GitGutterPrevHunk
+" nmap ]c <Plug>GitGutterNextHunk
 
 " -- Airline {{{2
 let g:airline#extensions#branch#enabled = 0
