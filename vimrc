@@ -29,20 +29,21 @@ if has("nvim")
 endif
 
 " OTHER ENHANCEMENTS {{{2
-Plug 'tpope/vim-unimpaired'             " essential: group mappings to [ and ] for common functions
-Plug 'tpope/vim-surround'               " Essential: Surrounding text with (), {}, [] and more
-Plug 'tpope/vim-fugitive'               " Git intergration
-Plug 'airblade/vim-gitgutter'           " Shows the file's git-status in a gutter
-Plug 'tpope/vim-speeddating'            " CTRL-X and CTRL-A enhancements for dates etc
-Plug 'godlygeek/tabular'                " Easy table creation
-Plug 'tpope/vim-dispatch'               " Async task runner
-Plug 'stefandtw/quickfix-reflector.vim' " Allows modifying all searchresults in quickfix window
-Plug 'tpope/vim-vinegar'                " Netrw upgrader (contains '-' shortcut)
-Plug 'tpope/vim-eunuch'                 " Filesystem commands in vim like (:Rename or :Remove)
-Plug 'artnez/vim-wipeout'               " Removes empty buffers with :Wipe
-Plug 'tpope/vim-repeat'                 " Improves vim's dot command-repeating
-Plug 'vim-voom/VOoM'                    " Shows an index for the current file
-Plug 'sk1418/HowMuch'                   " Calculate slections
+Plug 'tpope/vim-unimpaired'               " essential: group mappings to [ and ] for common functions
+Plug 'tpope/vim-surround'                 " Essential: Surrounding text with (), {}, [] and more
+Plug 'tpope/vim-fugitive'                 " Git intergration
+Plug 'airblade/vim-gitgutter'             " Shows the file's git-status in a gutter
+Plug 'tpope/vim-speeddating'              " CTRL-X and CTRL-A enhancements for dates etc
+Plug 'godlygeek/tabular'                  " Easy table creation
+Plug 'tpope/vim-dispatch'                 " Async task runner
+Plug 'stefandtw/quickfix-reflector.vim'   " Allows modifying all searchresults in quickfix window
+Plug 'tpope/vim-vinegar'                  " Netrw upgrader (contains '-' shortcut)
+Plug 'tpope/vim-eunuch'                   " Filesystem commands in vim like (:Rename or :Remove)
+Plug 'artnez/vim-wipeout'                 " Removes empty buffers with :Wipe
+Plug 'tpope/vim-repeat'                   " Improves vim's dot command-repeating
+Plug 'vim-voom/VOoM'                      " Shows an index for the current file
+Plug 'sk1418/HowMuch'                     " Calculate slections
+Plug 'jeffkreeftmeijer/vim-numbertoggle'  " toggle absolute and relative line numbers, respecting active buffer.
 " Plug 'tpope/vim-dadbod'                 " Db access
 
 " CODING {{{2
