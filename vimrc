@@ -239,8 +239,6 @@ let g:solarized_contrast = "high"
 let g:solarized_termtrans = 1
 colorscheme solarized
 
-" Make sure gitgutter looks like the linenumber column
-highlight! link SignColumn LineNr
 
 " set guifont=Menlo\ Regular:h12
 set t_Co=256
@@ -333,6 +331,8 @@ let g:UltiSnipsExpandTrigger = "<c-l>"
 " -- GitGutter {{{2
 " Defaults like <leader>h I have mapped to left window already
 let g:gitgutter_map_keys = 0
+" Make sure gitgutter looks like the linenumber column
+highlight! link SignColumn LineNr
 " nmap gp <Plug>GitGutterPreviewHunk
 " nmap ga <Plug>GitGutterStageHunk
 " nmap gu <Plug>GitGutterUndoHunk
@@ -410,14 +410,32 @@ noremap <leader>t :FZF<CR>
 " LANGUAGE CONFIG {{{1
 "===============================================================================
 
+
+
 " -- bash {{{2
+fu! AddLogStatement(logTarget)
+  let currLine = line('.')
+  let indent = repeat(" ", indent(currLine))
+  if a:logTarget =~ '^\$'
+    let name = '\' . a:logTarget
+    let var = a:logTarget
+  else
+    let name = a:logTarget
+    let var = '$' . a:logTarget
+  endif
+  let line = indent . 'echo "' . name . '=' . var . '"'
+  call append(currLine, line)
+endfu
+
 function! ApplyShellMappings()
   " set g:Dispatch with the command first, so we can rerun by calling :Dispatch without arguments
   " <c-r>=   call vimscript by using the '=' buffer in the command
   noremap <Leader>uc :let g:Dispatch='./runTests.sh <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
   noremap <Leader>uf :let g:Dispatch='./runTests.sh -m <c-r>=expand("<cword>")<cr> <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
   noremap <Leader>ua :let g:Dispatch='./runTests.sh' <bar> :Dispatch<CR>
-  nnoremap ,p oecho "<c-r>0:'${<c-r>0}'"<ESC><CR>
+  nnoremap <Leader>pl :call AddLogStatement(@0)<CR>
+  nnoremap <Leader>pc :call AddLogStatement(expand("<cword>"))<CR>
+  " nnoremap ,p oecho "<c-r>0:'${<c-r>0}'"<ESC><CR>
 endfunction
 autocmd! FileType sh call ApplyShellMappings() " so we call it on-load per filetype
 
