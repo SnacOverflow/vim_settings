@@ -209,6 +209,91 @@ fu! GetRelativeFilePath()
     return substitute(fullPath, getcwd() . "/" , "", "")
 endfu
 
+" Refactoring {{{1
+
+fu! ReplaceCurrentWord(...)
+  let l:currentWord = expand("<cword>")
+  let l:searchString = "\\<" . EscapeForVimRegexp(l:currentWord) . "\\>" "add the word-boundries, as this searches for the selected word only
+  call StageSearchAndReplaceInCommandWindow(l:searchString, l:currentWord, a:0 == 1 ? a:1 : "")
+endfu
+
+fu! ReplaceCurrentSelection(...)
+  let l:selectedString = s:get_visual_selection()
+  call StageSearchAndReplaceInCommandWindow(EscapeForVimRegexp(l:selectedString), l:selectedString, a:0 == 1 ? a:1 : "")
+endfu
+
+" write a search and replace as provided in the command window, ready for the user to change and run it
+fu! StageSearchAndReplaceInCommandWindow(searchString, replacementString, target)
+  " open cmd-line window and change to insert mode
+  call feedkeys("q:i")
+  " write typical search and replace string '%s/search/replace/gc'
+  call feedkeys(a:target . "%s/" . a:searchString . "/" . a:replacementString . "/gc")
+  " exit insert mode, and go to the start of the replacement, ready for the user to change it
+  call feedkeys("\<Esc>2T/")
+endfu
+
+
+
+fu! SeachWordInCwd()
+  call SearchWord(expand("<cword>"), 1)
+endfu
+
+fu! SeachSelectedWordInCwd()
+  call SearchWord(s:get_visual_selection(), 0)
+endfu
+
+fu! SearchWord(searchString, fullWord)
+  " so we don't ediit the grepprg in case someone was using it, the current
+  " values are saved and restored
+  let oldgrepprg = &grepprg
+  let orig_grepformat = &grepformat
+
+
+  " TODO: This breaks saving from quickfix-reflector for some reason. Research
+  " if exepath("rg") != ""
+  "     " Use the super-fast ripgrep for faster search
+  "     let &grepprg = "rg"
+  "     " TODO: Escape searchString?
+  "     let searchCmd = "silent grep! \"" . a:searchString . "\""
+  " else
+  if a:fullWord == 1
+      let searchCmd = "vimgrep /\\<" . EscapeForVimRegexp(a:searchString) . "\\>/j **/*"
+    else
+      let searchCmd = "vimgrep /" . EscapeForVimRegexp(a:searchString) . "/j **/*"
+  endif
+  " endif
+
+  echomsg searchCmd
+  execute searchCmd
+  copen " open the results in the quickfix window
+
+  let &grepprg = oldgrepprg
+  let &grepformat = orig_grepformat
+endfu
+
+" credit: https://stackoverflow.com/a/61517520/3968618
+function! EscapeForVimRegexp(str)
+  return escape(a:str, '^$.*?/\[]')
+endfunction
+function! EscapeForGNURegexp(str)
+  return escape(a:str, '^$.*?/\[]()' . '"' . "'")
+endfunction
+
+" credit: https://stackoverflow.com/a/6271254/3968618
+function! s:get_visual_selection()
+    " Why is this not a built-in Vim script function?!
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+        return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
+endfunction
+
+
 " }}}
 
 " autocmd FileType markdown set formatexpr=CustomPar(v:lnum,v:lnum+v:count-1)
