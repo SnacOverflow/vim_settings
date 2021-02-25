@@ -258,16 +258,26 @@ noremap <leader>n :NERDTreeToggle<CR>
 noremap <leader>N :NERDTreeFind<CR>
 
 " -- Dispatch {{{2
-" Run dispatch without arguments, assuming last command was run with FocusDispatch
-noremap <Leader>ul :Dispatch<CR>
+" Run FocusDispatch and then Dispatch
+fu! ReDispatch(args)
+  let g:Dispatch=a:args " couldn't quickly figure out how to call FocusDispatch first
+  :Dispatch
+endfu
+
+command! -nargs=* -complete=customlist,dispatch#command_complete ReDispatch :call ReDispatch(<q-args>)
 
 " rerun Dispatch, but adding the provided arguments after the executable (at index 1)
-function! AppendDispatch(args)
-  " inject args at position 1
-  let g:Dispatch=join(insert(split(g:Dispatch), a:args, 1))
-  :Dispatch
+function! EditDispatch()
+  let [currentFocus, why] = dispatch#focus()
+  " open cmd-line window and change to insert mode
+  call feedkeys("q:i")
+  " add command setting g:Dispatch with the previous command inserted, and then running Dispatch
+  call feedkeys(substitute(currentFocus, ':Dispatch', ':ReDispatch', 'g'))
+  " " exit insert mode, and go to the start of the replacement, ready for the user to change it
+  call feedkeys("\<Esc>2T'W")
 endfunction
-command! -nargs=* AppendDispatch :call AppendDispatch(<q-args>)  "let g:Dispatch=g:Dispatch . " " . <q-args>  | :Dispatch
+
+command! EditDispatch :call EditDispatch()
 
 
 " -- deoplete {{{2
@@ -410,8 +420,6 @@ noremap <leader>t :FZF<CR>
 " LANGUAGE CONFIG {{{1
 "===============================================================================
 
-
-
 " -- bash {{{2
 fu! AddLogStatement(logTarget)
   let currLine = line('.')
@@ -430,9 +438,9 @@ endfu
 function! ApplyShellMappings()
   " set g:Dispatch with the command first, so we can rerun by calling :Dispatch without arguments
   " <c-r>=   call vimscript by using the '=' buffer in the command
-  noremap <Leader>uc :let g:Dispatch='./runTests.sh <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
-  noremap <Leader>uf :let g:Dispatch='./runTests.sh -m <c-r>=expand("<cword>")<cr> <c-r>=expand("%")<cr>' <bar> :Dispatch<CR>
-  noremap <Leader>ua :let g:Dispatch='./runTests.sh' <bar> :Dispatch<CR>
+  noremap <Leader>uc :ReDispatch ./runTests.sh <c-r>=expand("%")<cr><CR>
+  noremap <Leader>ua :ReDispatch ./runTests.sh -a <c-r>=expand("%")<cr><CR>
+  noremap <Leader>uf :ReDispatch ./runTests.sh -m <c-r>=expand("<cword>")<cr> <c-r>=expand("%")<cr><CR>
   nnoremap <Leader>pl :call AddLogStatement(@0)<CR>
   nnoremap <Leader>pc :call AddLogStatement(expand("<cword>"))<CR>
   " nnoremap ,p oecho "<c-r>0:'${<c-r>0}'"<ESC><CR>
@@ -603,6 +611,7 @@ source ~/.vim/funcs.vim
 
 " EXPERIMENTAL {{{1
 "===============================================================================
+
 
   
 
