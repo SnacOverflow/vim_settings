@@ -431,7 +431,7 @@ fu! AddLogStatement(logTarget)
     let name = a:logTarget
     let var = '$' . a:logTarget
   endif
-  let line = indent . 'echo "' . name . '=' . var . '"'
+  let line = indent . 'echo "' . name . ':' . var . '"'
   call append(currLine, line)
 endfu
 
