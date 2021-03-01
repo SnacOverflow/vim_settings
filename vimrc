@@ -259,6 +259,8 @@ noremap <leader>N :NERDTreeFind<CR>
 
 " -- Dispatch {{{2
 " Run FocusDispatch and then Dispatch
+noremap <Leader>ul :Dispatch<CR>
+
 fu! ReDispatch(args)
   let g:Dispatch=a:args " couldn't quickly figure out how to call FocusDispatch first
   :Dispatch
