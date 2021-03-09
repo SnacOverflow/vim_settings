@@ -250,21 +250,22 @@ fu! SearchWord(searchString, fullWord)
 
 
   " TODO: This breaks saving from quickfix-reflector for some reason. Research
-  " if exepath("rg") != ""
-  "     " Use the super-fast ripgrep for faster search
-  "     let &grepprg = "rg"
-  "     " TODO: Escape searchString?
-  "     let searchCmd = "silent grep! \"" . a:searchString . "\""
-  " else
-  if a:fullWord == 1
-      let searchCmd = "vimgrep /\\<" . EscapeForVimRegexp(a:searchString) . "\\>/j **/*"
+  if exepath("rg") != ""
+    let &grepprg = "rg --vimgrep"
+    let escapedSearchString = EscapeForGNURegexp(a:searchString)
+    let searchCmd = "grep " . escapedSearchString
+  else
+    let &grepprg='internal'
+    let escapedSearchString = EscapeForVimRegexp(a:searchString)
+    if a:fullWord == 1
+      let searchCmd = "grep /\\<" . escapedSearchString . "\\>/j **/*"
     else
-      let searchCmd = "vimgrep /" . EscapeForVimRegexp(a:searchString) . "/j **/*"
+      let searchCmd = "grep /" . escapedSearchString . "/j **/*"
+    endif
   endif
-  " endif
 
-  echomsg searchCmd
-  execute searchCmd
+  echomsg "searching:'" . searchCmd . "' using '" . &grepprg . "'"
+  execute 'silent ' . searchCmd
   copen " open the results in the quickfix window
 
   let &grepprg = oldgrepprg
