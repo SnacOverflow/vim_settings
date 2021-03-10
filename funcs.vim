@@ -249,18 +249,25 @@ fu! SearchWord(searchString, fullWord)
   let orig_grepformat = &grepformat
 
 
-  " TODO: This breaks saving from quickfix-reflector for some reason. Research
   if exepath("rg") != ""
-    let &grepprg = "rg --vimgrep"
+    if a:fullWord == 1
+      let &grepprg = "rg --vimgrep --word-regexp"
+    else
+      let &grepprg = "rg --vimgrep"
+    endif
+
+
     let escapedSearchString = EscapeForGNURegexp(a:searchString)
-    let searchCmd = "grep " . escapedSearchString
+    let searchCmd = "grep! " . escapedSearchString
+
+
   else
     let &grepprg='internal'
     let escapedSearchString = EscapeForVimRegexp(a:searchString)
     if a:fullWord == 1
-      let searchCmd = "grep /\\<" . escapedSearchString . "\\>/j **/*"
+      let searchCmd = "grep! /\\<" . escapedSearchString . "\\>/j **/*"
     else
-      let searchCmd = "grep /" . escapedSearchString . "/j **/*"
+      let searchCmd = "grep! /" . escapedSearchString . "/j **/*"
     endif
   endif
 
