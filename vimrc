@@ -133,7 +133,6 @@ call plug#end()
 " GENERAL {{{1
 "===============================================================================
 
-
 " env {{{2
 set nocompatible     " use vim defaults
 set nobackup         " do not keep a backup file
@@ -238,7 +237,9 @@ let g:solarized_contrast = "high"
 " let g:solarized_termcolors= 256 "Guess I shouldn't use this one
 let g:solarized_termtrans = 1
 colorscheme solarized
+hi! MatchParen cterm=NONE,bold gui=NONE,bold ctermbg=12 guibg=#839496 ctermfg=15 guifg=#fdf6e3
 
+" TODO: maybe tryout https://github.com/lifepillar/vim-solarized8 instead of 
 
 " set guifont=Menlo\ Regular:h12
 set t_Co=256
@@ -527,7 +528,8 @@ endfunction
 
 " Mapping for quick calculations
 " from http://vimcasts.org/episodes/simple-calculations-with-vims-expression-register/
-nnoremap Q 0yt=A<C-r>=<C-r>"<CR><Esc>
+" nnoremap Q 0yt=A<C-r>=<C-r>"<CR><Esc>
+nnoremap Q 0yt=f=lC<C-r>=<C-r>"<CR><Esc>
 
 
 
@@ -615,7 +617,19 @@ source ~/.vim/funcs.vim
 "===============================================================================
 
 
-  
+" from :h hex-editing
+" vim -b : edit binary using xxd-format!
+augroup Binary
+  au!
+  au BufReadPre  *.bin,*.jks let &bin=1
+  au BufReadPost *.bin,*.jks if &bin | %!xxd
+  au BufReadPost *.bin,*.jks set ft=xxd | endif
+  au BufWritePre *.bin,*.jks if &bin | %!xxd -r
+  au BufWritePre *.bin,*.jks endif
+  au BufWritePost *.bin,*.jks if &bin | %!xxd
+  au BufWritePost *.bin,*.jks set nomod | endif
+augroup END
+
 
 " convert pdf file to vim-readable text using the 'pdftotext' command line tool
 " :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
