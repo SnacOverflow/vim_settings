@@ -18,6 +18,7 @@ Plug 'scrooloose/nerdtree'      " Easy filesystem navigation
 " Plug 'Lokaltog/vim-easymotion'  " Direcly moving the cursor somewhere
 " fzf is a system fuzzy finder. This also installs it.
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Plug 'junegunn/fzf.vim'
 
 " STYLING & SYNTAX {{{2
 Plug 'altercation/vim-colors-solarized'
@@ -60,8 +61,6 @@ Plug 'editorconfig/editorconfig-vim'    " Support for reading config from .edito
 " Plug 'SirVer/ultisnips'               " Snippet integration. rearly used. Requires python
 if has("nvim")
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  " Plug 'neovim/nvim-lspconfig'
-  " Plug 'Shougo/deoplete-lsp'
 
   Plug 'autozimu/LanguageClient-neovim', {
       \ 'branch': 'next',
@@ -104,8 +103,9 @@ Plug 'vim-scripts/groovyindent-unix'    " indentation for groovy scripts
 " endif
 
 " -- rust {{{3
-" Plug 'rust-lang/rust.vim'
-" Plug 'racer-rust/vim-racer'
+" 1. install rustup https://rustup.rs/
+" 2. install language-server https://rust-analyzer.github.io/manual.html#rust-analyzer-language-server-binary
+" 3. should work now
 
 
 " -- latex {{{3
@@ -315,11 +315,11 @@ function! ApplyLanguageClientMappings()
 endfunction
 autocmd! FileType * call ApplyLanguageClientMappings() " so we call it on-load per filetype
 
-" let g:LanguageClient_semanticHighlightMaps = {
-"     \ 'rust': {
-"     \     'function': 'Type'
-"     \   }
-"     \ }
+let g:LanguageClient_semanticHighlightMaps = {
+    \ 'rust': {
+    \     'function': 'Type'
+    \   }
+    \ }
 
 
 " -- gutentags {{{2
@@ -419,9 +419,18 @@ map <leader>F <Plug>(easymotion-F)
 
 " -- FZF {{{2
 noremap <leader>t :FZF<CR>
+noremap <leader>b :Buffers<CR>
 
 " LANGUAGE CONFIG {{{1
 "===============================================================================
+
+let g:LanguageClient_serverCommands = {}
+
+" autocmd FileType groovy set commentstring=//%s
+" -- php {{{2
+" let g:LanguageClient_serverCommands['php'] = ['rust-analyzer']
+" have to try and fix, but could not run installer:
+" - https://github.com/felixfbecker/php-language-server
 
 " -- bash {{{2
 fu! AddLogStatement(logTarget)
@@ -459,12 +468,8 @@ autocmd! FileType vim call ApplyVimscriptMappings()
 autocmd! FileType vader call ApplyVimscriptMappings()
 
 " -- rust {{{2
-let g:LanguageClient_serverCommands = {
-\ 'rust': ['rust-analyzer'],
-\ }
-" with nvim-lspconfig
-" lua require('lspconfig').rust_analyzer.setup{}
-" autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
+let g:LanguageClient_serverCommands['rust'] = ['rust-analyzer']
+
 
 " -- kotlin {{{2
 autocmd FileType kotlin set tabstop=4
@@ -496,15 +501,6 @@ autocmd FileType markdown set commentstring=<!--%s-->
 autocmd BufNewFile,BufRead *.swift set filetype=swift
 
 " -- python {{{2
-
-let g:python3_host_prog = substitute(system('which python3.6'), '\n', '', 'g')
-
-if g:python3_host_prog == ""
-  let g:python3_host_prog = substitute(system('which python3'), '\n', '', 'g')
-endif
-if g:python3_host_prog == ""
-  let g:python3_host_prog = '/usr/bin/python3'
-endif
 
 
 " -- ruby {{{2
@@ -630,6 +626,7 @@ augroup Binary
   au BufWritePost *.bin,*.jks set nomod | endif
 augroup END
 
+nnoremap <silent> * :let @/= '\<' . expand('<cword>') . '\>' <bar> set hls <cr>
 
 " convert pdf file to vim-readable text using the 'pdftotext' command line tool
 " :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
