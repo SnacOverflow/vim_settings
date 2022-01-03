@@ -309,6 +309,9 @@ function! ApplyLanguageClientMappings()
   if has_key(g:LanguageClient_serverCommands, &filetype)
     nnoremap <silent> ,d :call LanguageClient#textDocument_hover()<CR>
     nnoremap <silent> ,i :call LanguageClient#textDocument_implementation()<CR>
+    nnoremap <silent> ,m : call LanguageClient_contextMenu()<CR>
+    nnoremap <silent> ,c : call LanguageClient#textDocument_codeAction()<CR>
+    nnoremap <silent> ,? : call LanguageClient#explainErrorAtPoint()<CR>
     nnoremap <silent> <C-]> :call LanguageClient#textDocument_definition()<CR>
     nnoremap <silent> <leader>rr :call LanguageClient#textDocument_rename()<CR>
   endif
