@@ -337,6 +337,11 @@ let g:gutentags_file_list_command = {
        \ },
    \ }
 
+" for bashbuilder stuff, add a '.gutctags' file this content:
+" --language-force=sh
+" --exclude=bashbuilder
+" --exclude=old-*
+
 " -- neomake {{{2
 autocmd! BufWritePost * Neomake
 let g:neomake_java_enabled_makers = ['gradle']
@@ -634,7 +639,6 @@ nnoremap <silent> * :let @/= '\<' . expand('<cword>') . '\>' <bar> set hls <cr>
 " convert pdf file to vim-readable text using the 'pdftotext' command line tool
 " :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> - |fmt -csw78
 :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk -layout <q-args> -
-
 
 "----------------------------------------------------------------
 " vim:fdm=marker
