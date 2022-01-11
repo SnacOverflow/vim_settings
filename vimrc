@@ -293,7 +293,7 @@ if has("nvim")
   inoremap <silent><expr> <C-Space>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
-      \ deoplete#mappings#manual_complete()
+      \ deoplete#manual_complete()
 
 endif
 
