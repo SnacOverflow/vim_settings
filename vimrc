@@ -66,6 +66,8 @@ if has("nvim")
       \ 'branch': 'next',
       \ 'do': 'bash install.sh',
       \ }
+  Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
+  Plug 'kristijanhusak/deoplete-phpactor' " configure phpactor to work with deoplete?
 endif
 
 
@@ -435,7 +437,16 @@ noremap <leader>b :Buffers<CR>
 let g:LanguageClient_serverCommands = {}
 
 " autocmd FileType groovy set commentstring=//%s
+
 " -- php {{{2
+augroup PhpactorMappings
+  au!
+  au FileType php nnoremap <silent> ,i :PhpactorGotoImplementations<CR>
+  au FileType php nnoremap <silent> ,m :PhpactorContextMenu<CR>
+  au FileType php nnoremap <silent> <C-]> :PhpactorGotoDefinition<CR>
+augroup END
+<
+
 " let g:LanguageClient_serverCommands['php'] = ['rust-analyzer']
 " have to try and fix, but could not run installer:
 " - https://github.com/felixfbecker/php-language-server
