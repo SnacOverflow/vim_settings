@@ -45,7 +45,6 @@ Plug 'tpope/vim-repeat'                   " Improves vim's dot command-repeating
 Plug 'vim-voom/VOoM'                      " Shows an index for the current file
 Plug 'sk1418/HowMuch'                     " Calculate slections
 Plug 'jeffkreeftmeijer/vim-numbertoggle'  " toggle absolute and relative line numbers, respecting active buffer.
-" Plug 'tpope/vim-dadbod'                 " Db access
 
 " CODING {{{2
 
@@ -57,19 +56,26 @@ Plug 'meonlol/vim-subvenient'           " TODO
 Plug 'ludovicchabant/vim-gutentags'     " Tags handling
 Plug 'vim-scripts/taglist.vim'          " tags overview window :TlistToggle
 Plug 'editorconfig/editorconfig-vim'    " Support for reading config from .editorconfig file
-" Plugin 'scrooloose/syntastic'         " Better support from other plugin
-" Plug 'SirVer/ultisnips'               " Snippet integration. rearly used. Requires python
-if has("nvim")
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-  Plug 'autozimu/LanguageClient-neovim', {
-      \ 'branch': 'next',
-      \ 'do': 'bash install.sh',
-      \ }
-  Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
-  Plug 'kristijanhusak/deoplete-phpactor' " configure phpactor to work with deoplete?
+" -- lanuage client {{{3
+if has("nvim")
+
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'williamboman/nvim-lsp-installer'
+
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/cmp-path'
+  Plug 'hrsh7th/cmp-cmdline'
+  Plug 'hrsh7th/nvim-cmp'
+
+  Plug 'hrsh7th/cmp-vsnip'
+  Plug 'hrsh7th/vim-vsnip'
+
+  set completeopt=menu,menuone,noselect
 endif
 
+" -- php {{{3
 
 " -- Vimscript {{{3
 Plug 'tpope/vim-scriptease'             " vim plugin writing improvements
@@ -285,46 +291,149 @@ endfunction
 command! EditDispatch :call EditDispatch()
 
 
-" -- deoplete {{{2
+
+" -- lanuage-client  {{{2
+
+" function! ApplyLanguageClientMappings()
+"   if has_key(g:LanguageClient_serverCommands, &filetype)
+"     nnoremap <silent> ,d :call LanguageClient#textDocument_hover()<CR>
+"     nnoremap <silent> ,i :call LanguageClient#textDocument_implementation()<CR>
+"     nnoremap <silent> ,m : call LanguageClient_contextMenu()<CR>
+"     nnoremap <silent> ,c : call LanguageClient#textDocument_codeAction()<CR>
+"     nnoremap <silent> ,? : call LanguageClient#explainErrorAtPoint()<CR>
+"     nnoremap <silent> <C-]> :call LanguageClient#textDocument_definition()<CR>
+"     nnoremap <silent> <leader>rr :call LanguageClient#textDocument_rename()<CR>
+"   endif
+" endfunction
+" autocmd! FileType * call ApplyLanguageClientMappings() " so we call it on-load per filetype
+
 if has("nvim")
-  let g:deoplete#enable_at_startup = 1
-  " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-  " inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-d>"
-  call deoplete#custom#option('smart_case', v:true)
 
-  inoremap <silent><expr> <C-Space>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ deoplete#manual_complete()
+lua <<EOF
 
+
+require("nvim-lsp-installer").setup({
+    ensure_installed = { "rust_analyzer", "sumneko_lua" }, -- ensure these servers are always installed
+    automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
+    ui = {
+        icons = {
+            server_installed = "✓",
+            server_pending = "➜",
+            server_uninstalled = "✗"
+        }
+    }
+})
+
+  -- Setup nvim-cmp.
+local cmp = require("cmp")
+
+cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+    end,
+},
+  window = {
+    -- completion = cmp.config.window.bordered(),
+    -- documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' }, -- For vsnip users.
+    -- { name = 'luasnip' }, -- For luasnip users.
+    -- { name = 'ultisnips' }, -- For ultisnips users.
+    -- { name = 'snippy' }, -- For snippy users.
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-- Set configuration for specific filetype.
+cmp.setup.filetype('gitcommit', {
+  sources = cmp.config.sources({
+    { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+
+local opts = { noremap=true, silent=true }
+vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', ',d', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', ',p', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
+
+-- Setup lspconfig.
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+-- make sure phpactor is in the path. Eg: PATH="$PATH:$HOME/.vim/bundle/phpactor/bin"
+local servers = { 'phpactor', 'rust_analyzer', 'tsserver' }
+
+for _, lsp in pairs(servers) do
+  require('lspconfig')[lsp].setup {
+    capabilities = capabilities,
+    on_attach = on_attach
+  }
+end
+
+-- require('lspconfig/quick_lint_js').setup {}
+
+EOF
+
+" luafile 'lua/extended_config.lua'
 endif
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-
-" -- LanguageClient  {{{2
-
-function! ApplyLanguageClientMappings()
-  if has_key(g:LanguageClient_serverCommands, &filetype)
-    nnoremap <silent> ,d :call LanguageClient#textDocument_hover()<CR>
-    nnoremap <silent> ,i :call LanguageClient#textDocument_implementation()<CR>
-    nnoremap <silent> ,m : call LanguageClient_contextMenu()<CR>
-    nnoremap <silent> ,c : call LanguageClient#textDocument_codeAction()<CR>
-    nnoremap <silent> ,? : call LanguageClient#explainErrorAtPoint()<CR>
-    nnoremap <silent> <C-]> :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <silent> <leader>rr :call LanguageClient#textDocument_rename()<CR>
-  endif
-endfunction
-autocmd! FileType * call ApplyLanguageClientMappings() " so we call it on-load per filetype
-
-let g:LanguageClient_semanticHighlightMaps = {
-    \ 'rust': {
-    \     'function': 'Type'
-    \   }
-    \ }
 
 
 " -- gutentags {{{2
@@ -434,9 +543,6 @@ noremap <leader>b :Buffers<CR>
 " LANGUAGE CONFIG {{{1
 "===============================================================================
 
-let g:LanguageClient_serverCommands = {}
-
-" autocmd FileType groovy set commentstring=//%s
 
 " -- php {{{2
 augroup PhpactorMappings
@@ -486,9 +592,6 @@ endfunction
 autocmd! FileType vim call ApplyVimscriptMappings()
 autocmd! FileType vader call ApplyVimscriptMappings()
 
-" -- rust {{{2
-let g:LanguageClient_serverCommands['rust'] = ['rust-analyzer']
-
 
 " -- kotlin {{{2
 autocmd FileType kotlin set tabstop=4
@@ -519,17 +622,6 @@ autocmd FileType markdown set commentstring=<!--%s-->
 " -- swift {{{2
 autocmd BufNewFile,BufRead *.swift set filetype=swift
 
-" -- python {{{2
-
-
-" -- ruby {{{2
-" see: https://github.com/vim-ruby/vim-ruby/blob/master/doc/ft-ruby-omni.txt
-" let g:rubycomplete_buffer_loading = 1
-" let g:rubycomplete_classes_in_global = 1
-
-" -- javascript {{{2
-" let g:tern#command = ["tern"]
-" let g:tern#arguments = ["--persistent"]
 
 " -- Applescript {{{2
 command! Asformat call AppleScriptFormat()
