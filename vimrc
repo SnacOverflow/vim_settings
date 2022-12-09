@@ -411,15 +411,15 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>r,', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
 -- Setup lspconfig.
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
--- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
 -- make sure phpactor is in the path. Eg: PATH="$PATH:$HOME/.vim/bundle/phpactor/bin"
-local servers = { 'phpactor', 'rust_analyzer', 'tsserver' }
+-- :LspInstallInfo
+local servers = { 'phpactor', 'rust_analyzer', 'tsserver', 'jdtls', 'kotlin_language_server', 'bashls' }
 
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
@@ -723,6 +723,18 @@ source ~/.vim/funcs.vim
 " EXPERIMENTAL {{{1
 "===============================================================================
 
+
+fu! JiraCreate()
+  read ~/.vim/templates/ticket.jira
+  setf jira
+endfu
+
+command! JiraCreate call JiraCreate()
+
+
+augroup filetypedetect
+  au BufNewFile,BufRead *.jira			setf jira
+augroup END
 
 " from :h hex-editing
 " vim -b : edit binary using xxd-format!
