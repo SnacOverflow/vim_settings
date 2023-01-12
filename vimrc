@@ -252,6 +252,7 @@ hi! MatchParen cterm=NONE,bold gui=NONE,bold ctermbg=12 guibg=#839496 ctermfg=15
 " set guifont=Menlo\ Regular:h12
 set t_Co=256
 
+au TextYankPost * silent! lua vim.highlight.on_yank()
 
 "}}}
 " PLUGIN CONFIG {{{1
