@@ -15,10 +15,9 @@ Plug 'gmarik/Vundle.vim' " required. Plugin management using Vundle
 Plug 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
 
 Plug 'scrooloose/nerdtree'      " Easy filesystem navigation
-" Plug 'Lokaltog/vim-easymotion'  " Direcly moving the cursor somewhere
+Plug 'Lokaltog/vim-easymotion'  " Direcly moving the cursor somewhere
 " fzf is a system fuzzy finder. This also installs it.
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Plug 'junegunn/fzf.vim'
 
 " STYLING & SYNTAX {{{2
 Plug 'altercation/vim-colors-solarized'
@@ -532,9 +531,10 @@ let g:airline_mode_map = {
     \ }
 
 " -- EasyMotion {{{2
-map <leader>s <Plug>(easymotion-s)
-map <leader>f <Plug>(easymotion-f)
-map <leader>F <Plug>(easymotion-F)
+map <Leader> <Plug>(easymotion-prefix)
+" map <leader>s <Plug>(easymotion-s)
+" map <leader>f <Plug>(easymotion-f)
+" map <leader>F <Plug>(easymotion-F)
 
 
 " -- FZF {{{2
