@@ -233,16 +233,26 @@ fu! StageSearchAndReplaceInCommandWindow(searchString, replacementString, target
 endfu
 
 
+command! -nargs=? FindInFile call FindInFile('<args>')
+command! -nargs=? FindInFile call FindInFile('<args>')
+
+fu! Find(...)
+  call SearchWord(a:1, 0, '*')
+endfu
+
+fu! FindInFile(...)
+  call SearchWord(a:1, 0, expand('%:.'))
+endfu
 
 fu! SeachWordInCwd()
-  call SearchWord(expand("<cword>"), 1)
+  call SearchWord(expand("<cword>"), 1, "*")
 endfu
 
 fu! SeachSelectedWordInCwd()
-  call SearchWord(s:get_visual_selection(), 0)
+  call SearchWord(s:get_visual_selection(), 0, "*")
 endfu
 
-fu! SearchWord(searchString, fullWord)
+fu! SearchWord(searchString, fullWord, location)
   " so we don't ediit the grepprg in case someone was using it, the current
   " values are saved and restored
   let oldgrepprg = &grepprg
@@ -258,16 +268,16 @@ fu! SearchWord(searchString, fullWord)
 
 
     let escapedSearchString = EscapeForGNURegexp(a:searchString)
-    let searchCmd = "grep! " . escapedSearchString
+    let searchCmd = "grep! " . escapedSearchString . " " . a:location
 
 
   else
     let &grepprg='internal'
     let escapedSearchString = EscapeForVimRegexp(a:searchString)
     if a:fullWord == 1
-      let searchCmd = "grep! /\\<" . escapedSearchString . "\\>/j **/*"
+      let searchCmd = "grep! /\\<" . escapedSearchString . "\\>/j " . a:location
     else
-      let searchCmd = "grep! /" . escapedSearchString . "/j **/*"
+      let searchCmd = "grep! /" . escapedSearchString . "/j " . a:location
     endif
   endif
 
