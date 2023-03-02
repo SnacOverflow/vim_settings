@@ -205,7 +205,8 @@ noremap ,b :b#<CR>
 " Using the arrow-keys in the command-line navigates the command-history
 " filtered by the input text, CTRL-P does the same without filtering. Since I
 " don't want no arrow key-usage, make CTRL-P use the filtering too.
-cnoremap <C-p> <Up>
+cnoremap <A-p> <Up>
+cnoremap <A-n> <Down>
 
 
 " easyer window commands
