@@ -227,6 +227,8 @@ inoremap <S-Tab> <C-d>
 " navigation those anoying wrapped lines like a human
 nmap j gj
 nmap k gk
+nmap 0 g0
+nmap E gE
 
 set wildignore=**/build/*,**/.git/*,*.class
 
