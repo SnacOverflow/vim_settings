@@ -318,8 +318,42 @@ endfunction
 
 " }}}
 
-" autocmd FileType markdown set formatexpr=CustomPar(v:lnum,v:lnum+v:count-1)
+fu! AssertSystemProgramAvailable(name)
+  if substitute(system('which ' . a:name), '\n', '', 'g') == ""
+    throw "The program '" . a:name . "' is required to run this function. Please install it first."
+  endif
+endfu
 
+" Render the current markdown file to html using pandoc
+"
+" Will create a temp file that will be reused when running the command
+" multiple times, so you can refresh the file in the browser you have open.
+fu! MdRender()
+  let srcFile = expand('%:p')
+
+  " create a temp html file, and save it so we can update it
+  if !exists('b:mdTmpOut')
+    let l:mdTmpOut = tempname() . ".html"
+  else
+    let l:mdTmpOut = b:mdTmpOut
+  endif
+
+  call AssertSystemProgramAvailable('pandoc')
+  call system('pandoc ' . srcFile . ' -o ' . l:mdTmpOut)
+
+  if !exists('b:mdTmpOut')
+    let b:mdTmpOut = l:mdTmpOut
+    echo system('xdg-open ' . l:mdTmpOut)
+    echo "Rendered html to " . l:mdTmpOut . " and opened it in the browser."
+  else
+    echo "Updated html in file " . l:mdTmpOut
+  endif
+endfu
+
+command! MdRender call MdRender()
+
+
+" autocmd FileType markdown set formatexpr=CustomPar(v:lnum,v:lnum+v:count-1)
 
 "----------------------------------------------------------------
 " vim:fdm=marker
