@@ -237,7 +237,7 @@ command! Lvimrc e ~/.vim/vimrc
 " Styling {{{2
 "----------------------------------------
 
-set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:·
+set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:␣
 set background=dark
 
 let g:tex_flavor = 'latex'
