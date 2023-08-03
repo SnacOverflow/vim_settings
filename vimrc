@@ -475,7 +475,7 @@ highlight! link SignColumn LineNr
 " nmap ]c <Plug>GitGutterNextHunk
 
 " -- Airline {{{2
-let g:airline#extensions#branch#enabled = 0
+" let g:airline#extensions#branch#enabled = 0
 let g:airline#extensions#hunks#enabled = 0  " show summary of git changes like: '+16 ~32 -6'
 let g:airline#extensions#wordcount#enabled = 0 " no need for wordcount. Not in school any more.
 
