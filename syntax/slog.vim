@@ -26,13 +26,13 @@
 " Speech
 " syn match       odpBackend          "Speech\.DM"
 " hi def link     odpBackend          Underlined
-syn match       nbestResultText     "recognizedString=\".\{-}\""
-hi def link     nbestResultText     Todo
-syn match       nbestResultConf     "confidence=\d*"
-hi def link     nbestResultConf     Todo
-syn match       nbestResultWord     "NBestList"
-hi def link     nbestResultWord     Function
-syn region      nbestResult         start="SpeechRecognitionDSIListenerFacade#updateNBestList" end="$" contains=nbestResultText,nbestResultWord,nbestResultConf
+" syn match       nbestResultText     "recognizedString=\".\{-}\""
+" hi def link     nbestResultText     Todo
+" syn match       nbestResultConf     "confidence=\d*"
+" hi def link     nbestResultConf     Todo
+" syn match       nbestResultWord     "NBestList"
+" hi def link     nbestResultWord     Function
+" syn region      nbestResult         start="SpeechRecognitionDSIListenerFacade#updateNBestList" end="$" contains=nbestResultText,nbestResultWord,nbestResultConf
 
 
 

@@ -727,6 +727,12 @@ source ~/.vim/funcs.vim
 " EXPERIMENTAL {{{1
 "===============================================================================
 
+augroup slog
+    autocmd!
+
+    autocmd BufRead,BufNewFile *.slog		set filetype=slog
+    autocmd BufRead,BufNewFile *.log		set filetype=text
+augroup END
 
 fu! JiraCreate()
   read ~/.vim/templates/ticket.jira
