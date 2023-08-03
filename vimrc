@@ -227,8 +227,8 @@ inoremap <S-Tab> <C-d>
 " navigation those anoying wrapped lines like a human
 nmap j gj
 nmap k gk
-nmap 0 g0
-nmap E gE
+" nmap 0 g0 " g0 does not have the same function as 0 (jumps to different place)
+" nmap E gE " this makes moving left and right weird.
 
 set wildignore=**/build/*,**/.git/*,*.class
 
