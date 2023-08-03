@@ -60,7 +60,8 @@ Plug 'editorconfig/editorconfig-vim'    " Support for reading config from .edito
 if has("nvim")
 
   Plug 'neovim/nvim-lspconfig'
-  Plug 'williamboman/nvim-lsp-installer'
+  Plug 'williamboman/mason.nvim'
+  Plug 'williamboman/mason-lspconfig.nvim'
 
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-buffer'
@@ -314,17 +315,16 @@ if has("nvim")
 lua <<EOF
 
 
-require("nvim-lsp-installer").setup({
-    ensure_installed = { "rust_analyzer", "sumneko_lua" }, -- ensure these servers are always installed
-    automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
-    ui = {
-        icons = {
-            server_installed = "✓",
-            server_pending = "➜",
-            server_uninstalled = "✗"
-        }
+require("mason").setup {
+  ui = {
+    icons = {
+      package_installed = "✓"
     }
-})
+  }
+}
+
+require("mason-lspconfig").setup {
+}
 
   -- Setup nvim-cmp.
 local cmp = require("cmp")
@@ -422,7 +422,7 @@ end
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 -- make sure phpactor is in the path. Eg: PATH="$PATH:$HOME/.vim/bundle/phpactor/bin"
 -- :LspInstallInfo
-local servers = { 'phpactor', 'rust_analyzer', 'tsserver', 'jdtls', 'kotlin_language_server', 'bashls' }
+local servers = { 'phpactor', 'rust_analyzer', 'tsserver', 'jdtls', 'bashls' } -- 'kotlin_language_server', 
 
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
@@ -436,6 +436,7 @@ end
 EOF
 
 " luafile 'lua/extended_config.lua'
+
 endif
 
 
@@ -740,7 +741,6 @@ fu! JiraCreate()
 endfu
 
 command! JiraCreate call JiraCreate()
-
 
 augroup filetypedetect
   au BufNewFile,BufRead *.jira			setf jira
