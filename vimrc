@@ -11,7 +11,7 @@ filetype off                      " required by Vundle
 call plug#begin('~/.vim/bundle')
 
 " ENVIRONMENT {{{2
-Plug 'gmarik/Vundle.vim' " required. Plugin management using Vundle
+Plug 'junegunn/vim-plug' " Plugin management using vim-plug installed above, but this adds the docs
 Plug 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
 
 Plug 'scrooloose/nerdtree'      " Easy filesystem navigation
@@ -423,7 +423,8 @@ end
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 -- make sure phpactor is in the path. Eg: PATH="$PATH:$HOME/.vim/bundle/phpactor/bin"
 -- :LspInstallInfo
-local servers = { 'phpactor', 'rust_analyzer', 'tsserver', 'jdtls', 'bashls' } -- 'kotlin_language_server', 
+local servers = { 'phpactor', 'rust_analyzer', 'tsserver', 'jdtls', 'bashls' }
+-- 'kotlin_language_server' -- disabled because slow
 
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
@@ -445,8 +446,6 @@ endif
 set tags+=.tags    " I want to use hidden tags files
 let g:gutentags_ctags_tagfile=".tags"
 
-       " \ 'bb': 'git ls-files -- . ":!:old-*" ":!:bb"; ./bb listDeps',
-       " \ 'bb': 'find ~/.bb/ -type f -executable',
 let g:gutentags_file_list_command = {
    \ 'markers': {
        \ 'bashbuilder': 'git ls-files -- . ":!:old-*" ":!:bashbuilder"; ./bashbuilder listDeps',
