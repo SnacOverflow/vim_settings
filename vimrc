@@ -468,12 +468,11 @@ let g:UltiSnipsExpandTrigger = "<c-l>"
 " Defaults like <leader>h I have mapped to left window already
 let g:gitgutter_map_keys = 0
 " Make sure gitgutter looks like the linenumber column
-highlight! link SignColumn LineNr
-" nmap gp <Plug>GitGutterPreviewHunk
-" nmap ga <Plug>GitGutterStageHunk
-" nmap gu <Plug>GitGutterUndoHunk
-" nmap [c <Plug>GitGutterPrevHunk
-" nmap ]c <Plug>GitGutterNextHunk
+nmap gp <Plug>(GitGutterPreviewHunk)
+nmap ga <Plug>(GitGutterStageHunk)
+nmap gu <Plug>(GitGutterUndoHunk)
+nmap [g <Plug>(GitGutterPrevHunk)
+nmap ]g <Plug>(GitGutterNextHunk)
 
 " -- Airline {{{2
 " let g:airline#extensions#branch#enabled = 0
