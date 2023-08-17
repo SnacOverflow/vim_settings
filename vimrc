@@ -17,7 +17,8 @@ Plug 'sjl/vitality.vim'  " Improvements for tmux (autofocus event + cursor)
 Plug 'scrooloose/nerdtree'      " Easy filesystem navigation
 Plug 'Lokaltog/vim-easymotion'  " Direcly moving the cursor somewhere
 " fzf is a system fuzzy finder. This also installs it.
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " STYLING & SYNTAX {{{2
 Plug 'vim-scripts/MultipleSearch'
