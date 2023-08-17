@@ -20,12 +20,14 @@ Plug 'Lokaltog/vim-easymotion'  " Direcly moving the cursor somewhere
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
 " STYLING & SYNTAX {{{2
-Plug 'altercation/vim-colors-solarized'
 Plug 'vim-scripts/MultipleSearch'
 " Plug 'endel/vim-github-colorscheme'   " colorscheme based on githubs syntax highlighting
 if has("nvim")
+  Plug 'lifepillar/vim-solarized8'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
+else
+  Plug 'altercation/vim-colors-solarized'
 endif
 
 " OTHER ENHANCEMENTS {{{2
@@ -239,21 +241,20 @@ command! Lvimrc e ~/.vim/vimrc
 "----------------------------------------
 
 set listchars=tab:▸\ ,eol:¬,trail:·,nbsp:␣
-set background=dark
+set background=dark " can use 'yob' to switch to 'light'
 
 let g:tex_flavor = 'latex'
 let g:vimtex_compiler_method = "tectonic"
-let g:solarized_visibility = "high"
-let g:solarized_contrast = "high"
-" let g:solarized_termcolors= 256 "Guess I shouldn't use this one
-let g:solarized_termtrans = 1
-colorscheme solarized
-hi! MatchParen cterm=NONE,bold gui=NONE,bold ctermbg=12 guibg=#839496 ctermfg=15 guifg=#fdf6e3
-
-" TODO: maybe tryout https://github.com/lifepillar/vim-solarized8 instead of 
-
-" set guifont=Menlo\ Regular:h12
-set t_Co=256
+if has("nvim")
+  set termguicolors
+  colorscheme solarized8
+else
+  let g:solarized_visibility = "high"
+  let g:solarized_contrast = "high"
+  colorscheme solarized
+  set t_Co=256
+  " hi! MatchParen cterm=NONE,bold gui=NONE,bold ctermbg=12 guibg=#839496 ctermfg=15 guifg=#fdf6e3
+endif
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
@@ -475,63 +476,12 @@ nmap [g <Plug>(GitGutterPrevHunk)
 nmap ]g <Plug>(GitGutterNextHunk)
 
 " -- Airline {{{2
-" let g:airline#extensions#branch#enabled = 0
-let g:airline#extensions#hunks#enabled = 0  " show summary of git changes like: '+16 ~32 -6'
-let g:airline#extensions#wordcount#enabled = 0 " no need for wordcount. Not in school any more.
-
-let g:airline#extensions#whitespace#trailing_format = '·%s'
-" let g:airline#extensions#whitespace#mixed_indent_format = '%s▸'
-let g:airline#extensions#whitespace#mixed_indent_file_format = '▸%s'
+let g:airline#extensions#hunks#enabled = 0  " hide summary of git changes like: '+16 ~32 -6'
+let g:airline_powerline_fonts = 1
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tab_count = 0 " for example: 'tab 1/2' in top left
-let g:airline#extensions#tabline#show_splits = 0 " show names of splits at the right
-let g:airline#extensions#tabline#show_buffers = 0 " Show buffers if no tabs available
-let g:airline#extensions#tabline#show_tab_nr = 0 " don't show number of splits on tab
-let g:airline#extensions#tabline#show_tab_type = 0 " only show tabs, so don't print 'tabs'/'buffers'
-let g:airline#extensions#tabline#show_close_button = 0
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline_theme='solarized'
-set laststatus=2    " always show, not just with when the view is split
-
-let g:airline#extensions#tabline#tabtitle_formatter = 'AirlineTablineCurrentBuffer'
-" copied from docs. This used to be the default?
-function! AirlineTablineCurrentBuffer(n)
-  let buflist = tabpagebuflist(a:n)
-  let winnr = tabpagewinnr(a:n)
-  let bufnr = buflist[winnr - 1]
-  let winid = win_getid(winnr, a:n)
-  let title = bufname(bufnr)
-
-  if empty(title)
-    let title = '[No Name]'
-  endif
-
-  return title
-endfunction
-
-
-" Displays the current mode, but shorter than the default
-let g:airline_mode_map = {
-    \ '__'     : '-',
-    \ 'c'      : 'C',
-    \ 'i'      : 'I',
-    \ 'ic'     : 'I',
-    \ 'ix'     : 'I',
-    \ 'n'      : 'N',
-    \ 'multi'  : 'M',
-    \ 'ni'     : 'N',
-    \ 'no'     : 'N',
-    \ 'R'      : 'R',
-    \ 'Rv'     : 'R',
-    \ 's'      : 'S',
-    \ 'S'      : 'S',
-    \ ''     : 'S',
-    \ 't'      : 'T',
-    \ 'v'      : 'V',
-    \ 'V'      : 'V',
-    \ ''     : 'V',
-    \ }
 
 " -- EasyMotion {{{2
 map <Leader> <Plug>(easymotion-prefix)
