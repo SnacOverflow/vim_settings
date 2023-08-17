@@ -480,6 +480,8 @@ let g:airline_powerline_fonts = 1
 
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tab_count = 0 " for example: 'tab 1/2' in top left
+let g:airline#extensions#tabline#show_buffers = 0 " Show buffers if no tabs available
+let g:airline#extensions#tabline#show_tab_nr = 0 " don't show number of splits on tab (usually 1 or 2)
 let g:airline_theme='solarized'
 
 " -- EasyMotion {{{2
