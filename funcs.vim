@@ -352,6 +352,25 @@ endfu
 
 command! MdRender call MdRender()
 
+" copied from fzf.vim/.../vim.vim -> s:get_git_root
+function! GetGitRoot()
+  let dir = substitute(split(expand('%:p:h'), '[/\\]\.git\([/\\]\|$\)')[0], '^fugitive://', '', '')
+  let root = systemlist('git -C ' . fzf#shellescape(dir) . ' rev-parse --show-toplevel')[0]
+  return v:shell_error ? '' : (root)
+endfunction
+
+" The fzf.vim plugin has 2 commands :Files, which opens FZF with all files in
+" the wd, and :GFiles which is like :Files but limited to files tracked in the
+" git repo. I want a mapping that uses :GFiles in a git repo (excluding build
+" results etc), but normal :Files everywere else.
+fu! FilesOrGFiles()
+  let root = GetGitRoot()
+  if empty(root)
+    call fzf#vim#files('')
+  else
+    call fzf#vim#gitfiles('')
+  endif
+endfu
 
 " autocmd FileType markdown set formatexpr=CustomPar(v:lnum,v:lnum+v:count-1)
 

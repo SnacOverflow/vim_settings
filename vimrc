@@ -493,8 +493,10 @@ map <Leader> <Plug>(easymotion-prefix)
 
 
 " -- FZF {{{2
-noremap <leader>t :FZF<CR>
+
+noremap <leader>t :call FilesOrGFiles()<CR>
 noremap <leader>b :Buffers<CR>
+
 
 " LANGUAGE CONFIG {{{1
 "===============================================================================
@@ -531,9 +533,9 @@ endfu
 function! ApplyShellMappings()
   " set g:Dispatch with the command first, so we can rerun by calling :Dispatch without arguments
   " <c-r>=   call vimscript by using the '=' buffer in the command
-  noremap <Leader>uc :ReDispatch ./runTests.sh <c-r>=expand("%")<cr><CR>
-  noremap <Leader>ua :ReDispatch ./runTests.sh -a <c-r>=expand("%")<cr><CR>
-  noremap <Leader>uf :ReDispatch ./runTests.sh -m <c-r>=expand("<cword>")<cr> <c-r>=expand("%")<cr><CR>
+  noremap <Leader>uc :ReDispatch ./runTests.sh -v <c-r>=expand("%")<cr><CR>
+  noremap <Leader>ua :ReDispatch ./runTests.sh -v -a <c-r>=expand("%")<cr><CR>
+  noremap <Leader>uf :ReDispatch ./runTests.sh -v -m <c-r>=expand("<cword>")<cr> <c-r>=expand("%")<cr><CR>
   nnoremap <Leader>pl :call AddLogStatement(@0)<CR>
   nnoremap <Leader>pc :call AddLogStatement(expand("<cword>"))<CR>
   " nnoremap ,p oecho "<c-r>0:'${<c-r>0}'"<ESC><CR>
