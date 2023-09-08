@@ -22,6 +22,7 @@ Plug 'junegunn/fzf.vim'
 
 " STYLING & SYNTAX {{{2
 Plug 'vim-scripts/MultipleSearch'
+Plug 'PeterRincker/vim-searchlight'
 " Plug 'endel/vim-github-colorscheme'   " colorscheme based on githubs syntax highlighting
 if has("nvim")
   Plug 'lifepillar/vim-solarized8'
@@ -74,6 +75,7 @@ if has("nvim")
   Plug 'hrsh7th/nvim-cmp'
 
   Plug 'hrsh7th/cmp-vsnip'
+  Plug 'quangnguyen30192/cmp-nvim-tags'
   Plug 'hrsh7th/vim-vsnip'
 
   set completeopt=menu,menuone,noselect
@@ -260,6 +262,9 @@ endif
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
+highlight Search guibg='Underlined' guifg='NONE'
+highlight link Searchlight Incsearch
+
 "}}}
 " PLUGIN CONFIG {{{1
 "===============================================================================
@@ -352,7 +357,7 @@ let g:gitgutter_map_keys = 0
 " Make sure gitgutter looks like the linenumber column
 nmap gp <Plug>(GitGutterPreviewHunk)
 nmap ga <Plug>(GitGutterStageHunk)
-nmap gu <Plug>(GitGutterUndoHunk)
+nmap gx <Plug>(GitGutterUndoHunk)
 nmap [g <Plug>(GitGutterPrevHunk)
 nmap ]g <Plug>(GitGutterNextHunk)
 
@@ -378,6 +383,11 @@ map <Leader> <Plug>(easymotion-prefix)
 noremap <leader>t :call FilesOrGFiles()<CR>
 noremap <leader>b :Buffers<CR>
 
+" -- diffview {{{2
+" aliases to make his faster
+:command! -nargs=* Do DiffviewOpen <args>
+:command! -nargs=* Dc DiffviewClose <args>
+:command! -nargs=* Dh DiffviewFileHistory <args>
 
 " LANGUAGE CONFIG {{{1
 "===============================================================================
