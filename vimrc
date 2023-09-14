@@ -210,10 +210,13 @@ let mapleader = "\<SPACE>"
 noremap ,b :b#<CR>
 
 " Using the arrow-keys in the command-line navigates the command-history
-" filtered by the input text, CTRL-P does the same without filtering. Since I
-" don't want no arrow key-usage, make CTRL-P use the filtering too.
-cnoremap <A-p> <Up>
-cnoremap <A-n> <Down>
+" filtered by the current input text, CTRL-P used to do the same but without
+" filtering, but since configuring command-completion it now navigates through
+" completion. Since I don't want to leave the home row for the arrows, and
+" filtering using the current input is super handy, this maps CTRL j and k to
+" the arrow keys.
+cnoremap <C-k> <Up>
+cnoremap <C-j> <Down>
 
 
 " easyer window commands
