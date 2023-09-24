@@ -128,13 +128,7 @@ Plug 'lervag/vimtex'                      " for latex
 
 
 " MY PLUGINS {{{2
-" Plug 'meonlol/vim-java-hi-semantics'
-" Plug 'meonlol/vim-gosem'
-" Plug 'http://meonlol@192.168.178.23/meonlol/vim-logsearch.git'
-" Plugin 'meonlol/vim-android'
-" Plugin 'meonlol/vim-grand'
-" Plugin 'meonlol/vim-android'
-" Plugin 'meonlol/vim-grand'
+Plug 'leonschreuder/vim-chunk'
 
 " }}}
 
