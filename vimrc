@@ -578,6 +578,11 @@ source ~/.vim/funcs.vim
 " EXPERIMENTAL {{{1
 "===============================================================================
 
+augroup chunk
+    autocmd!
+  autocmd BufWinEnter quickfix nnoremap <leader>c :call LoadChunkFromQuickfix()<CR>
+augroup END
+
 augroup slog
     autocmd!
 
