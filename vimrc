@@ -21,9 +21,10 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " STYLING & SYNTAX {{{2
-Plug 'vim-scripts/MultipleSearch'
-Plug 'PeterRincker/vim-searchlight'
-" Plug 'endel/vim-github-colorscheme'   " colorscheme based on githubs syntax highlighting
+" Plug 'vim-scripts/MultipleSearch'
+Plug 'inkarkat/vim-mark' " highlighting searches
+Plug 'inkarkat/vim-ingo-library' " dependency for vim-mark
+" Plug 'PeterRincker/vim-searchlight'
 if has("nvim")
   Plug 'lifepillar/vim-solarized8'
   Plug 'vim-airline/vim-airline'
@@ -259,9 +260,6 @@ endif
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
-highlight Search guibg='Underlined' guifg='NONE'
-highlight link Searchlight Incsearch
-
 "}}}
 " PLUGIN CONFIG {{{1
 "===============================================================================
@@ -385,6 +383,17 @@ noremap <leader>b :Buffers<CR>
 :command! -nargs=* Do DiffviewOpen <args>
 :command! -nargs=* Dc DiffviewClose <args>
 :command! -nargs=* Dh DiffviewFileHistory <args>
+" -- mark {{{2
+let g:mw_no_mappings = 1
+" see :h mark-usage and vim-mark/plugin/mark.vim
+let g:mwDefaultHighlightingPalette = 'extended' " more than 6 colors
+nnoremap <Leader>mc <Plug>MarkSet
+xnoremap <Leader>mc <Plug>MarkSet
+
+nnoremap <Leader>mx <Plug>MarkClear
+nnoremap <Leader>mr <Plug>MarkRegex
+xnoremap <Leader>mr <Plug>MarkRegex
+
 
 " LANGUAGE CONFIG {{{1
 "===============================================================================
