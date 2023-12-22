@@ -223,6 +223,11 @@ noremap <leader>j <C-W>j
 noremap <leader>k <C-W>k
 noremap <leader>l <C-W>l
 
+" in an effort to reduce strain on my pinky
+noremap ,l :tabnext<CR>
+noremap ,h :tabprevious<CR>
+tnoremap <C-x> <C-\><C-n>
+
 " move up/down/left/right
 noremap <C-j> 3<C-e>
 noremap <C-k> 3<C-y>

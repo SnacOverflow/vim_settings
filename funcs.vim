@@ -141,73 +141,72 @@ fu! GetLinesEndingInSlash(lines)
 endfu
 
 " OpenOther {{{1
-nnoremap ,t :call OpenOther()<CR>
+" nnoremap ,t :call OpenOther()<CR>
 
-fu! OpenOther()
-  if &filetype == "java"
-    call OpenOtherOnSuffix("/main/", "/test/", "Test")
-  elseif &filetype == "sh"
-    call OpenOtherOnPrefix("main", "test", "test_")
-  endif
-endfu
+" fu! OpenOther()
+"   if &filetype == "java"
+"     call OpenOtherOnSuffix("/main/", "/test/", "Test")
+"   elseif &filetype == "sh"
+"     call OpenOtherOnPrefix("main", "test", "test_")
+"   endif
+" endfu
 
-fu! OpenOtherOnPrefix(mainDirId, testDirId, testPrefix)
-  " Files & paths
-  let srcDir = GetRelativeFilePath()
-  let srcFileName = expand('%:t')
+" fu! OpenOtherOnPrefix(mainDirId, testDirId, testPrefix)
+"   " Files & paths
+"   let srcDir = GetRelativeFilePath()
+"   let srcFileName = expand('%:t')
 
-  " Change path
-  let targetPathItems = split(srcDir, '/')
-  let mainIdIndex = index(targetPathItems, a:mainDirId)
-  let testIdIndex = index(targetPathItems, a:testDirId)
+"   " Change path
+"   let targetPathItems = split(srcDir, '/')
+"   let mainIdIndex = index(targetPathItems, a:mainDirId)
+"   let testIdIndex = index(targetPathItems, a:testDirId)
 
-  if (mainIdIndex > -1)
-    let targetPathItems[mainIdIndex] = a:testDirId
-  elseif (testIdIndex > -1)
-    let targetPathItems[testIdIndex] = a:mainDirId
-  endif
+"   if (mainIdIndex > -1)
+"     let targetPathItems[mainIdIndex] = a:testDirId
+"   elseif (testIdIndex > -1)
+"     let targetPathItems[testIdIndex] = a:mainDirId
+"   endif
 
-  " Change fileName
-  if (srcFileName =~ "^" . a:testPrefix)
-    call add(targetPathItems, substitute(srcFileName, a:testPrefix, "", ""))
-  else
-    call add(targetPathItems, a:testPrefix . srcFileName)
-  endif
+"   " Change fileName
+"   if (srcFileName =~ "^" . a:testPrefix)
+"     call add(targetPathItems, substitute(srcFileName, a:testPrefix, "", ""))
+"   else
+"     call add(targetPathItems, a:testPrefix . srcFileName)
+"   endif
 
-  execute 'edit ' . join(targetPathItems, "/")
-endfu
+"   execute 'edit ' . join(targetPathItems, "/")
+" endfu
 
-fu! OpenOtherOnSuffix(mainDirId, testDirId, testSuffix)
-  " Files & paths
-  let srcDir = GetRelativeFilePath()
-  let srcFile = expand('%:t')
-  let extension = "." . expand('%:e')
+" fu! OpenOtherOnSuffix(mainDirId, testDirId, testSuffix)
+"   " Files & paths
+"   let srcDir = GetRelativeFilePath()
+"   let srcFile = expand('%:t')
+"   let extension = "." . expand('%:e')
 
-  " Change path
-  let targetPath = ""
-  if (stridx(srcDir, a:mainDirId) > -1)
-    let targetPath = substitute(srcDir, a:mainDirId, a:testDirId, "")
-  elseif (stridx( srcDir, a:testDirId) > -1)
-    let targetPath = substitute(srcDir, a:testDirId, a:mainDirId, "")
-  endif
+"   " Change path
+"   let targetPath = ""
+"   if (stridx(srcDir, a:mainDirId) > -1)
+"     let targetPath = substitute(srcDir, a:mainDirId, a:testDirId, "")
+"   elseif (stridx( srcDir, a:testDirId) > -1)
+"     let targetPath = substitute(srcDir, a:testDirId, a:mainDirId, "")
+"   endif
+"   " Change fileName
+"   let targetFile = ""
+"   if (stridx(srcFile, a:testSuffix . extension) > -1)
+"     let targetFile = substitute(srcFile, a:testSuffix . extension, extension, "")
+"   else
+"     let targetFile = substitute(srcFile, extension, a:testSuffix . extension, "")
+"   endif
 
-  " Change fileName
-  let targetFile = ""
-  if (stridx(srcFile, a:testSuffix . extension) > -1)
-    let targetFile = substitute(srcFile, a:testSuffix . extension, extension, "")
-  else
-    let targetFile = substitute(srcFile, extension, a:testSuffix . extension, "")
-  endif
+"   execute 'edit ' . targetPath . '/' . targetFile
 
-  execute 'edit ' . targetPath . '/' . targetFile
-
-endfu
+" endfu
 
 
-fu! GetRelativeFilePath()
-    let fullPath = expand('%:p:h')
-    return substitute(fullPath, getcwd() . "/" , "", "")
-endfu
+" fu! GetRelativeFilePath()
+"     let fullPath = expand('%:p:h')
+"     return substitute(fullPath, getcwd() . "/" , "", "")
+" endfu
 
 " Refactoring {{{1
 
