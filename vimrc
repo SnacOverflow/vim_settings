@@ -61,6 +61,8 @@ Plug 'meonlol/vim-subvenient'           " TODO
 Plug 'ludovicchabant/vim-gutentags'     " Tags handling
 Plug 'vim-scripts/taglist.vim'          " tags overview window :TlistToggle
 Plug 'editorconfig/editorconfig-vim'    " Support for reading config from .editorconfig file
+Plug 'LucHermitte/lh-vim-lib'
+Plug 'LucHermitte/vim-UT'
 
 " -- lanuage client {{{3
 if has("nvim")

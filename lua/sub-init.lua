@@ -111,7 +111,7 @@ end
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 -- make sure phpactor is in the path. Eg: PATH="$PATH:$HOME/.vim/bundle/phpactor/bin"
 -- :LspInstallInfo
-local servers = { 'phpactor', 'rust_analyzer', 'tsserver', 'jdtls', 'bashls' }
+local servers = { 'phpactor', 'rust_analyzer', 'tsserver', 'jdtls', 'bashls', 'kotlin_language_server', 'vimls' }
 -- 'kotlin_language_server' -- disabled because slow
 
 for _, lsp in pairs(servers) do
