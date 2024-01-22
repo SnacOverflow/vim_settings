@@ -419,6 +419,28 @@ nnoremap [r <Plug>(grammarous-move-to-previous-error) 	" Move cursor to the prev
 " <Plug>(grammarous-remove-error) 	" Remove the error under the cursor
 " <Plug>(grammarous-disable-rule) 	" Disable the grammar rule under the cursor
 
+" -- UT {{{2
+
+function! CallUTRunWithCurrent()
+echom "CallUTRunWithCurrent"
+  let g:utLastTest = expand("%")
+  exe ":UTRun " . g:utLastTest
+endfunction
+
+function! CallUTRunWithLast()
+  echom "CallUTRunWithLast"
+  if !exists("g:utLastTest")
+    echom "Error: No last test."
+  else
+    exe ":UTRun " . g:utLastTest
+  endif
+endfunction
+
+function! ApplyVimscriptMappings()
+  noremap <Leader>uc :call CallUTRunWithCurrent()<CR>
+  noremap <Leader>ul :call CallUTRunWithLast()<CR>
+endfunction
+autocmd! FileType vim call ApplyVimscriptMappings()
 
 " LANGUAGE CONFIG {{{1
 "===============================================================================
@@ -466,11 +488,11 @@ autocmd! FileType sh call ApplyShellMappings() " so we call it on-load per filet
 
 
 " -- vimscript {{{2
-function! ApplyVimscriptMappings()
-   nnoremap ,p oechomsg "<c-r>0:'" . <c-r>0 . "'"<ESC><CR>
-endfunction
-autocmd! FileType vim call ApplyVimscriptMappings()
-autocmd! FileType vader call ApplyVimscriptMappings()
+" function! ApplyVimscriptMappings()
+"    nnoremap ,p oechomsg "<c-r>0:'" . <c-r>0 . "'"<ESC><CR>
+" endfunction
+" autocmd! FileType vim call ApplyVimscriptMappings()
+" autocmd! FileType vader call ApplyVimscriptMappings()
 
 
 " -- kotlin {{{2
