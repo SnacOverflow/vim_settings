@@ -50,6 +50,8 @@ Plug 'tpope/vim-repeat'                   " Improves vim's dot command-repeating
 Plug 'vim-voom/VOoM'                      " Shows an index for the current file
 Plug 'sk1418/HowMuch'                     " Calculate slections
 Plug 'jeffkreeftmeijer/vim-numbertoggle'  " toggle absolute and relative line numbers, respecting active buffer.
+" Plug 'Konfekt/vim-langtool'               " LanguageTool plugin
+Plug 'rhysd/vim-grammarous'               " LanguageTool plugin
 
 " CODING {{{2
 
@@ -401,6 +403,21 @@ xnoremap <Leader>mc <Plug>MarkSet
 nnoremap <Leader>mx <Plug>MarkClear
 nnoremap <Leader>mr <Plug>MarkRegex
 xnoremap <Leader>mr <Plug>MarkRegex
+
+" -- LanguageTool {{{2
+
+let g:grammarous#jar_url = 'https://www.languagetool.org/download/LanguageTool-5.9.zip'
+
+nnoremap ro <Plug>(grammarous-open-info-window) 	" Open the info window for the error under the cursor
+nnoremap rf <Plug>(grammarous-fixit) 	" Fix the error under the cursor automatically
+nnoremap ]r <Plug>(grammarous-move-to-next-error) 	" Move cursor to the next error
+nnoremap [r <Plug>(grammarous-move-to-previous-error) 	" Move cursor to the previous error
+" <Plug>(grammarous-move-to-info-window) 	" Move the cursor to the info window
+" <Plug>(grammarous-reset) 	" Reset the current check
+" <Plug>(grammarous-fixall) 	" Fix all the errors in a current buffer automatically
+" <Plug>(grammarous-close-info-window) 	" Close the information window from checked buffer
+" <Plug>(grammarous-remove-error) 	" Remove the error under the cursor
+" <Plug>(grammarous-disable-rule) 	" Disable the grammar rule under the cursor
 
 
 " LANGUAGE CONFIG {{{1
