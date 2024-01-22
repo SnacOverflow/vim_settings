@@ -132,6 +132,7 @@ Plug 'lervag/vimtex'                      " for latex
 
 " MY PLUGINS {{{2
 Plug 'leonschreuder/vim-chunk'
+Plug 'leonschreuder/vim-searchalot'
 
 " }}}
 
@@ -534,8 +535,8 @@ vnoremap ,<C-r> :call ReplaceCurrentSelection("bufdo")<CR>
 " to allow editing the quickfix window and saving the results to the
 " corresponding files, and using the above ReplaceCurrentWord() mappings
 " to modify the search results, this becomes a powerfull refactoring tool.
-nnoremap ,/ :call SeachWordInCwd()<CR>
-vnoremap ,/ :call SeachSelectedWordInCwd()<CR>
+nnoremap ,/ :call SearchaCurrentWord()<CR>
+vnoremap ,/ :call SearchaSelectedWord()<CR>
 
 
 
