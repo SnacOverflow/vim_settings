@@ -10,42 +10,17 @@
 " Gray:         Comment
 
 
-" syn match       titleDef            /\(title=\)\@<=[^|]\+/
-" hi def link     titleDef            Error
+highlight link jiraMarkOn Keyword
+highlight link jiraMarkOff Comment
+highlight link jiraMarkCheck String
+highlight link jiraMarkError Delimiter
+highlight link jiraMarkWarn PreProc
+highlight link jiraMarkYes String
+highlight link jiraMarkNo PreProc
+highlight link jiraMarkInfo Underlined
 
-" syn region      panelReg            start="^{panel" end="}" contains=titleDef
-" hi def link     panelReg            Comment
-
-" syn match       markQuestion        "(?).*"
-" hi def link     markQuestion        Function
-
-" syn match       markNotDone         "(x).*"
-" hi def link     markNotDone         Delimiter
-
-" syn match       markDone            "(/).*"
-" hi def link     markDone            String
-
-" syn match       linkTitle           /\(\[\)\@<=[^|\]]\+/ contained
-" hi def link     linkTitle           Type
-" syn match       linkBody            /\(|\)\@<=[^\]]\+/ contained
-" hi def link     linkBody            Underlined
-" syn region      linkReg             start="\[" end="\]" contains=linkTitle,linkBody
-
-" syn match       jiraTask            "TASK\d\d-\d\+"
-" hi def link     jiraTask            Underlined
-
-highlight jiraMarkOn ctermfg=yellow guifg=yellow
-highlight jiraMarkOff ctermfg=darkgrey guifg=darkgrey
-highlight jiraMarkCheck ctermfg=green guifg=green
-highlight jiraMarkError ctermfg=red guifg=red
-highlight jiraMarkWarn ctermfg=202 guifg=#ff5f00
-highlight jiraMarkYes ctermfg=green guifg=green
-highlight jiraMarkNo ctermfg=red guifg=red
-highlight jiraMarkInfo ctermfg=blue guifg=blue
-
-highlight link jiraPanelTitle Title
-highlight hide guifg=darkgrey ctermfg=darkgrey
-highlight link jiraPanelEnd hide
+highlight link jiraPanelTitle Type
+highlight link jiraPanelEnd Comment
 highlight jiraBold gui=bold cterm=bold
 highlight jiraItalic gui=italic cterm=underline
 
@@ -64,10 +39,13 @@ syntax cluster jiraMark contains=jiraMarkOn,jiraMarkOff,jiraMarkCheck,jiraMarkEr
 syntax match jiraItalic /_[^_]\+_/ excludenl contains=ALL
 syntax match jiraBold /\*[^*]\+\*/ excludenl contains=ALL
 
-syntax region jiraNoFormat matchgroup=hide start="{noformat}" end="{noformat}" keepend
+syntax match    jiraNoFormat          "{noformat}\|{code}" contained
+highlight link  jiraNoFormat          Comment
+syntax region   jiraNoFormatRegion    start="{noformat}\|{code}" end="{noformat}\|{code}" contains=jiraNoFormat
+highlight link  jiraNoFormatRegion    String
 
 syntax region jiraPanel start="{panel:" end="{panel}" fold contains=ALL keepend
-syntax region jiraPanelTitle matchgroup=hide start="{panel:.\{-}\(title=\)" end="|.*}" contained 
+syntax region jiraPanelTitle matchgroup=Comment start="{panel:.\{-}\(title=\)" end="|.*}" contained 
 syntax match jiraPanelEnd /{panel}/ contained
 
 highlight link jiraTableHeader jiraBold
