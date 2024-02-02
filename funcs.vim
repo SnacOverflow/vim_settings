@@ -8,8 +8,8 @@ function! GetBufferList()
     return buflist
 endfunction
 
-" nnoremap <silent> <leader>el :call ToggleList("Location List", 'l')<CR>
-nnoremap <silent> <leader>e :call ToggleList("Quickfix List", 'c')<CR>
+nnoremap <silent> <leader>wl :call ToggleList("Location List", 'l')<CR>
+nnoremap <silent> <leader>we :call ToggleList("Quickfix List", 'c')<CR>
 function! ToggleList(bufname, pfx)
     let buflist = GetBufferList()
     for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')

@@ -187,6 +187,8 @@ set expandtab    " use spaces in stead of tabs
 
 " Removes quickfix buffer from showing up using :bnext and the like.
 autocmd FileType qf set nobuflisted
+" make quickfix window always full width
+botright cwindow
 
 
 " Searching {{{2
@@ -574,8 +576,10 @@ vnoremap ,<C-r> :call ReplaceCurrentSelection("bufdo")<CR>
 " to allow editing the quickfix window and saving the results to the
 " corresponding files, and using the above ReplaceCurrentWord() mappings
 " to modify the search results, this becomes a powerfull refactoring tool.
-nnoremap ,/ :call SearchaCurrentWord()<CR>
-vnoremap ,/ :call SearchaSelectedWord()<CR>
+nnoremap ,/ :call SearchalotCurrentWordToQuickfix()<CR>
+nnoremap <leader>,/ :call SearchalotCurrentWordToLocation()<CR>
+vnoremap ,/ :call SearchalotSelectionToQuickfix()<CR>
+vnoremap <leader>,/ :call SearchalotSelectionToLocation()<CR>
 
 
 
@@ -629,6 +633,9 @@ augroup chunk
     autocmd!
   autocmd BufWinEnter quickfix nnoremap <leader>c :call LoadChunkFromQuickfix()<CR>
 augroup END
+
+nnoremap ]c :call ChunkNext()<CR>
+nnoremap [c :call ChunkPrevious()<CR>
 
 augroup slog
     autocmd!
