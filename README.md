@@ -3,7 +3,7 @@ https://github.com/neovim/neovim/wiki/Installing-Neovim
 
 ```
 rm -rf ~/.vim ~/.config/nvim/
-git clone https://github.com/meonlol/vim_settings.git ~/.vim
+git clone https://github.com/leonschreuder/vim_settings.git ~/.vim
 ln -s ~/.vim/vimrc ~/.vim/init.vim
 ln -s ~/.vim ~/.config/nvim
 
