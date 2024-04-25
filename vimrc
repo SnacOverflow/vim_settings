@@ -188,14 +188,13 @@ set expandtab    " use spaces in stead of tabs
 
 " Removes quickfix buffer from showing up using :bnext and the like.
 autocmd FileType qf set nobuflisted
-" make quickfix window always full width
-botright cwindow
 
 
 " Searching {{{2
 set incsearch       " do incremental searching
 set ignorecase      " ignore case when searching
 set smartcase       " no ignorecase if Uppercase char present
+set nowrapscan      " don't automatically continue from the top when search reaches bottom
 
 " Files {{{2
 syntax on          " turn syntax highlighting on by default
