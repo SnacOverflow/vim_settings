@@ -189,6 +189,63 @@ endfunction
 
 " }}}
 
+" Runing Tests {{{1
+
+fu! RunTestsInFile()
+  echom "RunTestsInFile"
+  let g:lastTestFile = expand("%")
+  if &ft == 'vim'
+    call s:echoRun(":UTRun " . g:lastTestFile)
+    copen
+  elseif &ft == 'sh'
+    call s:echoRun(":ReDispatch ./runTests.sh -v " . g:lastTestFile)
+  else
+    echom "No test runner or RunTestsInFile() action configured for filetype: " . &ft
+  endif
+endfu
+
+fu! RunLastTests()
+  if !exists("g:lastTestFile")
+    echom "Error: No last test to run."
+  elseif &ft == 'vim'
+    call s:echoRun(":UTRun " . g:lastTestFile)
+    copen
+  elseif &ft == 'sh'
+    call s:echoRun(":Dispatch")
+  else
+    echom "No test runner or RunLastTests() action configured for filetype: " . &ft
+  endif
+endfu
+
+fu! RunAllTests()
+  let g:lastTestFile = expand("%")
+  if &ft == 'vim'
+    call s:echoRun(":UTRun ./test/**/*.vim")
+    copen
+  elseif &ft == 'sh'
+    call s:echoRun(":ReDispatch ./runTests.sh -v -a " . g:lastTestFile)
+  else
+    echom "No test runner or RunAllTests() action configured for filetype: " . &ft
+  endif
+endfu
+
+fu! RunCurrentTestFunction()
+  let g:lastTestFile = expand("%")
+  if &ft == 'sh'
+    call s:echoRun(":ReDispatch ./runTests.sh -v -m " . expand("<cword>") . " " . g:lastTestFile)
+  else
+    echom "No test runner or RunCurrentTestFunction() action configured for filetype: " . &ft
+  endif
+endfu
+
+
+fu s:echoRun(cmd)
+  echom "Running " . a:cmd
+  exe a:cmd
+endfu
+
+" }}}
+
 fu! AssertSystemProgramAvailable(name)
   if substitute(system('which ' . a:name), '\n', '', 'g') == ""
     throw "The program '" . a:name . "' is required to run this function. Please install it first."

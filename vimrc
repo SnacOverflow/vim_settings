@@ -287,7 +287,6 @@ noremap <leader>N :NERDTreeFind<CR>
 
 " -- Dispatch {{{2
 " Run FocusDispatch and then Dispatch
-noremap <Leader>ul :Dispatch<CR>
 
 fu! ReDispatch(args)
   let g:Dispatch=a:args " couldn't quickly figure out how to call FocusDispatch first
@@ -309,6 +308,10 @@ endfunction
 
 command! EditDispatch :call EditDispatch()
 
+noremap <Leader>ul :call RunLastTests()<CR>
+noremap <Leader>uc :call RunTestsInFile()<CR>
+noremap <Leader>ua :call RunAllTests()<CR>
+noremap <Leader>uf :call RunCurrentTestFunction()<CR>
 
 
 " -- lanuage-client  {{{2
@@ -421,28 +424,13 @@ nnoremap [r <Plug>(grammarous-move-to-previous-error) 	" Move cursor to the prev
 " <Plug>(grammarous-remove-error) 	" Remove the error under the cursor
 " <Plug>(grammarous-disable-rule) 	" Disable the grammar rule under the cursor
 
-" -- UT {{{2
 
-function! CallUTRunWithCurrent()
-echom "CallUTRunWithCurrent"
-  let g:utLastTest = expand("%")
-  exe ":UTRun " . g:utLastTest
-endfunction
+" -- vim-maximizer {{{2
 
-function! CallUTRunWithLast()
-  echom "CallUTRunWithLast"
-  if !exists("g:utLastTest")
-    echom "Error: No last test."
-  else
-    exe ":UTRun " . g:utLastTest
-  endif
-endfunction
-
-function! ApplyVimscriptMappings()
-  noremap <Leader>uc :call CallUTRunWithCurrent()<CR>
-  noremap <Leader>ul :call CallUTRunWithLast()<CR>
-endfunction
-autocmd! FileType vim call ApplyVimscriptMappings()
+nnoremap <leader>wm :MaximizerToggle<CR>
+" no need for this in visual or insert mode I think
+" vnoremap <silent><F3> :MaximizerToggle<CR>gv
+" inoremap <silent><F3> <C-o>:MaximizerToggle<CR>
 
 " LANGUAGE CONFIG {{{1
 "===============================================================================
@@ -456,46 +444,6 @@ augroup PhpactorMappings
   au FileType php nnoremap <silent> <C-]> :PhpactorGotoDefinition<CR>
 augroup END
 <
-
-" let g:LanguageClient_serverCommands['php'] = ['rust-analyzer']
-" have to try and fix, but could not run installer:
-" - https://github.com/felixfbecker/php-language-server
-
-" -- bash {{{2
-fu! AddLogStatement(logTarget)
-  let currLine = line('.')
-  let indent = repeat(" ", indent(currLine))
-  if a:logTarget =~ '^\$'
-    let name = '\' . a:logTarget
-    let var = a:logTarget
-  else
-    let name = a:logTarget
-    let var = '$' . a:logTarget
-  endif
-  let line = indent . 'echo "' . name . ':' . var . '"'
-  call append(currLine, line)
-endfu
-
-function! ApplyShellMappings()
-  " set g:Dispatch with the command first, so we can rerun by calling :Dispatch without arguments
-  " <c-r>=   call vimscript by using the '=' buffer in the command
-  noremap <Leader>uc :ReDispatch ./runTests.sh -v <c-r>=expand("%")<cr><CR>
-  noremap <Leader>ua :ReDispatch ./runTests.sh -v -a <c-r>=expand("%")<cr><CR>
-  noremap <Leader>uf :ReDispatch ./runTests.sh -v -m <c-r>=expand("<cword>")<cr> <c-r>=expand("%")<cr><CR>
-  nnoremap <Leader>pl :call AddLogStatement(@0)<CR>
-  nnoremap <Leader>pc :call AddLogStatement(expand("<cword>"))<CR>
-  " nnoremap ,p oecho "<c-r>0:'${<c-r>0}'"<ESC><CR>
-endfunction
-autocmd! FileType sh call ApplyShellMappings() " so we call it on-load per filetype
-
-
-" -- vimscript {{{2
-" function! ApplyVimscriptMappings()
-"    nnoremap ,p oechomsg "<c-r>0:'" . <c-r>0 . "'"<ESC><CR>
-" endfunction
-" autocmd! FileType vim call ApplyVimscriptMappings()
-" autocmd! FileType vader call ApplyVimscriptMappings()
-
 
 " -- kotlin {{{2
 autocmd FileType kotlin set tabstop=4
