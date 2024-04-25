@@ -12,7 +12,6 @@ require("mason").setup {
     }
   }
 }
-
 require("mason-lspconfig").setup {}
 
 -- Setup nvim-cmp.
@@ -111,8 +110,19 @@ end
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 -- make sure phpactor is in the path. Eg: PATH="$PATH:$HOME/.vim/bundle/phpactor/bin"
 -- :LspInstallInfo
-local servers = { 'phpactor', 'rust_analyzer', 'tsserver', 'jdtls', 'bashls', 'kotlin_language_server', 'vimls' }
+local servers = {
+    'phpactor',
+    'rust_analyzer',
+    'tsserver',
+    'jdtls',
+    'bashls',
+    'kotlin_language_server',
+    'vimls',
+    'marksman',
+    'lua_ls',
+}
 -- 'kotlin_language_server' -- disabled because slow
+-- , 'ltex-ls' -- doesn't automatically install correctly
 
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
