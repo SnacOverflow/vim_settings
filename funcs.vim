@@ -231,6 +231,13 @@ fu! StageSearchAndReplaceInCommandWindow(searchString, replacementString, target
   call feedkeys("\<Esc>2T/")
 endfu
 
+" credit: https://stackoverflow.com/a/61517520/3968618
+function! EscapeForVimRegexp(str)
+  return escape(a:str, '^$.*?/\[]')
+endfunction
+function! EscapeForGNURegexp(str)
+  return escape(a:str, '^$.*?/\[]()' . '"' . "'")
+endfunction
 
 " credit: https://stackoverflow.com/a/6271254/3968618
 function! s:get_visual_selection()
