@@ -51,7 +51,8 @@ Plug 'vim-voom/VOoM'                      " Shows an index for the current file
 Plug 'sk1418/HowMuch'                     " Calculate slections
 Plug 'jeffkreeftmeijer/vim-numbertoggle'  " toggle absolute and relative line numbers, respecting active buffer.
 " Plug 'Konfekt/vim-langtool'               " LanguageTool plugin
-Plug 'rhysd/vim-grammarous'               " LanguageTool plugin
+" Plug 'rhysd/vim-grammarous'               " LanguageTool plugin
+Plug 'szw/vim-maximizer'                  " zoom in and out of active window
 
 " CODING {{{2
 
