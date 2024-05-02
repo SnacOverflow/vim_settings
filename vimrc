@@ -524,10 +524,14 @@ vnoremap ,<C-r> :call ReplaceCurrentSelection("bufdo")<CR>
 " to allow editing the quickfix window and saving the results to the
 " corresponding files, and using the above ReplaceCurrentWord() mappings
 " to modify the search results, this becomes a powerfull refactoring tool.
-nnoremap ,/ :call SearchalotCurrentWordToQuickfix()<CR>
-nnoremap <leader>,/ :call SearchalotCurrentWordToLocation()<CR>
-vnoremap ,/ :call SearchalotSelectionToQuickfix()<CR>
-vnoremap <leader>,/ :call SearchalotSelectionToLocation()<CR>
+nnoremap ,/ :call SearchalotCurrentWordToQuickfixNoHighlighting()<CR>
+nnoremap ,? :call SearchalotCurrentWordToQuickfix()<CR>
+nnoremap <leader>,/ :call SearchalotCurrentWordToLocationNoHighlighting()<CR>
+nnoremap <leader>,? :call SearchalotCurrentWordToLocation()<CR>
+vnoremap ,/ :call SearchalotSelectionToQuickfixNoHighlighting()<CR>
+vnoremap ,? :call SearchalotSelectionToQuickfix()<CR>
+vnoremap <leader>,/ :call SearchalotSelectionToLocationNoHighlighting()<CR>
+vnoremap <leader>,? :call SearchalotSelectionToLocation()<CR>
 
 
 
