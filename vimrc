@@ -136,8 +136,8 @@ Plug 'lervag/vimtex'                      " for latex
 
 
 " MY PLUGINS {{{2
-Plug 'leonschreuder/vim-chunk'
-Plug 'leonschreuder/vim-searchalot'
+Plug 'leonschreuder/vim-chunk', { 'branch': 'dev' }
+Plug 'leonschreuder/vim-searchalot', { 'branch': 'dev' }
 
 " }}}
 
