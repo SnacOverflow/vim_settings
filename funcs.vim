@@ -188,51 +188,54 @@ endfunction
 
 
 " }}}
-
 " Runing Tests {{{1
 
 fu! RunTestsInFile()
-  echom "RunTestsInFile"
-  let g:lastTestFile = expand("%")
-  if &ft == 'vim'
-    call s:echoRun(":UTRun " . g:lastTestFile)
+  let g:lastTestPath = expand("%")
+  let g:lastTestFileType = &ft
+  if g:lastTestFileType == 'vim'
+    call s:echoRun(":UTRun " . g:lastTestPath)
     copen
-  elseif &ft == 'sh'
-    call s:echoRun(":ReDispatch ./runTests.sh -v " . g:lastTestFile)
+  elseif g:lastTestFileType == 'sh'
+    call s:echoRun(":ReDispatch ./runTests.sh -v " . g:lastTestPath)
   else
     echom "No test runner or RunTestsInFile() action configured for filetype: " . &ft
   endif
 endfu
 
+" runs last test OR calls Dispatch if :ReDispatch was used with some command
 fu! RunLastTests()
-  if !exists("g:lastTestFile")
-    echom "Error: No last test to run."
-  elseif &ft == 'vim'
-    call s:echoRun(":UTRun " . g:lastTestFile)
+  if !exists("g:lastTestPath") && !exists("g:Dispatch")
+    echom "Error: No last test or :Dispatch to run."
+  elseif exists("g:lastTestFileType") && g:lastTestFileType == 'vim'
+    call s:echoRun(":UTRun " . g:lastTestPath)
     copen
-  elseif &ft == 'sh'
+  elseif exists("g:Dispatch")
     call s:echoRun(":Dispatch")
   else
-    echom "No test runner or RunLastTests() action configured for filetype: " . &ft
+    echom "No test runner or RunLastTests() action configured for filetype: " . g:lastTestFileType
   endif
 endfu
 
 fu! RunAllTests()
-  let g:lastTestFile = expand("%")
+  let g:lastTestPath = expand("%")
+  let g:lastTestFileType = &ft
   if &ft == 'vim'
-    call s:echoRun(":UTRun ./test/**/*.vim")
+    let g:lastTestPath = './test/**/*.vim'
+    call s:echoRun(":UTRun " . g:lastTestPath)
     copen
-  elseif &ft == 'sh'
-    call s:echoRun(":ReDispatch ./runTests.sh -v -a " . g:lastTestFile)
+  elseif g:lastTestFileType == 'sh'
+    call s:echoRun(":ReDispatch ./runTests.sh -v -a " . g:lastTestPath)
   else
     echom "No test runner or RunAllTests() action configured for filetype: " . &ft
   endif
 endfu
 
 fu! RunCurrentTestFunction()
-  let g:lastTestFile = expand("%")
-  if &ft == 'sh'
-    call s:echoRun(":ReDispatch ./runTests.sh -v -m " . expand("<cword>") . " " . g:lastTestFile)
+  let g:lastTestPath = expand("%")
+  let g:lastTestFileType = &ft
+  if g:lastTestFileType == 'sh'
+    call s:echoRun(":ReDispatch ./runTests.sh -v -m " . expand("<cword>") . " " . g:lastTestPath)
   else
     echom "No test runner or RunCurrentTestFunction() action configured for filetype: " . &ft
   endif
