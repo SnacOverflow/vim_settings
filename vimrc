@@ -25,14 +25,16 @@ Plug 'junegunn/fzf.vim'
 Plug 'inkarkat/vim-mark' " highlighting searches
 Plug 'inkarkat/vim-ingo-library' " dependency for vim-mark
 " Plug 'PeterRincker/vim-searchlight'
+Plug 'joshdick/onedark.vim'
 if has("nvim")
-  Plug 'lifepillar/vim-solarized8'
+  " Plug 'lifepillar/vim-solarized8'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'sindrets/diffview.nvim'
 else
-  Plug 'altercation/vim-colors-solarized'
+  " Plug 'altercation/vim-colors-solarized'
 endif
+
 
 " OTHER ENHANCEMENTS {{{2
 Plug 'tpope/vim-unimpaired'               " essential: group mappings to [ and ] for common functions
@@ -259,14 +261,16 @@ set background=dark " can use 'yob' to switch to 'light'
 
 let g:tex_flavor = 'latex'
 let g:vimtex_compiler_method = "tectonic"
+colorscheme onedark
 if has("nvim")
   set termguicolors
-  colorscheme solarized8
+
+  " colorscheme solarized8
 else
   let g:solarized_visibility = "high"
   let g:solarized_contrast = "high"
-  colorscheme solarized
-  set t_Co=256
+  " colorscheme solarized
+  " set t_Co=256
   " hi! MatchParen cterm=NONE,bold gui=NONE,bold ctermbg=12 guibg=#839496 ctermfg=15 guifg=#fdf6e3
 endif
 
@@ -379,7 +383,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tab_count = 0 " for example: 'tab 1/2' in top left
 let g:airline#extensions#tabline#show_buffers = 0 " Show buffers if no tabs available
 let g:airline#extensions#tabline#show_tab_nr = 0 " don't show number of splits on tab (usually 1 or 2)
-let g:airline_theme='solarized'
+let g:airline_theme='onedark'
 
 " -- EasyMotion {{{2
 map <Leader> <Plug>(easymotion-prefix)
