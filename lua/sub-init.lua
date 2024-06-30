@@ -144,3 +144,5 @@ require("diffview").setup({
 
 
 -- vim:fdm=marker
+
+require('refactoring').setup()

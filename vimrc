@@ -68,6 +68,9 @@ Plug 'vim-scripts/taglist.vim'          " tags overview window :TlistToggle
 Plug 'editorconfig/editorconfig-vim'    " Support for reading config from .editorconfig file
 Plug 'LucHermitte/lh-vim-lib'
 Plug 'LucHermitte/vim-UT'
+Plug 'ThePrimeagen/refactoring.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-treesitter/nvim-treesitter'
 
 " -- lanuage client {{{3
 if has("nvim")
