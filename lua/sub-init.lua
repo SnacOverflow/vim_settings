@@ -113,14 +113,13 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protoc
 local servers = {
     'phpactor',
     'rust_analyzer',
-    -- 'tsserver',
+    'tsserver',
     'jdtls',
     'bashls',
     'kotlin_language_server',
     'vimls',
     'marksman',
     'lua_ls',
-    'denols',
 }
 -- 'kotlin_language_server' -- disabled because slow
 -- , 'ltex-ls' -- doesn't automatically install correctly
