@@ -280,6 +280,11 @@ endif
 au TextYankPost * silent! lua vim.highlight.on_yank()
 
 "}}}
+
+if has("nvim")
+  lua require("sub-init")
+endif
+
 " PLUGIN CONFIG {{{1
 "===============================================================================
 
@@ -320,34 +325,9 @@ noremap <Leader>uc :call RunTestsInFile()<CR>
 noremap <Leader>ua :call RunAllTests()<CR>
 noremap <Leader>uf :call RunCurrentTestFunction()<CR>
 
-
-" -- lanuage-client  {{{2
-" function! ApplyLanguageClientMappings()
-"   if has_key(g:LanguageClient_serverCommands, &filetype)
-"     nnoremap <silent> ,d :call LanguageClient#textDocument_hover()<CR>
-"     nnoremap <silent> ,i :call LanguageClient#textDocument_implementation()<CR>
-"     nnoremap <silent> ,m : call LanguageClient_contextMenu()<CR>
-"     nnoremap <silent> ,c : call LanguageClient#textDocument_codeAction()<CR>
-"     nnoremap <silent> ,? : call LanguageClient#explainErrorAtPoint()<CR>
-"     nnoremap <silent> <C-]> :call LanguageClient#textDocument_definition()<CR>
-"     nnoremap <silent> <leader>rr :call LanguageClient#textDocument_rename()<CR>
-"   endif
-" endfunction
-" autocmd! FileType * call ApplyLanguageClientMappings() " so we call it on-load per filetype
-
-if has("nvim")
-
-lua <<EOF
-require("sub-init")
-EOF
-
-" luafile 'lua/extended_config.lua'
-
-endif
-
-
 " -- gutentags {{{2
-set tags+=.tags    " I want to use hidden tags files
+
+set tags+=.tags " I want to use hidden tags files
 let g:gutentags_ctags_tagfile=".tags"
 
 let g:gutentags_file_list_command = {
