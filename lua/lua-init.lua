@@ -144,6 +144,38 @@ require("diffview").setup({
 
 require('refactoring').setup()
 
--- }}}
 
+-- aerial  {{{2
+-- code outline window using lsp
+
+require("aerial").setup({
+  -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+  on_attach = function(bufnr)
+    -- Jump forwards/backwards with '{' and '}'
+    vim.keymap.set("n", "]]", "<cmd>AerialNext<CR>", { buffer = bufnr })
+    vim.keymap.set("n", "[[", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+  end,
+})
+
+-- harpoon  {{{2
+-- Saving favorite files in a separate menu
+
+local harpoon = require("harpoon")
+
+harpoon:setup()
+
+vim.keymap.set("n", "<leader>ga", function() harpoon:list():add() end)
+vim.keymap.set("n", "<leader>gm", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+-- vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
+-- vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
+-- vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
+-- vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+
+-- Toggle previous & next buffers stored within Harpoon list
+vim.keymap.set("n", "<leader>gn", function() harpoon:list():prev() end)
+vim.keymap.set("n", "<leader>gp", function() harpoon:list():next() end)
+
+
+-- }}}
 -- vim:fdm=marker

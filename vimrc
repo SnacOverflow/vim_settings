@@ -55,8 +55,12 @@ Plug 'jeffkreeftmeijer/vim-numbertoggle'  " toggle absolute and relative line nu
 " Plug 'Konfekt/vim-langtool'               " LanguageTool plugin
 " Plug 'rhysd/vim-grammarous'               " LanguageTool plugin
 Plug 'szw/vim-maximizer'                  " zoom in and out of active window
+Plug 'stevearc/aerial.nvim'               " code outline window using lsp
+Plug 'ThePrimeagen/harpoon'               " Saving favorite files in a separate menu
 
-" CODING {{{2
+
+
+" LANGUAGE/TYPE SPECIFIC {{{2
 
 " -- General {{{3
 Plug 'tpope/vim-commentary'             " Comment stuff out.
@@ -409,6 +413,8 @@ augroup END
 
 nnoremap ]c :call ChunkNext()<CR>
 nnoremap [c :call ChunkPrevious()<CR>
+
+nnoremap <leader>a :AerialToggle!<CR>
 
 " LANGUAGE CONFIG {{{1
 "===============================================================================
