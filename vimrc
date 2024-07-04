@@ -20,7 +20,7 @@ Plug 'Lokaltog/vim-easymotion'  " Direcly moving the cursor somewhere
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-" STYLING & SYNTAX {{{2
+" UI, STYLING, SYNTAX {{{2
 " Plug 'vim-scripts/MultipleSearch'
 Plug 'inkarkat/vim-mark' " highlighting searches
 Plug 'inkarkat/vim-ingo-library' " dependency for vim-mark
@@ -34,13 +34,13 @@ if has("nvim")
 else
   " Plug 'altercation/vim-colors-solarized'
 endif
+Plug 'airblade/vim-gitgutter'             " Shows the file's git-status in a gutter
 
 
 " OTHER ENHANCEMENTS {{{2
 Plug 'tpope/vim-unimpaired'               " essential: group mappings to [ and ] for common functions
 Plug 'tpope/vim-surround'                 " Essential: Surrounding text with (), {}, [] and more
 Plug 'tpope/vim-fugitive'                 " Git intergration
-Plug 'airblade/vim-gitgutter'             " Shows the file's git-status in a gutter
 Plug 'tpope/vim-speeddating'              " CTRL-X and CTRL-A enhancements for dates etc
 Plug 'godlygeek/tabular'                  " Easy table creation
 Plug 'tpope/vim-dispatch'                 " Async task runner
@@ -67,7 +67,6 @@ Plug 'ludovicchabant/vim-gutentags'     " Tags handling
 Plug 'vim-scripts/taglist.vim'          " tags overview window :TlistToggle
 Plug 'editorconfig/editorconfig-vim'    " Support for reading config from .editorconfig file
 Plug 'LucHermitte/lh-vim-lib'
-Plug 'LucHermitte/vim-UT'
 Plug 'ThePrimeagen/refactoring.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
@@ -97,45 +96,28 @@ endif
 " -- Vimscript {{{3
 Plug 'tpope/vim-scriptease'             " vim plugin writing improvements
 Plug 'junegunn/vader.vim'               " Vimscript Testing library
+Plug 'LucHermitte/vim-UT'
 
 " -- Kotlin {{{3
 Plug 'udalov/kotlin-vim'
 
 " -- Java {{{3
 Plug 'udalov/javap-vim'                 " view bytecode of class files using javap
-" Plug 'artur-shaik/vim-javacomplete2'
 
 " -- Groovy {{{3
 Plug 'tfnico/vim-gradle'                " grooy highlighting and gradle compiling
 Plug 'vim-scripts/groovyindent-unix'    " indentation for groovy scripts
 
-" -- Applescript {{{3
-" Plug 'dearrrfish/vim-applescript'
-
-" -- Swift {{{3
-" Plug 'mitsuse/autocomplete-swift'
-
-" -- Javascript {{{3
-" Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-" Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 
-" -- go {{{3
-" neovim only plugins
-" if has("nvim")
-"   Plug 'fatih/vim-go'
-"   Plug 'meonlol/vim-godebug'              " Debugger for go
-" endif
 
 " -- rust {{{3
 " 1. install rustup https://rustup.rs/
 " 2. install language-server https://rust-analyzer.github.io/manual.html#rust-analyzer-language-server-binary
 " 3. should work now
 
-
 " -- latex {{{3
 Plug 'lervag/vimtex'                      " for latex
-
 
 
 " MY PLUGINS {{{2
@@ -254,7 +236,7 @@ nmap k gk
 
 set wildignore=**/build/*,**/.git/*,*.class
 
-command! Lvimrc e ~/.vim/vimrc
+command! Lvimrc tabe ~/.vim/lua/lua-init.lua | vsplit ~/.vim/vimrc
 
 " Styling {{{2
 "----------------------------------------
@@ -282,7 +264,7 @@ au TextYankPost * silent! lua vim.highlight.on_yank()
 "}}}
 
 if has("nvim")
-  lua require("sub-init")
+  lua require("lua-init")
 endif
 
 " PLUGIN CONFIG {{{1
@@ -418,10 +400,18 @@ nnoremap <leader>wm :MaximizerToggle<CR>
 " no need for this in visual or insert mode I think
 " vnoremap <silent><F3> :MaximizerToggle<CR>gv
 " inoremap <silent><F3> <C-o>:MaximizerToggle<CR>
+" -- vim-chunk {{{2
+
+augroup chunk
+    autocmd!
+  autocmd BufWinEnter quickfix nnoremap <leader>c :call LoadChunkFromQuickfix()<CR>
+augroup END
+
+nnoremap ]c :call ChunkNext()<CR>
+nnoremap [c :call ChunkPrevious()<CR>
 
 " LANGUAGE CONFIG {{{1
 "===============================================================================
-
 
 " -- php {{{2
 augroup PhpactorMappings
@@ -450,23 +440,9 @@ autocmd FileType groovy map <Leader>al :Dispatch ./gradlew test --console plain<
 " -- markdown {{{2
 autocmd FileType markdown set commentstring=<!--%s-->
 
-" -- go {{{2
-" autocmd BufRead,BufNewFile *.go       setlocal syntax=vim-gosem
-" autocmd BufWritePost *.go     silent! setlocal syntax=vim-gosem
-" autocmd FileType go map <Leader>ul :GoTest!<CR>
-" autocmd BufWritePre *.go silent! GoImports
-" autocmd BufWritePost *.go silent! !gotags -R -f=".tags" .
-" let g:syntastic_go_checkers = ['go']
-
-" -- swift {{{2
-autocmd BufNewFile,BufRead *.swift set filetype=swift
 
 
-" -- Applescript {{{2
-command! Asformat call AppleScriptFormat()
-function! AppleScriptFormat()
-    execute "%s/},/},\r\t/g | %s/alias/\r\t\t\talias/g | noh"
-endfunction
+
 
 
 " CODING {{{1
@@ -475,9 +451,7 @@ endfunction
 " Mapping for quick calculations
 " from http://vimcasts.org/episodes/simple-calculations-with-vims-expression-register/
 " nnoremap Q 0yt=A<C-r>=<C-r>"<CR><Esc>
-nnoremap Q 0yt=f=lC<C-r>=<C-r>"<CR><Esc>
-
-
+nnoremap Q 0yt=f=A<C-r>=<C-r>"<CR><Esc>
 
 
 " REFACTORING {{{1
@@ -551,9 +525,6 @@ nmap <leader>m2 o<ESC>80i-<ESC>0k
 nmap <leader>m3 I### <ESC>
 nmap <leader>m4 I#### <ESC>
 
-" Quick Reformat paragraph
-nmap <leader>a gqap
-
 noremap <leader>\| :Tabularize/\|<CR>
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
@@ -567,14 +538,6 @@ source ~/.vim/funcs.vim
 
 " EXPERIMENTAL {{{1
 "===============================================================================
-
-augroup chunk
-    autocmd!
-  autocmd BufWinEnter quickfix nnoremap <leader>c :call LoadChunkFromQuickfix()<CR>
-augroup END
-
-nnoremap ]c :call ChunkNext()<CR>
-nnoremap [c :call ChunkPrevious()<CR>
 
 augroup slog
     autocmd!

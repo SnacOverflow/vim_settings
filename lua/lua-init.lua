@@ -1,9 +1,8 @@
 
 -- Extended init file for neovim stuff only
 
--- lanuage-client  {{{1
-
--- mason: auto-installer for language client languages
+-- plugins confis  {{{1
+-- mason: auto-installer for language client languages {{{2
 
 require("mason").setup {
   ui = {
@@ -14,7 +13,7 @@ require("mason").setup {
 }
 require("mason-lspconfig").setup {}
 
--- Setup nvim-cmp.
+-- nvim-cmp. {{{2
 local cmp = require("cmp")
 
 cmp.setup({
@@ -76,6 +75,8 @@ cmp.setup.cmdline(':', {
   })
 })
 
+-- LSP  {{{2
+
 local opts = { noremap=true, silent=true }
 vim.api.nvim_set_keymap('n', ',e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
@@ -106,7 +107,6 @@ local on_attach = function(client, bufnr)
 
 end
 
--- Setup lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 -- make sure phpactor is in the path. Eg: PATH="$PATH:$HOME/.vim/bundle/phpactor/bin"
 -- :LspInstallInfo
@@ -121,8 +121,6 @@ local servers = {
     'marksman',
     'lua_ls',
 }
--- 'kotlin_language_server' -- disabled because slow
--- , 'ltex-ls' -- doesn't automatically install correctly
 
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
@@ -131,7 +129,7 @@ for _, lsp in pairs(servers) do
   }
 end
 
--- diff-view  {{{1
+-- diff-view  {{{2
 
 require("diffview").setup({
   use_icons = false,
@@ -142,7 +140,10 @@ require("diffview").setup({
   }
 })
 
-
--- vim:fdm=marker
+-- refactoring  {{{2
 
 require('refactoring').setup()
+
+-- }}}
+
+-- vim:fdm=marker
