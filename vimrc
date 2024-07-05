@@ -56,7 +56,7 @@ Plug 'jeffkreeftmeijer/vim-numbertoggle'  " toggle absolute and relative line nu
 " Plug 'rhysd/vim-grammarous'               " LanguageTool plugin
 Plug 'szw/vim-maximizer'                  " zoom in and out of active window
 Plug 'stevearc/aerial.nvim'               " code outline window using lsp
-Plug 'ThePrimeagen/harpoon'               " Saving favorite files in a separate menu
+Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }               " Saving favorite files in a separate menu
 
 
 
