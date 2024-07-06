@@ -3,15 +3,19 @@
 
 -- plugins confis  {{{1
 -- mason: auto-installer for language client languages {{{2
-
-require("mason").setup {
-  ui = {
-    icons = {
-      package_installed = "✓"
+local masonOk, mason = pcall(require, "mason")
+if masonOk then
+  mason.setup {
+    ui = {
+      icons = {
+        package_installed = "✓"
+      }
     }
   }
-}
-require("mason-lspconfig").setup {}
+  require("mason-lspconfig").setup {}
+end
+
+
 
 -- nvim-cmp. {{{2
 local cmp = require("cmp")
@@ -131,50 +135,61 @@ end
 
 -- diff-view  {{{2
 
-require("diffview").setup({
-  use_icons = false,
-  signs = {
-    fold_closed = "> ",
-    fold_open = "v ",
-    done = "✓",
-  }
-})
+local diffviewOk, diffview = pcall(require, "diffview")
+if diffviewOk then
+  diffview.setup({
+    use_icons = false,
+    signs = {
+      fold_closed = "> ",
+      fold_open = "v ",
+      done = "✓",
+    }
+  })
+end
 
 -- refactoring  {{{2
 
-require('refactoring').setup()
-
+local refactoringOk, refactoring = pcall(require, "refactoring")
+if refactoringOk then
+  refactoring.setup()
+end
 
 -- aerial  {{{2
 -- code outline window using lsp
 
-require("aerial").setup({
-  -- optionally use on_attach to set keymaps when aerial has attached to a buffer
-  on_attach = function(bufnr)
-    -- Jump forwards/backwards with '{' and '}'
-    vim.keymap.set("n", "]]", "<cmd>AerialNext<CR>", { buffer = bufnr })
-    vim.keymap.set("n", "[[", "<cmd>AerialPrev<CR>", { buffer = bufnr })
-  end,
-})
+local aerialOk, aerial = pcall(require, "aerial")
+if aerialOk then
+  aerial.setup({
+    -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+    on_attach = function(bufnr)
+      -- Jump forwards/backwards with '{' and '}'
+      vim.keymap.set("n", "]]", "<cmd>AerialNext<CR>", { buffer = bufnr })
+      vim.keymap.set("n", "[[", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+    end,
+  })
+end
 
 -- harpoon  {{{2
 -- Saving favorite files in a separate menu
 
-local harpoon = require("harpoon")
+local harpoonOk, harpoon = pcall(require, "harpoon")
+if harpoonOk then
+  harpoon:setup()
 
-harpoon:setup()
+  vim.keymap.set("n", "<leader>ga", function() harpoon:list():add() end)
+  vim.keymap.set("n", "<leader>gm", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
-vim.keymap.set("n", "<leader>ga", function() harpoon:list():add() end)
-vim.keymap.set("n", "<leader>gm", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+  -- vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
+  -- vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
+  -- vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
+  -- vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
 
--- vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
--- vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
--- vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
--- vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+  -- Toggle previous & next buffers stored within Harpoon list
+  vim.keymap.set("n", "<leader>gn", function() harpoon:list():prev() end)
+  vim.keymap.set("n", "<leader>gp", function() harpoon:list():next() end)
 
--- Toggle previous & next buffers stored within Harpoon list
-vim.keymap.set("n", "<leader>gn", function() harpoon:list():prev() end)
-vim.keymap.set("n", "<leader>gp", function() harpoon:list():next() end)
+end
+
 
 
 -- }}}
