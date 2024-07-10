@@ -57,6 +57,7 @@ Plug 'jeffkreeftmeijer/vim-numbertoggle'  " toggle absolute and relative line nu
 Plug 'szw/vim-maximizer'                  " zoom in and out of active window
 Plug 'stevearc/aerial.nvim'               " code outline window using lsp
 Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }               " Saving favorite files in a separate menu
+Plug 'pechorin/any-jump.vim'              " quickly navigate using rg or ag
 
 
 
@@ -415,6 +416,21 @@ nnoremap ]c :call ChunkNext()<CR>
 nnoremap [c :call ChunkPrevious()<CR>
 
 nnoremap <leader>a :AerialToggle!<CR>
+
+" -- any-jump {{{2
+let g:any_jump_disable_default_keybindings = 1
+
+" Normal mode: Jump to definition under cursor
+nnoremap <leader>gj :AnyJump<CR>
+
+" Visual mode: jump to selected text in visual mode
+xnoremap <leader>gj :AnyJumpVisual<CR>
+
+" Normal mode: open previous opened file (after jump)
+nnoremap <leader>gb :AnyJumpBack<CR>
+
+" Normal mode: open last closed search window again
+nnoremap <leader>gl :AnyJumpLastResults<CR>
 
 " LANGUAGE CONFIG {{{1
 "===============================================================================
