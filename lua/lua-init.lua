@@ -124,6 +124,8 @@ local servers = {
     'vimls',
     'marksman',
     'lua_ls',
+    'basedpyright',
+    'ltex',
 }
 
 for _, lsp in pairs(servers) do
@@ -132,6 +134,19 @@ for _, lsp in pairs(servers) do
     on_attach = on_attach
   }
 end
+
+-- ServerConfig: ltex  {{{3
+
+-- Grammar/Spell Checker Using LanguageTool with Support for LATEX,
+-- Markdown, and Others
+
+require('lspconfig')['ltex'].setup {
+  settings = {
+		ltex = {
+      language = "de-DE",
+		},
+	},
+}
 
 -- treesitter  {{{2
 
