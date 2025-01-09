@@ -120,13 +120,13 @@ local servers = {
     'tsserver',
     'jdtls',
     'bashls',
-    'kotlin_language_server',
     'vimls',
     'marksman',
     'lua_ls',
     'basedpyright',
     'ltex',
 }
+-- 'kotlin_language_server', -- Has problems with large projects
 
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
@@ -135,18 +135,77 @@ for _, lsp in pairs(servers) do
   }
 end
 
--- ServerConfig: ltex  {{{3
-
+-- ServerConfig: ltex
 -- Grammar/Spell Checker Using LanguageTool with Support for LATEX,
 -- Markdown, and Others
 
+
 require('lspconfig')['ltex'].setup {
   settings = {
-		ltex = {
-      language = "de-DE",
-		},
-	},
+    ltex = {
+      enabled = false,
+    },
+  },
 }
+
+local ltexLanguages = {
+  -- default:
+  "bibtex", "context", "context.tex", "html", "latex", "markdown", "org", "restructuredtext", "rsweave",
+  -- additional:
+  "jira",
+}
+
+vim.api.nvim_create_user_command(
+  'LngOn',
+  function(opts)
+    local providedLanguage = opts.fargs[1]
+    if not providedLanguage == nil then
+      print("Enabling LanguageTool with langauge:",providedLanguage)
+    else
+      print("Enabling LanguageTool with default langauge (en-US)")
+    end
+    require('lspconfig')['ltex'].setup {
+      settings = {
+        ltex = {
+          enabled = ltexLanguages,
+          language = providedLanguage,
+        },
+      },
+      filetypes = ltexLanguages,
+    }
+  end,
+  { nargs = '?' }
+)
+
+vim.api.nvim_create_user_command(
+  'LngOff',
+  function()
+    print("Disabling LanguageTool")
+    require('lspconfig')['ltex'].setup {
+      settings = {
+        ltex = {
+          enabled = false,
+        },
+      },
+    }
+  end,
+  {}
+)
+
+-- Detaches the ltex language tool plugin from the current buffer. This is
+-- usefull when multiple buffers are opened and spellchecking should only be
+-- done in one of them.
+vim.api.nvim_create_user_command(
+  'LngDetatch',
+  function()
+    local bufNr = vim.fn.bufnr()
+    for index, client in ipairs(vim.lsp.get_clients({name='ltex'})) do
+      print("Disconnecting Languagetool from bufNr:", bufNr)
+      vim.lsp.buf_detach_client(bufNr, client['id'])
+    end
+  end,
+  {}
+)
 
 -- treesitter  {{{2
 
