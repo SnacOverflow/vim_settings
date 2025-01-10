@@ -27,12 +27,12 @@ Plug 'inkarkat/vim-ingo-library' " dependency for vim-mark
 " Plug 'PeterRincker/vim-searchlight'
 Plug 'joshdick/onedark.vim'
 if has("nvim")
-  " Plug 'lifepillar/vim-solarized8'
+  Plug 'lifepillar/vim-solarized8'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
   Plug 'sindrets/diffview.nvim'
 else
-  " Plug 'altercation/vim-colors-solarized'
+  Plug 'altercation/vim-colors-solarized'
 endif
 Plug 'airblade/vim-gitgutter'             " Shows the file's git-status in a gutter
 
@@ -124,10 +124,15 @@ Plug 'vim-scripts/groovyindent-unix'    " indentation for groovy scripts
 " -- latex {{{3
 Plug 'lervag/vimtex'                      " for latex
 
+" -- logcat {{{3
+
+" Plug 'gburca/vim-logcat' " farben nicht hilfreich
+" Plug 'naseer/logcat'  " sehr häßlich
 
 " MY PLUGINS {{{2
 Plug 'leonschreuder/vim-chunk', { 'branch': 'dev' }
 Plug 'leonschreuder/vim-searchalot', { 'branch': 'dev' }
+Plug 'leonschreuder/vim-logdog'
 
 " }}}
 
